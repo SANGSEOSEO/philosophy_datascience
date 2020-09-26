@@ -1,4 +1,4 @@
-### Humanitarian v.s Data Scientists
+### Humanities v.s Data Scientists
 **Study History**
 
 Nowadays,So many people are creating or consuming multi-media contents with fully emotional feeling through SNS or Utouve whatever.
