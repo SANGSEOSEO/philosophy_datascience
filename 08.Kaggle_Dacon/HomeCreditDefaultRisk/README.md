@@ -21,6 +21,6 @@
   * 대출금 납입 정보
 
 ### 테이블 구조
-
+  * 캐글의 이미지 참조
 ![](https://storage.googleapis.com/kaggle-media/competitions/home-credit/home_credit.png)
 
