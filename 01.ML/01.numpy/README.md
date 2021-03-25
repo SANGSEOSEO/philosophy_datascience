@@ -9,3 +9,7 @@
 - Scipy를 통해 보는 최적화 및 확률분포
 - pgmpy로 공부하는 확률론
 - 추정과 검증
+
+## 업데이트 내역
+
+* 넘파이 - argsort(), np.sort(), ndarray.sort()
