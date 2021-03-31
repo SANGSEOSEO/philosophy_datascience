@@ -1,11 +1,44 @@
-### 인문학과 데이터 사이언스
-**공부 배경**
+### The road to Data Science with humanities.
+#### Introductory
 
-오늘날 많은 사람들은 SNS혹은 웹상에서 다양한 감성이 담긴 영상 및 텍스트 데이터를 생산해 내고 있고 ,또한 소비하고 있다.
-IT의 출발도 어떤 점에서 보면 인간의 사고와 인간이 만들어 내는 데이터를 논리화시키고 체계화시키기 위한 노력의 일환으로 생겨난 것이다.
-그 속에 살아 쉼쉬고있는 인간 의식의 흐름을 데이터를 통해서 알아보고자 한다.
+Data had been produced, has been , will have been produced by human.
 
-- 분석하고자 하는 데이터 
-  - SNS상의 키워드 검색으로 보는 임대주택에 대한 불편한 진실
-  - 대형서점에서의 코로나 이전과 이후의 도서구매 현황을 통해 보는 구매패턴의 변화 
-  - 코로나 시대에서의 항후 새롭게 부상될 직업군 분석
+Data science should be based on not machine but Human.
+
+All of these material is only tool to read data from human's action , thoughts and behavour.
+
+Data science is to understanding human like humanities.
+
+#### 01.ML(Machine Learning)
+
+* numpy
+* Scipy
+* Scikit-learn
+* Pgmpy
+* Simpy
+
+#### 02.Python programming
+
+* Python Study-  [David Beazley](https://github.com/dabeaz)
+
+#### 03.Visualization
+
+* matplotlib
+* pyplot
+* seaborn
+
+#### 04.Pandas
+
+* Also R tools
+
+#### 06.Tensorflow_Keras
+
+* Deep Learning study
+
+#### 08.Kaggle_Dacon
+
+competition submission for Kaggle and Dacon datasets 
+
+#### 999.Data Analysis Project
+
+* repositories for Data Analysis
