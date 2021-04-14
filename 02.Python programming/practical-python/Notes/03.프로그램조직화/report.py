@@ -48,3 +48,23 @@ def portfolio_report(portfoliofile, pricefile):
 
     # Print it out
     print_report(report)
+
+
+def main(args):
+    '''
+    sys.argv추가 
+    '''
+    TARGET_DIR = "C:\\dataAnalysis\\philosophy_datascience\\02.Python programming\\practical-python\\Work\\Data\\"
+    print("첫번째 파라미터 : ", args[0])
+    print("두번째 파라미터 : ", args[1])
+    print("세번째 파라미터 : ", args[2])
+
+    portfoliofile = args[1]
+    pricefile = args[2]
+    portfolio_report(TARGET_DIR+portfoliofile, TARGET_DIR+pricefile)
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) != 3:
+        SystemExit(f'Usage: {sys.argv[0]} ' 'portfile pricefile')
+    main(sys.argv)    
