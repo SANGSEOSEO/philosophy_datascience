@@ -24,7 +24,7 @@ I will deep into the OpenCV world.
 * Getting and Setting Pixels
 * Drawing with OpenCV
 * Translation, Rotation, Resizing, Flipping, Cropping
-* Image Arithmetics, Bitwise Operations, Masking
+* Image Arithmetics, Bitwise Operations, Masking, Splitting and Merging Channels
 
 ### OpenCV 103 - Contours
 
