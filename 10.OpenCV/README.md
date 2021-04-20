@@ -13,24 +13,24 @@ I will deep into the OpenCV world.
 * Colab, Jupyter Notebook
 * Kaggle Notebook Available
 
-## Install Guide
+### Install Guide
 
 * pip install opencv-contrib-python
 * Go and seek detail - [here](https://www.pyimagesearch.com/2018/09/19/pip-install-opencv/)
 
-## OpenCV Basics
+### OpenCV101-  OpenCV Basics
 
 * Loading and Displaying Images
 * Getting and Setting Pixels
 * Drawing with OpenCV
 * Translation, Rotation, Resizing, Flipping, Cropping
-* Image Arithmetics, Bitwise Operations
+* Image Arithmetics, Bitwise Operations, Masking
 
-## Contours
+### OpenCV 103 - Contours
 
 * OpenCV Connected Components Labeling and Analysis
 
-## Histograms
+### OpenCV 104 - Histograms
 
 * Histogram and Adaptive Histogram Equalization
 * Histogram Matching
