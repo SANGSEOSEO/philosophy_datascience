@@ -28,7 +28,7 @@
 
 요점은 단순히 "가장 가까운"픽셀을 찾고 그 값을 가정하는 것 이상을 수행하고 있다는 것입니다 (가장 가까운 이웃 보간에서와 같이). 이제 이웃 픽셀을 가져와 이 이웃을 *사용* 하여 보간 된 값 을 *계산* 합니다 (가장 가까운 픽셀 값을 가정하는 것이 아니라).
 
-[보간에 대하여 참조 - 다크 프로그래머]([https://darkpgmr.tistory.com/117)
+[보간에 대하여 참조 - 다크 프로그래머](https://darkpgmr.tistory.com/117)
 
 [아티클 참조](https://medium.com/@wenrudong/what-is-opencvs-inter-area-actually-doing-282a626a09b3) 
 
