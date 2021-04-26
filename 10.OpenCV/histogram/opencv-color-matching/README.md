@@ -9,9 +9,10 @@ OpenCV및 scikit-image를 사용하여 <span style="color:red">histogram matchin
 * [PyImageSearch](https://pyimagesearch.com)
 * [히스토그램 매칭](https://en.wikipedia.org/wiki/Histogram_matching)
 
-## 추가적인 패키지 설치
+## 추가적인 패키지 설치 및 관련 자료
 
 * `pip install scikit-image`
+* [Super fast color transfer between images](https://www.pyimagesearch.com/2014/06/30/super-fast-color-transfer-images/)
 
 ## 개요
 
