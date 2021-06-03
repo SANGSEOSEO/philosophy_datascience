@@ -23,12 +23,16 @@
 
 * 따라서 데이터의 어떤 기준을 바탕으로 규칙을 만들어야 가장 효율적인 분류가 될 것인가가 알고리즘의 성능을 크게 좌우.
 
-  ![](https://user-images.githubusercontent.com/70785000/120695618-8e120580-c4e6-11eb-8c65-1a3dd1274594.PNG)
+  ![의사결정트리](https://user-images.githubusercontent.com/70785000/120695618-8e120580-c4e6-11eb-8c65-1a3dd1274594.PNG)
 
 * 규칙노드로 표시된 노드는 규칙조건이 되는것이고, 리프 노드로 표시된 노드는 결정된 클래스값.그리고 새로운 규칙 조건마다 서브트리가 생성됩니다. 데이터세트에 피처가 있고 이러한 피처가 결합해 규칙 조건을 만들 때마다 규칙노드가 만들어집니다.
+
 * 트리의 깊이가 깊을 수록 결정 트리의 예측 성능이 저하될 가능성이 존재.
+
 * 가능하다면 적은 결정 노드로 좋은 예측 정확도를 가지려면 데이터를 분류시 최대한 많은 데이터가 해당 분류에 속할 수 있도록 결정노드의 규칙이 정해져야 합니다.
+
 * 리프노드로 결정된 노드는 정보 균일도가 높은 데이터가 모여있다고 이해하자.
+
 * 정보 균일도 측정 계수 : 엔트로피를 이용한 정보 이득 지수와 지니계수가 있다.
 
 ### 데이터 균일도
@@ -37,7 +41,7 @@
 
   노란색 블록의 경우 모두 동그라미로 구성되고, 빨강과 파랑 블록의 경우는 동그라미, 네모 , 세모가 골고루 섞여 있다고 한다면 각 레고 블록을 분류하고자 할 때 가장 첫 번째로 만들어져야 하는 각 레코 블록을 분류하고자 할 때 가장 첫번째로 만들어져야 하는 규칙 조건은?
 
-  ![](https://user-images.githubusercontent.com/70785000/120695922-e34e1700-c4e6-11eb-9e33-9e845a125a80.PNG)
+  ![균일도](https://user-images.githubusercontent.com/70785000/120695922-e34e1700-c4e6-11eb-9e33-9e845a125a80.PNG)
 
   **if 색깔 == '노란색'**  
 
@@ -57,7 +61,7 @@
 
 ### 결정트리 규칙 노드 생성 프로세스 
 
-![](https://user-images.githubusercontent.com/70785000/120695886-d7625500-c4e6-11eb-9b40-7f88df0c64c4.PNG)
+![의사결정트리_규칙](https://user-images.githubusercontent.com/70785000/120695886-d7625500-c4e6-11eb-9b40-7f88df0c64c4.PNG)
 
 * 결정트리의 장점은, 쉽고 직관적이며, 피처의 스케일링이나 정규화등의 사전 가공 영향도가 크지 않다.
 * 단점으로는, 과적합으로 알고리즘 성능이 떨어진다.이를 극복하기 위해 트리의 크기를 사전에 제한하는 튜닝 필요
@@ -119,9 +123,9 @@
 
 * 보팅과 배깅의 다른 점은 보팅의 경우, 일반적으로 서로 다른 알고리즘을 가진 분류기를 결합하는 것이고, 배깅의 경우 각각의 분류기가 모두 같은 유형의 알고리즘 기반이지만, 데이터 샘플링을 서로 다르게 가져가면서 학습을 수행해 보팅을 수행하는 방식
 
-  ![](https://user-images.githubusercontent.com/70785000/120695994-fbbe3180-c4e6-11eb-91ff-de4963529059.PNG)
+  ![Voting](https://user-images.githubusercontent.com/70785000/120695994-fbbe3180-c4e6-11eb-91ff-de4963529059.PNG)
 
-![](https://user-images.githubusercontent.com/70785000/120695960-ee08ac00-c4e6-11eb-8d11-f16d8bdd9d42.PNG)
+![bagging](https://user-images.githubusercontent.com/70785000/120695960-ee08ac00-c4e6-11eb-8d11-f16d8bdd9d42.PNG)
 
 ### 보팅유형 - 하드보팅(Hard Voring )과 소프트보팅(Soft Voting)
 
@@ -129,7 +133,7 @@
 
 Hard Voting은 다수의 classifier간 다수결로 최종 class결정 
 
-![](https://user-images.githubusercontent.com/70785000/120695973-f19c3300-c4e6-11eb-8f6a-8cf0e2dc2183.PNG)
+![hard voting](https://user-images.githubusercontent.com/70785000/120695973-f19c3300-c4e6-11eb-8f6a-8cf0e2dc2183.PNG)
 
 #### Soft Voting
 
@@ -137,10 +141,21 @@ Hard Voting은 다수의 classifier간 다수결로 최종 class결정
 
 predict_proba()메소드를 이용하여 class별 확률 결정.
 
-![](https://user-images.githubusercontent.com/70785000/120695982-f4972380-c4e6-11eb-9925-f6d6c9a368e4.PNG)
+![soft_voting](https://user-images.githubusercontent.com/70785000/120695982-f4972380-c4e6-11eb-9925-f6d6c9a368e4.PNG)
 
 * 일반적으로 하드 보팅보다는 소프트 보팅이 예측 성능이 상대적으로 우수하여 주로 사용됨.
 
 * 사이킷런은 VotingClassifier클래스를 통해 Voting을 지원
 
-  
+
+
+
+### 배깅(Bagging) - 랜덤 포레스트(Random Forest)
+
+* 배깅의 대표적인 알고리즘은 렌덤 포레스트
+
+* 랜덤 포레스트는  다재 다능한 알고리즘으로, 앙상블 알고리즘 중에서 비교적 빠른 수행속도를 가지고 있으며, 다양한 영역에서 높은 예측 성능을 보임
+
+* 랜덤 포레스트는 여러 개의 결정 트리 분류기가 전체 데이터에서 배깅 방식으로 각자의 데이터를 샘플링해 개별적으로 학습을 수행한 뒤 최종적으로 모든 분류기가 보팅을 통해 예측 결정을 하게 된다.
+
+  ![random_forest](https://user-images.githubusercontent.com/70785000/120705701-1f877480-c4f3-11eb-9fb5-f6c112d433fe.PNG)
