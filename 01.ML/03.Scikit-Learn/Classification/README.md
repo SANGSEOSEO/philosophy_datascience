@@ -222,7 +222,7 @@ GBM도 Ada Boost와 유사하나, 가중치 업데이트를 경사 하강법(Gra
 
 * loss - 경사하강법에 사용할 비용함수를 지정.특별한 이유가 없으면 기본값이 `deviance`를 사용
 
-* learning_rate : GBM이 학습을 진행할 때 마다 적용하는 학습률입니다. Weak learner가 순차적으로 오류값을 보정해 나가는데 적용하는 계수. `0 ~ 1`사이의 값을 지정가능하며 기본값은 `0.1`이다.
+* learning_rate : GBM이 학습을 진행할 때 마다 적용하는 학습률입니다. Weak learner가 순차적으로 오류값을 보정해 나가는데 적용한느 계수. `0 ~ 1`사이의 값을 지정가능하며 기본값은 `0.1`이다.
 
   너무 작은 값을 적용하면, 업데이트 되는 값이 작아져서 최소 오류값을 찾을 가능성이 높아지지만, 많은 약한 학습기가 순차적으로 반복이 필요해서 수행시간이 오래 걸리고 , 또 너무 작게 설정하는 경우는 weak learner의 반복이 완료되도 최소 오류값을 찾지 못할 수 있다. 반대로 큰 값을 적용하면 최소 오류값을 찾지 못하고 그냥 지나쳐 버려 예측 성능이 떨어질 가능성이 높아지지만, 빠른 수행이 가능하다.
 
@@ -260,18 +260,27 @@ GBM도 Ada Boost와 유사하나, 가중치 업데이트를 경사 하강법(Gra
 
 | 파이썬 Wrapper     | 사이킷런 Wrapper   | 하이퍼 파라미터 설명                                         |
 | ------------------ | ------------------ | ------------------------------------------------------------ |
-| `eta`              | `learning_rate`    | GBM의 학습률(`learning rate`)과 같은 파라미터<br />`0`에서 `1`사이의 값을 지정하며 부스팅 스텝을 반복적으로 수행시 업데이트되는 학습률 값<br />파이썬 래퍼 기반의 `xgboost`를 이용할 경우 디폴트는 `0.3`<br />사이킷런 래퍼 클래스를 이용할 경우 `eta`는 `learning rate`파라미터로 대체되며, 디폴트는 `0.1`이다. |
+| `eta`              | `learning_rate`    | GBM의 학습률(`learning rate`)과 같은 파라미터<br />`0`에서 `1`사이의 값을 지정하며 부스팅 스텝을 반복적으로 수행시 업데이트되는 학습률 값<br />파이썬 래퍼 기반의 `xgboost`를 이용할 경우 디폴트는 `0.3`<br />사이킷런 래퍼 클래스를 이용할 경우 `eta`는 `learning rate`파라미터로 대체되며, 디폴트는 `0.1`이다.<br />과적합 제어를 위애 `eta`값을 낮출 경우, `num_rounds`혹은 `n_estimators`높여주어야 함. |
 | `num_boost_rounds` | `n_estimators`     | 사이킷런 앙상블의 `n_estimators`와 동일.약한 학습기의 개수(반복 수행 횟수) |
-| `min_child_weight` | `min_child_weight` | 결정 트리의 `min_child_leaf`와 유사.과적합 조절용<br />`min_child_weight`값이 특정값을 넘으면 `child`를 만들지 여부 |
+| `min_child_weight` | `min_child_weight` | 결정 트리의 `min_child_leaf`와 유사.과적합 조절용<br />`min_child_weight`값이 특정값을 넘으면 `child`를 만들지 여부<br />해당 값을 높힘으로써 과적합 제어 가능 |
 | `max_depth`        | `max_depth`        | 결정트리의 `max_depth`와 동일.트리의 최대 깊이               |
 | `sub_sample`       | `subsample`        | `GBM`의 `subsample`과 동일. 트리가 커져서 과적합되는 것을 제어하기 위해 데이터를 샘플링하는 비율을 지정<br />`sub_sample=0.5`로 지정하면 전체 데이터의 절반을 트리 생성하는데 사용<br />`0`에서 `1`사이의 값이 가능하나 일반적으로 `0.5 ~ 1`사이의 값을 사용 |
 | `lambda`           | `reg_lambda`       | 오차를 줄이기 위해 계속 학습을 하다보면,학습에만 몰두해서 실제로 검증 및 테스트 데이터세트에 사용될때 오류가 발생할 가능성이 많다.<br />그래서 오차에 집중하지 않기 위해 제약을 줄 파라미터가 필요.<br /> - `L2규제` .기본값은 1이고 값이 클수록 규제 값이 커짐(과적합제어) |
 | `alpha`            | `reg_alpha`        | `L1규제`.기본값이 0이고 값이 클수록 규제값이 커집(과적합 제어) |
 | `colsample_bytree` | `colsample_bytree` | 트리 생성시 필요한 피처(컬럼)을 어느 정도의 비율로 샘플링하는 할 것인가?<br />매우 많은 피처가 있는 경우, 과적합을 조정하는데 사용<br />`GBM`의 `max_features`와 유사. |
 | `scale_pos_weight` | `scale_pos_weight` | 특정값으로 치우친 비대칭한 클래스로 구성된 데이터세트의 균형을 유지 하기 위한 파라미터.기본값은 1<br />eg) 신용카드 사용금액의 정상 및 사기 판별 |
-| `gamma`            | `gamma`            | 트리의 리프노드를 추가적으로 나눌지를 결정하는 최소 손실 값<br />손실을 계속 줄여야 하는데 어느 정도 이상으로 손실이 줄지 않으면 tree의 leafnode를 추가적으로 분할하지 않는것. |
+| `gamma`            | `gamma`            | 트리의 리프노드를 추가적으로 나눌지를 결정하는 최소 손실 값<br />손실을 계속 줄여야 하는데 어느 정도 이상으로 손실이 줄지 않으면 tree의 leafnode를 추가적으로 분할하지 않는것.<br />`gamma`값을 높힘으로써 과적합을 제어. |
 
 사이킷런 Wrapper의 경우 GBM에 동일한 하이퍼 파라미터가 있다면 이를 사용하고 그렇지 않다면 파이썬 Wrapper의 하이퍼 파라미터를 사용
+
+####  XGBoost하이퍼 파라미터 (학습태스크)
+
+| 항목          | 학습 태스크 파라미터 설명                                    |
+| ------------- | ------------------------------------------------------------ |
+| `objective`   | 최솟값을 가져야 할 손실 함수를 정의합니다. `XGBoost`는 많은 유형의 손실함수를 사용 할 수 있는데 주로 사용되는 손실함수는 이진분류인지 다중 분류인지에 따라 달라짐.<br />* `bianry : logstic`이진분류일때 사용<br />* `multi:softmax` : 다중 분류일때 적용하며, 레이블 클래스의 갯수인 `num_class`파라미터를 지정해야 함.<br />- `multi:softprob` : `multi:softmax`와 유사하나 개별 레이블 클래스의 해다오디는 예측 확률을 반환 |
+| `eval_metric` | 검증에 사용되는 함수를 정의.<br />기본값이 회귀인 경우는 `mse(mean squared error)`<br />분류인 경우엔 `error`<br />- `rsme - Root Mean Squared Error`<br />- `logloss` :  `Negative log-likelihood`<br />-`error` : `Binary classification error rate`<br />- `merror`: `Multiclass classification error rate`<br />- `mlogloss : Multiclass logloss`<br />- `AUC - Area under the curve` |
+
+
 
 #### `XGBoost` 조기 중단(`Early Stopping`)
 
@@ -284,3 +293,10 @@ GBM도 Ada Boost와 유사하나, 가중치 업데이트를 경사 하강법(Gra
   - `eval_set`:평가를 수행하는 별도의 검증 데이터 세트.일반적으로 검증 데이터세트에서 반복적으로 비용 감소 성능 평가
 
 ![earlystopping](https://user-images.githubusercontent.com/70785000/120884525-99684c80-c61e-11eb-956c-19b89d9745fe.PNG)
+
+### XGBoost설치
+
+`아나콘다 환경`에서 설치가 가능.
+
+- `windows`환경 - `conda install -c anaconda py-xgboost
+- `linux환경` - ` conda install -c conda-forge xgboost
