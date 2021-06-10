@@ -300,3 +300,55 @@ GBM도 Ada Boost와 유사하나, 가중치 업데이트를 경사 하강법(Gra
 
 - `windows`환경 - `conda install -c anaconda py-xgboost
 - `linux환경` - ` conda install -c conda-forge xgboost
+
+### LightGBM개요
+
+* 기존 XGBoost의 단점을 개선하여 더 빠른 학습과 예측 수행시간
+* 더 작은 메모리 사용량(GPU지원)
+* 카테고리형 피처의 자동 변환과 최적 분할(원-핫 인코딩 등을 사용하지 않고도 카테고리형 피처를 최종적으로 변환하고 이에 따른 노드 분할 수행)
+
+#### LightGBM 트리 분할 방식 - 리프 중심
+
+![node_split](https://user-images.githubusercontent.com/70785000/121548747-3fb1b900-ca48-11eb-8142-2908da0ab399.PNG)
+
+#### LightGBM파이썬 구현
+
+![LGBM](https://user-images.githubusercontent.com/70785000/121548998-6f60c100-ca48-11eb-850d-5672250ebbbb.PNG)
+
+#### LightGBM 하이퍼 파라미터 
+
+| 유형       | 파이썬 래퍼 LightGBM      | 사이킷런 래퍼 LightGBM |                                                              |
+| ---------- | ------------------------- | ---------------------- | ------------------------------------------------------------ |
+| 파라미터명 | `num_iterations`          | `n_estimators`         | 약한 학습기의 갯수(반복 수행 횟수)                           |
+|            | `learning_rate`           | `learning_rate`        | 학습률(`learning_rate`).<br />`0`에서 `1`사이의 값을 기정하여 부스팅 스텝을 반복적으로 수행할 때 업데이트되는 학습률 값 |
+|            | `max_depth`               | `max_depth`            | 결정트리의 `max_depth`와 동일.트리의 최대 깊이               |
+|            | `min_data_in_leaf`        | `min_child_samples`    | 리프노드가 될 수 있는 최소 데이터 건수(`Sample수`)           |
+|            | `bagging_fraction`        | `subsample`            | 트리가 커져서 과적합되는 것을 제어하기 위해 데이터를 샘플링하는 비율을 지정합니다. <br />`sub_sample=0.5`로 지정하면 전체 데이터의 절반을 트리를 생성하는데 사용합니다. |
+|            | `feature_fraction`        | `colsample_bytree`     | `GBM`의 `max_features`와 유사합니다. 트리 생성에 필요한 피처(컬럼)을 임의로 샘플링하는데 사용됩니다.<br />매우 많은 피처가 있는 경우 과적합을 조정하는데 적용. |
+|            | `lambda_l2`               | `reg_lambda`           | `L2규제(Regulation)`적용 값. 기본값은 `1`<br />값이 클수록 규제값이 커짐(과적합 제어) |
+|            | `lambda_l1`               | `reg_alpha`            | `L1규제(Regulation)`적용 값. 기본값은 `0`<br />값이 클수록 규제값이 커짐(과적합 제어) |
+|            | `early_stopping_round`    | `early_stopping_round` | 학습 조기 종료을 위한 `early stopping interval`값            |
+|            | `num_leaves`              | `num_leaves`           | 최대 리프 노드 갯수                                          |
+|            | `min_sum_hessian_in_leaf` | `min_child_weight`     | 결정트리의 `min_child_leaf`와 유사.<br />과적합 조절용       |
+
+* `LightGBM사이킷런 래퍼`는 `XGBoost 사이킷런 래퍼`에 해당 하이터 파라미터가 있으면 이를 그대로 사용하고, 그렇지 않으면 `파이썬 래퍼 LightGBM 하이퍼 파라미터`를 사용.
+* `num_leaves`의 갯수를 중심으로 `min_child_samples(min_data_in_leaf), max_depth`를 함께 조정하면서 모델의 복잡도를 줄이는 것이 기본 튜닝 방안
+
+#### 파이썬 래퍼와 사이킷런 래퍼 하이퍼 파라미터 비교
+
+사이킷런 래퍼 XGBoost를 기준으로 다른 결정분류기가 파라미터를 따라간다는 것을 유념.
+
+| 유형       | 파이썬 래퍼 LightGBM      | 사이킷런 래퍼 LightGBM  | 사이킷런 래퍼 XGBoost   |
+| ---------- | ------------------------- | ----------------------- | ----------------------- |
+| 파라미터명 | `num_iterations`          | `n_estimators`          | `n_estimators`          |
+|            | `learning_rate`           | `learning_rate`         | `learning_rate`         |
+|            | `max_depth`               | `max_depth`             | `max_depth`             |
+|            | `min_data_in_leaf`        | `min_child_samples`     | `N/A`                   |
+|            | `bagging_fraction`        | `subsample`             | `subsample`             |
+|            | `feature_fraction`        | `colsample_bytree`      | `colsample_bytree`      |
+|            | `lambda_l2`               | `reg_lambda`            | `reg_lambda`            |
+|            | `lambda_l1`               | `reg_alpha`             | `reg_alpha`             |
+|            | `early_stopping_round`    | `early_stopping_rounds` | `early_stopping_rounds` |
+|            | `num_leaves`              | `num_leaves`            | `N/A`                   |
+|            | `min_sum_hessian_in_leaf` | `min_child_weight`      | `min_child_weight`      |
+
