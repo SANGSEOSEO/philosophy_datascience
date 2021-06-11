@@ -352,3 +352,37 @@ GBM도 Ada Boost와 유사하나, 가중치 업데이트를 경사 하강법(Gra
 |            | `num_leaves`              | `num_leaves`            | `N/A`                   |
 |            | `min_sum_hessian_in_leaf` | `min_child_weight`      | `min_child_weight`      |
 
+### Feature Engineering 
+
+#### Log변환
+
+- Log변환은 왜곡된 분포도를 가진 데이터세트를 비교적 정규분포에 가깝게 변환해주는 훌륭한 `Feature Engineering`방식
+
+#### IQR(Inter Quantile Range)를 이용한 Outlier Removal
+
+![iqr](https://user-images.githubusercontent.com/70785000/121657596-80a6dd80-cadb-11eb-8a29-d25d87d54ab2.PNG)
+
+![boxplot](https://user-images.githubusercontent.com/70785000/121657585-7e448380-cadb-11eb-9acd-32ca67b6872a.PNG)
+
+#### 언더샘플링과 오버 샘플링
+
+- 레이블이 뷸균형한 분포를 가진 데이터 세트를 학습 시, 이상 레이블을 가지는 데이터 건수가 매우 적어 제대로 된 유형의 학습이 어려움.
+
+- 반면에 정상 레이블을 가지는 데이터 건수는 매우 많아 일방적으로 정상 레이블로 치우친 학습을 수행하며, 제대로 된 이상 데이터 검출이 어려움
+
+- 대표적으로 오버샘플링과 언더 샘플링 방법을 통해 적절한 학습 데이터를 확보함
+
+- 짙은 회색의 사각형 (이상 데이터) , 옅은 회색의 사각형(정상 데이터)
+
+  ![under_sampling](https://user-images.githubusercontent.com/70785000/121748493-0d858180-cb44-11eb-9b07-d4c93f3a891f.PNG)
+
+![over_sampling](https://user-images.githubusercontent.com/70785000/121748535-1e35f780-cb44-11eb-9469-67762db62f2d.PNG)
+
+#### SMOTE
+
+![smote](https://user-images.githubusercontent.com/70785000/121750037-943b5e00-cb46-11eb-86c3-7d054deedc97.PNG)
+
+1)원본데이터의 `이상 데이터`를 2) KNN최근접 기법을이용해 이웃을 정하고 이웃과 이웃 사이에 있는 공간에 무작위 값을 정해 데이터를 증식시켜 3)오버 샘플링을 완성시키는 방법
+
+* [관련 이미지 참조](https://john-analyst.medium.com/)
+
