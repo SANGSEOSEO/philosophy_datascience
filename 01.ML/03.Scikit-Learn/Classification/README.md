@@ -382,7 +382,11 @@ GBM도 Ada Boost와 유사하나, 가중치 업데이트를 경사 하강법(Gra
 
 ![smote](https://user-images.githubusercontent.com/70785000/121750037-943b5e00-cb46-11eb-86c3-7d054deedc97.PNG)
 
-1)원본데이터의 `이상 데이터`를 2) KNN최근접 기법을이용해 이웃을 정하고 이웃과 이웃 사이에 있는 공간에 무작위 값을 정해 데이터를 증식시켜 3)오버 샘플링을 완성시키는 방법
+1)원본데이터의 `이상 데이터(녹색의 원)`를 2) KNN최근접 기법을이용해 이웃을 정하고 이웃과 이웃 사이에 있는 공간에 무작위 값(여기서는 빨간색의 원) 데이터를 증식시켜 3)오버 샘플링을 완성시키는 방법
 
 * [관련 이미지 참조](https://john-analyst.medium.com/)
+* [imbalanced learn](https://imbalanced-learn.org/stable/)
+* 설치 : `conda install -c conda-forge imbalanced-learn`
+
+
 
