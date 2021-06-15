@@ -388,5 +388,53 @@ GBM도 Ada Boost와 유사하나, 가중치 업데이트를 경사 하강법(Gra
 * [imbalanced learn](https://imbalanced-learn.org/stable/)
 * 설치 : `conda install -c conda-forge imbalanced-learn`
 
+### Basic Stacking Model 
 
+#### Diagram
+
+- 앙상블모델과 유사 - 서로 다른 알고리즘을 바탕으로 최적의 성능을 도출한다는 점은 유사
+
+- 기반 모델들이 예측한 값들을 stacking형태로 만들어서 메타 모델이 이를 학습하고 예측하는 모델
+
+  ![stacking](https://user-images.githubusercontent.com/70785000/121791358-fa49e300-cc23-11eb-9548-58bfbb65145d.PNG)
+
+#### Example
+
+![개요](https://user-images.githubusercontent.com/70785000/121828600-0b195800-ccfb-11eb-975e-36cd369dce16.PNG)
+
+`Model1`이 `M * N`데이터틀 학습해서 예측한 결과를 `Model1 예측값` - `M*1데이터`형태로 에측결과를 리턴해주고 각각의 `Model2, Model3`도 동일하게 예측결과를 리턴해주고 , `M * 3`예측결과값을 `Stacking`한다.
+
+이 데이터셋을 최종 모델이 학습해고 예측해서 `최종 예측`을 한다.
+
+#### 정리
+
+* 현실 모델에 적용여부에 대해서는 다양한 고려가 필요하며, 성능 개선의 한 방법이라고 이해하자
+* 개별모델보다 성능이 좋아진다는 보장은 없으니, 성능 개선한다고 단언할 수 는 없음에 유의
+
+
+
+### 교차검증 세트 기반의 스태킹
+
+교차 검증 세트 기반의 스태킹은 이에 대한 개선을 위해 개별 모델들이 각각 교차 검증으로 메타 모델을 위한 학습용 스태킹 데이터 생성과 예측을 위한 테스트용 스태킹 데이터를 생성한 뒤 이를 기반으로 메타 모델이 학습과 예측을 수행.
+
+* 스탭 1 - 각 모델별로 원본 학습/테스트 데이터를 예측한 결과 값을 기반으로 메타 모델을 위한 학습용/테스트 용 데이터를 생성
+* 스텝2 - 스탭1에서 개별 모델들이 생성한 학습용 데이터를 모두 스태킹 형태로 합쳐서 메타 모델이 학습할 최종 학습용 데이터 세트를 생성합니다. 마찬가지로 각 모델들이 생성한 테스트용 데이터를 모두 스태킹 형태로 합쳐서 메타 모델이 예측할 최종 테스트 데이터 세트를 생성합니다. 메타 모델은 최종적으로 생성된 학습 데이터 세트와 원본 학습 데이터의 레이블 데이터를 기반으로 학습한 뒤, 최종적으로 생성된 테스트 데이터 세트를 예측하고 , 원본 테스트 데이터의 레이블 데이터를 기반으로 평가합니다.
+
+#### 교차검증 세트 기반 스태킹 모델 만들기 - KFold 첫번째
+
+#### ![cv_1st_KFold](https://user-images.githubusercontent.com/70785000/121918218-ccbe8000-cd70-11eb-9268-60ba5cc3c70b.PNG)
+
+#### 교차검증 세트 기반 스태킹 모델 만들기 - KFold 두번째
+
+![cv_2st_KFold](https://user-images.githubusercontent.com/70785000/121919052-99c8bc00-cd71-11eb-8b50-63e7481dbbc7.PNG)
+
+#### 교차검증 세트 기반 스태킹 모델 만들기 - KFold 세번째
+
+![cv_3st_KFold](https://user-images.githubusercontent.com/70785000/121920163-bc0f0980-cd72-11eb-8bc4-12464b482edc.PNG)
+
+#### 교차검증 세트 기반 스태킹 모델 만들기
+
+[교차검증 세트기반 스테킹 기본 다이애그램]
+
+![stacking_diagram](https://user-images.githubusercontent.com/70785000/121979260-d1ad1f00-cdc4-11eb-805d-3c675fde94e2.PNG)
 
