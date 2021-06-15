@@ -426,15 +426,45 @@ GBM도 Ada Boost와 유사하나, 가중치 업데이트를 경사 하강법(Gra
 
 #### 교차검증 세트 기반 스태킹 모델 만들기 - KFold 두번째
 
-![cv_2st_KFold](https://user-images.githubusercontent.com/70785000/121919052-99c8bc00-cd71-11eb-8b50-63e7481dbbc7.PNG)
+![cv_2st_KFold](https://user-images.githubusercontent.com/70785000/122015049-b78e3380-cdfa-11eb-9054-6c8be3fc9ac9.PNG)
 
 #### 교차검증 세트 기반 스태킹 모델 만들기 - KFold 세번째
 
-![cv_3st_KFold](https://user-images.githubusercontent.com/70785000/121920163-bc0f0980-cd72-11eb-8bc4-12464b482edc.PNG)
+![cv_3st_KFold](https://user-images.githubusercontent.com/70785000/122018450-d6da9000-cdfd-11eb-9850-638b39b01f57.PNG)
 
 #### 교차검증 세트 기반 스태킹 모델 만들기
 
 [교차검증 세트기반 스테킹 기본 다이애그램]
 
-![stacking_diagram](https://user-images.githubusercontent.com/70785000/121979260-d1ad1f00-cdc4-11eb-805d-3c675fde94e2.PNG)
+`Step1`에서  개별 모델별로 예측값으로 학습과 테스트 데이터 생성
+
+![stacking_diagram](https://user-images.githubusercontent.com/70785000/122021047-46517f00-ce00-11eb-9836-5bf3d58d386a.PNG)
+
+#### 분류 정리
+
+- 결정 트리와 결정 트리 기반의 앙상블
+
+  장점 : 쉽고 직관적, 데이터 선처리에 영향을 덜 받음.
+
+  단점 : 률규칙을 만들기 위해 쉽게 오버피팅이 되는 단점이 있음.
+
+  앙상블기법은 이런 단점을 가지고 있는 결정트리를  학습기 기반에서 수십개, 수천개 만들어서 단점은 순화시키고, 강점은 강화시킴.
+
+* `배깅과 부스팅`(앙상블의 두가지 유형)
+
+  랜덤 포레스트 - 약한 학습기들이 데이터를 부트스트래핑방식으로 샘플링.각각의 학습기들이 중복을 허용한 하는 부트스트래핑 방식으로 샘플링된 데이터를 학습해 최종적으로 예측하는 방식
+
+  `GBM - 경사하강법 기법`을 이용해 오류가 발생한 데이터에 대해 다음 순서의 약한 학습기가 더 잘 학습할수있도록 가중치를 부여하는 방법(오류가 감소하는 방식)
+
+* `GBM`의 기능을 더욱 향상 시킨` XGBoost, LightGBM`
+
+* `스태킹 모델 `
+
+  앙상블과 굉장히 유사하지만, 큰 차이는 각각의 개별모델들이 학습을 해서 예측한 예측값을 기반으로 해서 최종적인 메타모델이 이 예측값을 즉, 스태킹한 데이터셋을 학습하고 예측하는 방법
+
+
+
+
+
+
 
