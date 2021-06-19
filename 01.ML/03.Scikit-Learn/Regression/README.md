@@ -67,7 +67,8 @@ $$
 
 회귀는 우측의 이미지처럼 `실제값과 모델 사이의 오류값의 차이를 최소화 하는 것`을 목표로 하며, 점선형태의  `빨간색 ` 회귀선처럼 오류차이가 많이 나면 좋지 않다고 할 수 있다.
 
-<img src="https://user-images.githubusercontent.com/70785000/122632286-d0edf300-d10c-11eb-853d-5805356da673.PNG" alt="regression_2" style="zoom:80%;" /> 
+| <img src="https://user-images.githubusercontent.com/70785000/122632039-07c30980-d10b-11eb-950c-e0106cba710a.PNG" alt="regression_1" style="zoom:80%;" /> | <img src="https://user-images.githubusercontent.com/70785000/122632286-d0edf300-d10c-11eb-853d-5805356da673.PNG" alt="regression_2" style="zoom:80%;" /> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
 
 <span style="color:red">`최적의 회귀 모델을 만든다는 것은 바로 전체 데이터의 잔차(오류 값)합이 최소가 되는 모델을 만든다는 의미이며, 동시에 오류 값이 최소가 될 수 있는 최적의 회귀계수를 찾는다는 의미도 된다.`</span>
 
@@ -105,8 +106,7 @@ W파라미터의 갯수가 적다면 고차원 방정식으로 비용 함수가 
 
 경사하강법은 이러한 고차원 방정식에 대한 문제를 해결해 주면서 비용 함수 RSS를 최소화하는 방법을 직관적으로 제공하는 뛰어난 방식입니다.
 
-| <img src="https://previews.123rf.com/images/stockimagesbank/stockimagesbank1706/stockimagesbank170600001/79833380-%EC%88%98%ED%95%99-%EB%B0%A9%EC%A0%95%EC%8B%9D%EC%9D%84-%ED%91%B8%EB%8A%94-%EC%82%AC%EB%9E%8C.jpg" style="zoom: 33%;" /> | ![gradient_descent](https://user-images.githubusercontent.com/70785000/122644851-3f08d900-d152-11eb-8a2a-e59e876694f0.PNG) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
+![gradient_descent](https://user-images.githubusercontent.com/70785000/122644851-3f08d900-d152-11eb-8a2a-e59e876694f0.PNG)
 
 경사하강법의 사전적 의미인 `점진적인 하강`이라는 뜻에서도 알수 있듯이, `점진적으로 반복적인 계산을 통해서 W파라미터 값을 업데이트하면서 오류값이 최소가 되는 W파라미터를 구하는 방식`.
 
