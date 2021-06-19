@@ -222,7 +222,7 @@ GBM도 Ada Boost와 유사하나, 가중치 업데이트를 경사 하강법(Gra
 
 * loss - 경사하강법에 사용할 비용함수를 지정.특별한 이유가 없으면 기본값이 `deviance`를 사용
 
-* learning_rate : GBM이 학습을 진행할 때 마다 적용하는 학습률입니다. Weak learner가 순차적으로 오류값을 보정해 나가는데 적용한느 계수. `0 ~ 1`사이의 값을 지정가능하며 기본값은 `0.1`이다.
+* learning_rate : GBM이 학습을 진행할 때 마다 적용하는 학습률입니다. Weak learner가 순차적으로 오류값을 보정해 나가는데 적용하는 계수. `0 ~ 1`사이의 값을 지정가능하며 기본값은 `0.1`이다.
 
   너무 작은 값을 적용하면, 업데이트 되는 값이 작아져서 최소 오류값을 찾을 가능성이 높아지지만, 많은 약한 학습기가 순차적으로 반복이 필요해서 수행시간이 오래 걸리고 , 또 너무 작게 설정하는 경우는 weak learner의 반복이 완료되도 최소 오류값을 찾지 못할 수 있다. 반대로 큰 값을 적용하면 최소 오류값을 찾지 못하고 그냥 지나쳐 버려 예측 성능이 떨어질 가능성이 높아지지만, 빠른 수행이 가능하다.
 
@@ -237,7 +237,7 @@ GBM도 Ada Boost와 유사하나, 가중치 업데이트를 경사 하강법(Gra
 ## XGBoost개요
 
 * 규제(Regularization)기능은 오차 오류만을 지속적으로 줄여나가기만 하면 overfitting이 생기게 마련이기 때문에 이런 부분때문에 규제기능이 필요(일반 GBM에는 없음)
-* 가지치기 : 일단 노드를 다 생성 후에 다시 한번 검증을 하는데 해당 트리들이 제대로 역할을 하는지 노드들로부터 검증을 하고 , 필요없으면 제거.
+* 가지치기 : 일단 노드를 다 생성 후에 다시 한번 검증을 하는데 해당 트리들이 제대로 역할을 하는지 노드들로부터 검증을 하고 , 필요없으면 제거
 * 조기중단 : 원래 정해진 n_estimators갯수 만큼 루프를 수행하면서 오류를 감소해야 하는데, 더 이상 오류를 감소하는 것이 특정 인터벌 동안 나오지 않는다면  , 더 이상 오류를 감소하는 루프를 수행하지 않고 중단
 
 ![XGBoost](https://user-images.githubusercontent.com/70785000/120875360-6f933380-c5e6-11eb-9a71-43f5c5e199c0.PNG)
@@ -277,14 +277,14 @@ GBM도 Ada Boost와 유사하나, 가중치 업데이트를 경사 하강법(Gra
 
 | 항목          | 학습 태스크 파라미터 설명                                    |
 | ------------- | ------------------------------------------------------------ |
-| `objective`   | 최솟값을 가져야 할 손실 함수를 정의합니다. `XGBoost`는 많은 유형의 손실함수를 사용 할 수 있는데 주로 사용되는 손실함수는 이진분류인지 다중 분류인지에 따라 달라짐.<br />* `bianry : logstic`이진분류일때 사용<br />* `multi:softmax` : 다중 분류일때 적용하며, 레이블 클래스의 갯수인 `num_class`파라미터를 지정해야 함.<br />- `multi:softprob` : `multi:softmax`와 유사하나 개별 레이블 클래스의 해다오디는 예측 확률을 반환 |
+| `objective`   | 최솟값을 가져야 할 손실 함수를 정의합니다. `XGBoost`는 많은 유형의 손실함수를 사용 할 수 있는데 주로 사용되는 손실함수는 이진분류인지 다중 분류인지에 따라 달라짐.<br />* `bianry : logstic`이진분류일때 사용<br />* `multi:softmax` : 다중 분류일때 적용하며, 레이블 클래스의 갯수인 `num_class`파라미터를 지정해야 함.<br />- `multi:softprob` : `multi:softmax`와 유사하나 개별 레이블 클래스의 해당되는 예측 확률을 반환 |
 | `eval_metric` | 검증에 사용되는 함수를 정의.<br />기본값이 회귀인 경우는 `mse(mean squared error)`<br />분류인 경우엔 `error`<br />- `rsme - Root Mean Squared Error`<br />- `logloss` :  `Negative log-likelihood`<br />-`error` : `Binary classification error rate`<br />- `merror`: `Multiclass classification error rate`<br />- `mlogloss : Multiclass logloss`<br />- `AUC - Area under the curve` |
 
 
 
 #### `XGBoost` 조기 중단(`Early Stopping`)
 
-* XGBoost는 특정 반복 횟수만큼 더 이상 비용함수가 감소하지 않으면 지정된 반복 횟수를 다 완료하지 않고 수행을 종료할 수 있음.
+* `XGBoost`는 특정 반복 횟수만큼 더 이상 비용함수가 감소하지 않으면 지정된 반복 횟수를 다 완료하지 않고 수행을 종료할 수 있음.
 * 학습을 위한 시간을 단축 시킬수있음 (최적화 튜닝단계에 적절히 사용가능)
 * 너무 반복횟수를 단축시, 예측 성능 최적화가 안된 상태에서 학습이 종료될 수 있음에 유의
 * 조기 중단을 위하 주요 파라미터
@@ -298,13 +298,13 @@ GBM도 Ada Boost와 유사하나, 가중치 업데이트를 경사 하강법(Gra
 
 `아나콘다 환경`에서 설치가 가능.
 
-- `windows`환경 - `conda install -c anaconda py-xgboost
-- `linux환경` - ` conda install -c conda-forge xgboost
+- `windows`환경 - `conda install -c anaconda py-xgboost`
+- `linux환경` - ` conda install -c conda-forge xgboost`
 
 ### LightGBM개요
 
-* 기존 XGBoost의 단점을 개선하여 더 빠른 학습과 예측 수행시간
-* 더 작은 메모리 사용량(GPU지원)
+* 기존 `XGBoost`의 단점을 개선하여 더 빠른 학습과 예측 수행시간
+* 더 작은 메모리 사용량(`GPU`지원)
 * 카테고리형 피처의 자동 변환과 최적 분할(원-핫 인코딩 등을 사용하지 않고도 카테고리형 피처를 최종적으로 변환하고 이에 따른 노드 분할 수행)
 
 #### LightGBM 트리 분할 방식 - 리프 중심
@@ -462,9 +462,66 @@ GBM도 Ada Boost와 유사하나, 가중치 업데이트를 경사 하강법(Gra
 
   앙상블과 굉장히 유사하지만, 큰 차이는 각각의 개별모델들이 학습을 해서 예측한 예측값을 기반으로 해서 최종적인 메타모델이 이 예측값을 즉, 스태킹한 데이터셋을 학습하고 예측하는 방법
 
+###  Feature Selection 기법
 
+* 피처값의 분포, 널, 피처간 높은 상관도, 결정값과의 독립성을 고려
 
+* 모델의 피처 중요도(Feature Importance) 기반 - 주로 사용됨
 
+#### SciKitLearn Feature Selection support
 
+* `RFE(Recursive Feature Elimination)`
+  * 모델 최초 학습 후 `Feature`중요도 선정
+  * <span style="color:red">`Feature중요도`가 낮은 속성들을 차례로 제거</span>해 가면서 반복적으로 학습/평가를 수행하여 최적 `Feature추출`
+  * 수행시간이 오래 걸리고, 낮은 속성들을 제거해 나가는 메커니즘이 정확한 `Feature`를 찾는 목표에 정확히 부합하지 않을 수 있음
+  * 데이터가 적은 경우만 사용하는것이 바람직.
+  * 알고리즘이기 보다는 유틸리티 성격이다.
+* `SelectFromModel  `
+  * 모델 최초 학습 후 선정된 `Feature Importance`에 따라 평균/중앙값의 특정 비율 이상인 `Feature`들을 선택
 
+#### Permutation(순열) importtance개요
+
+* 특정 피처들의 값을 <span style="color:red">완전히 변조</span>했을 때 모델 성능이 얼마나 저하되는지를 기준으로 해당 피처의 중요도를 산정(내가 조직에서 없어지면 조직이 안 돌아가..ㅎㅎ)
+* 학습 데이터를 제거하거나 혹은 변조하면 다시 재 학습을 수행해야 하므로 수행시간이 오래 걸림
+* 일반적으로 <span style="color:red">테스트 데이터(검증 데이터)에 특정 피처들을 반복적으로 변조한 뒤 해당 피처의 중요도를 평균적으로 산정</span>
+* `든 자리`는 몰라도 `난 자리`는 바로 안다는 속담을 기억해!!
+* [`Permutation importance 소스코드 참조`](https://scikit-learn.org/stable/modules/permutation_importance.html)
+* [`Permutaiton importance v.s RandomForest Importance`](https://scikit-learn.org/stable/auto_examples/inspection/plot_permutation_importance.html#sphx-glr-auto-examples-inspection-plot-permutation-importance-py)
+
+------
+
+[그림설명]
+
+* 원본 데이터셋의 기준 평가 성능이 0.9이라고 할때 ,`ftr1`에 대해서 
+* `Ftr1`이 중요 피처이면 `evaluation성능`이 감소
+* `원본 Evaluation score`에서 평균적으로 얼마나 성능이 감소했는지 계산해서 `Ftr1의 평균 Evaluation score계산`
+
+![Permutation importance_1](https://user-images.githubusercontent.com/70785000/122316641-38fad880-cf57-11eb-9451-7d07661eb2fa.PNG)
+
+​                                       [원본 데이터셋- `0.9`]     [`ftr1`의 첫번째 성능: `0.7`]        [ `ftr1`의 두번째 성능: `0.73`]     
+
+*  반복해서 랜덤셔플링한 후의 `ftr1`의 성능의 평가값을 평균해서 기준 평가성능과 비교
+*  `평균 성능 = (0.7 + 0.73) / 2 = 0.76`
+
+[그림 설명]
+
+* 원본 모델의 기준 평가 성능을 설정
+* 개별 피처별로 아래를 수행
+  1. 설정된 `iteration`값 별로 아래 수행
+     * `a`.해당 `Feature별로 shuffle`
+     * `b`.모델 성능 평가
+
+​           2. 기준 평가 성능에서 모델 성능이 얼마나 저하되었는지 평가
+
+![Permutation importance_2](https://user-images.githubusercontent.com/70785000/122318484-13bb9980-cf5a-11eb-955a-8fe6616feaeb.PNG)
+
+   #### Why the feature importance could not be the absolute standard for feature selection?
+
+*  `Feature importance`는 최적 `tree`구조를 만들기 위한 피처들의 `impurity - 정보이득 혹은 지니계수를 의미`가 중요 기준임. 결정 값과 관련이 없어도 `feature importance`가 높아질수 있음
+
+* `feature importance`는 학습 데이터를 기반으로 생성됨. 테스트 데이터에서는 달라질 수 있음
+
+  캐글의 경우엔, 학습데이터와는 전혀 다른 유형의  데이터셋을 제공하는 경향이 있음
+
+* `Feature importance`는 `number`형의 높은 `cardinality feature`에 편향되어 있음
 
