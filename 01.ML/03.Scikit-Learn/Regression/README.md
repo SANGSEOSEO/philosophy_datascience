@@ -67,7 +67,7 @@ $$
 
 회귀는 우측의 이미지처럼 `실제값과 모델 사이의 오류값의 차이를 최소화 하는 것`을 목표로 하며, 점선형태의  `빨간색 ` 회귀선처럼 오류차이가 많이 나면 좋지 않다고 할 수 있다.
 
-| <img src="https://user-images.githubusercontent.com/70785000/122632039-07c30980-d10b-11eb-950c-e0106cba710a.PNG" alt="regression_1" style="width:50%;" /> | <img src="https://user-images.githubusercontent.com/70785000/122632286-d0edf300-d10c-11eb-853d-5805356da673.PNG" alt="regression_2" style="zoom:80%;" /> |
+| <img src="https://user-images.githubusercontent.com/70785000/122632039-07c30980-d10b-11eb-950c-e0106cba710a.PNG" alt="regression_1" style="width:150px;" /> | <img src="https://user-images.githubusercontent.com/70785000/122632286-d0edf300-d10c-11eb-853d-5805356da673.PNG" alt="regression_2" style="zoom:80%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
 <span style="color:red">`최적의 회귀 모델을 만든다는 것은 바로 전체 데이터의 잔차(오류 값)합이 최소가 되는 모델을 만든다는 의미이며, 동시에 오류 값이 최소가 될 수 있는 최적의 회귀계수를 찾는다는 의미도 된다.`</span>
