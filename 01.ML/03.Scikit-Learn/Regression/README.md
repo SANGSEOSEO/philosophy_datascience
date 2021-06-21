@@ -138,19 +138,19 @@ R(w)를 최소화하는 w0와 w1 값은 각각 r(w)를 w0, w1으로 순차적으
 
 ![rss_편미분](https://user-images.githubusercontent.com/70785000/122647666-5353d280-d160-11eb-8ced-749a0470ff98.PNG)
 
-#### RSS의 편미분 - W1으로 편미분
+###### RSS의 편미분 - W1으로 편미분
 
 
 
-#### RSS의 편미분 - W0으로 편미분
+###### RSS의 편미분 - W0으로 편미분
 
 ![편미분풀어헤치기_1](https://user-images.githubusercontent.com/70785000/122697075-82ad3100-d27f-11eb-8782-c2adf1dbb2d7.PNG)
 
-#### 식을 풀어 헤치면
+식을 풀어헤치면
 
 ![편미분풀어헤치기](https://user-images.githubusercontent.com/70785000/122697115-9d7fa580-d27f-11eb-8ee7-f0e408d9e9ed.PNG)
 
-#### 위와 같이 w1, w0의 편미분 결과값인 최종 결과값을 반복적으로 보정하면서 w1, w0값을 업데이트 하면 비용함수 r(w)가 최소가 되는 w1, w0값을 구할 수 있습니다. 
+위와 같이 w1, w0의 편미분 결과값인 최종 결과값을 반복적으로 보정하면서 w1, w0값을 업데이트 하면 비용함수 r(w)가 최소가 되는 w1, w0값을 구할 수 있습니다. 
 
 하지만 실제로는 위 편미분 값이 너무 클 수 있기 때문에 보정 계수 &eta;를 곱하는데 , 이를 `학습률`이라고 한다.
 
@@ -164,3 +164,52 @@ R(w)를 최소화하는 w0와 w1 값은 각각 r(w)를 w0, w1으로 순차적으
 * `Step2` -` w1과 w0`의 값을 위의 비용함수의 계산식으로 업데이트 한 후 다시 비용 함수의 값을 계산
 * `Step3` - 비용 함수의 값이 감소했으면 다시 `Step2`를 반복합니다.  더 이상의 비용 함수의 값이 감소하지 않으면 그때의 `w1, w0`를 구하고 반복을 중지합니다.
 
+#### 사이킷런 `LinearRegression`클래스
+
+##### LinearRegression클래스
+
+`class sklearn.linear_model.LinearRegression(fit_intercept=True, normalize=False, copy_X = True, n_jobs=1)`
+
+* `linearRegressoin`클래스는 예측값과 실제 값의 `RSS(Residual Sum of Squares)`를 최소화해 `OLS(Ordinary Least Squares)추정 방식`으로 구현한 클래스
+
+* `LinearRegression`클래스는 `fit()`메소드로 X, y 배열을 입력받으면 회귀 계수(`coefficients)인  W`를 `coef_`속성에 저장
+
+  | 입력 파라미터 | `fit_intercept` : 불린 값으로 디폴트는 True<br />`Intercept(절편)`값을 계산할 것인지 말지를 지정<br />만일 False로 지정하면 `intercept`가 사용되지 않고 `0`으로 지정된다.<br /><br />normalize : 불린값으로 디폴트는 False.`fit_intercept`파라미터가 False인 경우는 이 파라미터가 무시됩니다. 만일 True이면 회귀를 수행하기 전에 입력 데이터세트를 정규화한다.<br />![fit_intercept_true](https://user-images.githubusercontent.com/70785000/122735569-1e5b9300-d2ba-11eb-948e-bfb74c977c6d.PNG) |
+  | ------------- | ------------------------------------------------------------ |
+  | 속성          | coef_`: fit()`메소드를 수행했을 때 회귀 계수가 배열 형태로 저장하는 속성.<br />`Shape는 (Target값 개수, 피처갯수)`<br />`intercept_ : intercept값` |
+
+##### 선형회귀의 다중 공선성 문제
+
+* 일반적으로 선형 회귀는 입력 피처의 독립성에 많은 영향을 받습니다. 피처간의 상관관계가 매우 높은 경우 분산이 매우 커져서 오류에 매우 민감해집니다. 이러한 현상을 다중 공선성(`multi-collinearity`)문제하고 합니다. 일반적으로 상관관계가 높은 피처가 많은 경우 독립적인 중요한 피처만 남기고 제거하거나 규제를 적용합니다.
+
+  예) `A`라는 피처가 방의 크기인데 평이고, 어떤 피처는 제곱미터(m^2)가 되어있는 예
+
+##### 회귀평가지표
+
+| 평가지표 | 설명                                                         | 수식                                                         |
+| -------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `MAE`    | `Mean Absolute Error(MAE)`이며 실제 값과 예측값의 차이를 절대값으로 변환해 평균한 것. | ![MAE](https://user-images.githubusercontent.com/70785000/122759351-cc743680-d2d4-11eb-895c-9c069dc28127.PNG) |
+| `MSE`    | `Mean Squared Error(MSE)`이며 실제 값과 예측값의 차이를 제곱해 평균한 것 | ![MSE](https://user-images.githubusercontent.com/70785000/122759669-2bd24680-d2d5-11eb-8aa5-486592971274.PNG) |
+| `MSLE`   | `MSE`에 로그를 적용한 것. 결정값이 클수록 오류값도 커지기 때문에 일부 큰 오류값들로 인해 전체 오류값이 커지는 것을 막아줍니다.<br />예) 매출금액과 같이 금액이 큰 경우. | `Log(MSE)`                                                   |
+| `RMSE`   | `MSE`값은 오류의 제곱을 구하므로 실제 오류 평균보다 더 커지는 특성이 있으므로 `MSE`에 루트를 씌운 것이 `RMSE(Root Mean Squared Error)`입니다. | ![RMSE](https://user-images.githubusercontent.com/70785000/122760009-984d4580-d2d5-11eb-8924-7a531521ac7a.PNG) |
+| `RMSLE`  | `RMSE`에 로그를 적용한 것입니다. 결정값이 클수록 오류값도 커지기 때문에 일부 큰 오류값들로 인해 전체 오류값이 커지는 것을 막아줍니다. | `Log(RMSE)`                                                  |
+| `R^2`    | 분산 기반으로 예측 성능을 평가합니다.실제 값의 분산 대비 예측값의 분산 비율을 지표로 하며, 1에 가까울수록 예측 정확도가 높습니다. | ![R2](https://user-images.githubusercontent.com/70785000/122760221-d9ddf080-d2d5-11eb-877f-1d1cbf091c93.PNG) |
+
+##### 사이킷런 회귀 평가 API
+
+* 사이킷런은 아쉽게도 RMSE를 제공하지 않습니다. RMSE를 구하기 위해서는 MSE에 제곱근을 씌우서 계산하는 함수를 직접 만들어야 합니다.
+* 다음은 각 평가 방법에 사이킷런의 API및 `cross_val_score`나 `GridSearchCV`에서 평가 시 사용되는 `scoring파라미터의 적용 값`입니다.
+
+| 평가방법 | 사이킷런 평가지표 API         | Scoring 함수 적용 값        |
+| -------- | ----------------------------- | --------------------------- |
+| MAE      | `metrics.mean_absolute_error` | `'neg_mean_absolute_error'` |
+| MSE      | `metrics.mean_squared_error`  | `'neg_mean_squared_error'`  |
+| R^2      | `metrics.r2_score`            | `'r^2'`                     |
+
+###### 사이킷런 Scoring함수에 회귀 평가 적용시 유의 사항
+
+**`cross_val_score, GridSearchCV와 같은 Scoring함수에 평가지표를 적용시 유의사항`**
+
+* `MAE`의 사이킷런 scoring파라미터 값은 `'neg_mean_absolute_error'`입니다. 이는 `Negative(음수)값`을 가진다는 의미인데, MAE는 절댓값의 합이기 때문에 음수가 될 수 없습니다.
+* Scoring함수에 `'neg_mean_absolute_error'`를 적용해 음수값을 반환하는 이유는 사이킷런의 `Scoring함수가 score값`이 클수록 좋은  평가결과로 자동 평가하기 때문입니다. 따라서 `-1`을 원래의 평가지표 값에 곱해서 음수(`negative`)를 만들어 작은 오류 값이 더 큰 숫자로 인식하게 됩니다. 예를 들어 `10 > 1`이지만 음수를 곱하면 `-1 > -10`이 됩니다.(오류값이 작을 수록 좋은 지표이기 때문에 원래의 평가지표에 `-1`을 곱함)
+* `metrics.mean_absolute_error()`와 같은 사이킷런 평가 지표 API는 정상적으로 양수의 값을 반환합니다. 하지만 `Scoring함수`의 `scoring파라미터 값` `'neg_mean_absolute_error'`가 의미하는 것은 `-1 * metrics.mean_absolute_error()`이니 주의가 필요합니다.
