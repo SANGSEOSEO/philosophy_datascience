@@ -213,3 +213,42 @@ R(w)를 최소화하는 w0와 w1 값은 각각 r(w)를 w0, w1으로 순차적으
 * `MAE`의 사이킷런 scoring파라미터 값은 `'neg_mean_absolute_error'`입니다. 이는 `Negative(음수)값`을 가진다는 의미인데, MAE는 절댓값의 합이기 때문에 음수가 될 수 없습니다.
 * Scoring함수에 `'neg_mean_absolute_error'`를 적용해 음수값을 반환하는 이유는 사이킷런의 `Scoring함수가 score값`이 클수록 좋은  평가결과로 자동 평가하기 때문입니다. 따라서 `-1`을 원래의 평가지표 값에 곱해서 음수(`negative`)를 만들어 작은 오류 값이 더 큰 숫자로 인식하게 됩니다. 예를 들어 `10 > 1`이지만 음수를 곱하면 `-1 > -10`이 됩니다.(오류값이 작을 수록 좋은 지표이기 때문에 원래의 평가지표에 `-1`을 곱함)
 * `metrics.mean_absolute_error()`와 같은 사이킷런 평가 지표 API는 정상적으로 양수의 값을 반환합니다. 하지만 `Scoring함수`의 `scoring파라미터 값` `'neg_mean_absolute_error'`가 의미하는 것은 `-1 * metrics.mean_absolute_error()`이니 주의가 필요합니다.
+
+#### 다항회귀 계요(Polynomial Regression)
+
+다항회귀는 아래와 같이 회귀식이 독립변수의 단항식이 아닌 2차, 3차 방정식과 같은 다항식으로 표현되는 것을 지칭합니다.
+
+![다항식](https://user-images.githubusercontent.com/70785000/122888410-d05b9380-d37c-11eb-9b46-05375c206ea8.PNG)
+
+다음 그림을 보면,단항 회귀보다 다항 회귀 곡선으로 표현되는 더 예측 성능이 좋음을 알 수 있습니다.
+
+![단항_vs 다항](https://user-images.githubusercontent.com/70785000/123013823-e5c5d180-d3ff-11eb-8101-c71a35962737.PNG)
+
+##### 사이킷런에서의 다항 회귀
+
+사이킷런은 다항 회귀를 바로 API로 제공하지 않음.
+
+대신 PolynomialFeatures클래스로 원본 단항 피처들을 다항 피처들로 변환한 데이터 세트에 LinearRegression객체를 적용하여 다항 회귀 기능을 제공함
+
+###### PolynomialFeatures
+
+* 원본 피처 데이터 세트를 기반으로 degree차수에 따른 다항시을 적용하여 새로운 피처들을 생성하는 클래스 피처 엔지니어링의 기법중의 하나.
+
+* 단항 피처 [x1, x2]를 Degree=2, 즉 다항 피처로 변환한다면?
+
+  (x1 + x2)^2의 식 전개에 대응되는 변환된 다항피처의 모습은 다음과 같다.
+
+![다항피처](https://user-images.githubusercontent.com/70785000/123220483-fa41c100-d508-11eb-9d6b-d097fc4f77f8.PNG)
+
+* 1차 단항 피처들의 값이 [x1, x2] = [0, 1] 일 경우, 2차 다항 피처들의 값은 [1, x1 = 0, x2 = 1, x1 * x2 = 0, x1^2 = 0, x2^2 = 1]형태인 [1, 0 , 1, 0, 0, 1]로 변환
+
+* 단항 피처 [x1, x2]를 Degree=3, 즉 3차 다항 피처로 변환한다면?
+
+  (x1 + x2)^3의 시 전개에 대응되는 아래와 같은 다항 피처로 변환
+
+  ![3차 다항식](https://user-images.githubusercontent.com/70785000/123221745-36295600-d50a-11eb-8879-d00b1dca5854.PNG)
+
+```
+사이킷런에서는 일반적으로 Pipeline클래스를 이용하여 PolynomialFeatures변환과 LinearRegression 학습 / 예측을 결합하여 다항 회귀를 구현합니다.
+```
+
