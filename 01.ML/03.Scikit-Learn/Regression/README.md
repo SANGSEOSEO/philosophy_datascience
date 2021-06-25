@@ -214,7 +214,7 @@ R(w)를 최소화하는 w0와 w1 값은 각각 r(w)를 w0, w1으로 순차적으
 * Scoring함수에 `'neg_mean_absolute_error'`를 적용해 음수값을 반환하는 이유는 사이킷런의 `Scoring함수가 score값`이 클수록 좋은  평가결과로 자동 평가하기 때문입니다. 따라서 `-1`을 원래의 평가지표 값에 곱해서 음수(`negative`)를 만들어 작은 오류 값이 더 큰 숫자로 인식하게 됩니다. 예를 들어 `10 > 1`이지만 음수를 곱하면 `-1 > -10`이 됩니다.(오류값이 작을 수록 좋은 지표이기 때문에 원래의 평가지표에 `-1`을 곱함)
 * `metrics.mean_absolute_error()`와 같은 사이킷런 평가 지표 API는 정상적으로 양수의 값을 반환합니다. 하지만 `Scoring함수`의 `scoring파라미터 값` `'neg_mean_absolute_error'`가 의미하는 것은 `-1 * metrics.mean_absolute_error()`이니 주의가 필요합니다.
 
-#### 다항회귀 계요(Polynomial Regression)
+#### 다항회귀 개요(Polynomial Regression)
 
 다항회귀는 아래와 같이 회귀식이 독립변수의 단항식이 아닌 2차, 3차 방정식과 같은 다항식으로 표현되는 것을 지칭합니다.
 
@@ -224,19 +224,48 @@ R(w)를 최소화하는 w0와 w1 값은 각각 r(w)를 w0, w1으로 순차적으
 
 ![단항_vs 다항](https://user-images.githubusercontent.com/70785000/123013823-e5c5d180-d3ff-11eb-8101-c71a35962737.PNG)
 
+##### 선형회귀와 비선형회귀의 구분
+
+###### 선형회귀
+
+$$
+Y = w0 + w_1x_1 + w_2x_2 + w_3x_1x_2 + w_4x_1^2 + w_5x_2^2
+$$
+
+새로운 변수인 Z를 z = [x1, x2, x1 * x2, x1^2, x2^2]로 한다면?
+$$
+Y = w_0 + w_1z_1 + w_2z_2 + w_3z_3 + w_4z_4 + w_5z_5
+$$
+
+```
+다항회귀는 선형 회귀입니다. 회귀에서 선형회귀 / 비선형 회귀를 나누는 기준을 회귀계수가 선형/비선형인지에 따른 것이지 독립변수의 선형/비선형 여부와는 무관합니다.
+```
+
+###### 비선형회귀
+
+$$
+Y = w_1cos(X + w_4 + w_2cos(2X + w_4) + w_3)
+$$
+
+$$
+Y = w_1 + X^w_2
+$$
+
+
+
 ##### 사이킷런에서의 다항 회귀
 
 사이킷런은 다항 회귀를 바로 API로 제공하지 않음.
 
-대신 PolynomialFeatures클래스로 원본 단항 피처들을 다항 피처들로 변환한 데이터 세트에 LinearRegression객체를 적용하여 다항 회귀 기능을 제공함
+대신 PolynomialFeatures클래스로 원본 단항 피처들을 다항 피처들로 변환한 데이터 세트에 `LinearRegression`객체를 적용하여 다항 회귀 기능을 제공함
 
 ###### PolynomialFeatures
 
-* 원본 피처 데이터 세트를 기반으로 degree차수에 따른 다항시을 적용하여 새로운 피처들을 생성하는 클래스 피처 엔지니어링의 기법중의 하나.
+* 원본 피처 데이터 세트를 기반으로 `degree차수`에 따른 다항식을 적용하여 새로운 피처들을 생성하는 클래스 피처 엔지니어링의 기법중의 하나.
 
-* 단항 피처 [x1, x2]를 Degree=2, 즉 다항 피처로 변환한다면?
+* 단항 피처 `[x1, x2]`를 `Degree=2`, 즉 다항 피처로 변환한다면?
 
-  (x1 + x2)^2의 식 전개에 대응되는 변환된 다항피처의 모습은 다음과 같다.
+  `(x1 + x2)^2`의 식 전개에 대응되는 변환된 다항피처의 모습은 다음과 같다.
 
 ![다항피처](https://user-images.githubusercontent.com/70785000/123220483-fa41c100-d508-11eb-9d6b-d097fc4f77f8.PNG)
 
@@ -251,4 +280,30 @@ R(w)를 최소화하는 w0와 w1 값은 각각 r(w)를 w0, w1으로 순차적으
 ```
 사이킷런에서는 일반적으로 Pipeline클래스를 이용하여 PolynomialFeatures변환과 LinearRegression 학습 / 예측을 결합하여 다항 회귀를 구현합니다.
 ```
+
+#### 편향-분산 트레이드 오프(`Bias-Variance Trade off`)
+
+* [Understanding the Bias-Variance Trade off](http://scott.fortmann-roe.com/docs/BiasVariance.html)
+
+  `Bias가 크다`는 의미는 타겟 값과의 떨어져 있다는 의미.
+
+  ![understanding bias_variance](https://user-images.githubusercontent.com/70785000/123395318-08601200-d5db-11eb-9ab7-07f1db883634.PNG)
+
+* `과소적합 v.s well-fit v.s Overfitting`
+
+  `Degree 1` - 1차 회귀 직선형(과소적합)
+
+  `Degree 4` - 회귀선 (잘 학습됨): well-fit된 회귀 곡선, 오류가 있음에도 불구하고 학습이 잘되어있고, MSE값도 작음
+
+  `Degree 15` - 복잡한 곡선(과대적합) - 모든 학습 데이터를 정확히 예측하기 위해 굉장히 복잡한 곡선이 만들어짐. Mear Squared Error이 터무니없이 커짐.
+
+| ![과소적합](https://user-images.githubusercontent.com/70785000/123394844-896ad980-d5da-11eb-9764-c9f36af7b7c0.PNG) | ![well_fit](https://user-images.githubusercontent.com/70785000/123395097-c8009400-d5da-11eb-9c9c-c5888d653669.PNG) | ![overfitt](https://user-images.githubusercontent.com/70785000/123395145-d3ec5600-d5da-11eb-88a8-210e19a25493.PNG) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+
+* 편향- 분산 트레이드 오프의 관계에 대한 고찰
+
+  * 편향이 높으면 분산은 낮아지고
+  * 분산이 높으면 편향이 낮아짐
+
+  ![total_error](https://user-images.githubusercontent.com/70785000/123449735-eab09e00-d616-11eb-981a-ca7ba16c7438.PNG)
 
