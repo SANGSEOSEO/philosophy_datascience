@@ -311,11 +311,11 @@ $$
 
 위의 다항식의 차수를 변경함에 있어 `degree=15`인 경우의 다항 회귀는 지나치게 모든 데이터에 적합한 회귀식을 만들기 위해서 다항식이 복잡해지고 회귀 계수가 매우 크게 설정이 되면서 과대적합이 되고 평가 데이터 세트에 대해서 형편없는 예측 성능을 보임.
 
-따라서 회귀 모델은 적절히 데이터에 적합하면서도 회귀 계수가 기하급수적으로 커지는 것을 제어 할 수 있어야 합니다.
+따라서 회귀 모델은 적절히 데이터에 적합하면서도 회귀 계수가 기하급수적으로 커지는 것을 제어 할 수 있어야 함.
 
 ![비용함수목표](https://user-images.githubusercontent.com/70785000/123507553-0a8ea300-d6a5-11eb-84f5-0fe34fcda30e.PNG)
 
-이로 인해 , 비용함수의 목표가 `학습데이터 잔차오류(RSS)`도 줄이면서 회귀계수도 크기도 적절하게 제어가 되어야 할 필요성이 대두됨.
+이로 인해 , 비용함수의 목표가 `학습데이터 잔차오류(RSS)`도 줄이면서 회귀계수도 크기도 적절하게 제거가 되어야 할 필요성이 대두됨.
 
 아래는 비용함수의 목표를 수식으로 기술한 것으로 ,`alpha`는 학습 데이터 적합 정도와 회귀 계수 값의 크기 제어를 수행하는 튜닝 파라미터.
 
@@ -333,7 +333,67 @@ $$
 
 ##### 규제 선형 회귀의 유형
 
-* 이처럼 비용 함수에 `alpha값`으로 페널티를 부여해 회귀 계수 값의 크기를 감소시켜 과적합을 개선하는 방식을 규제(`Regulation`)라고 부릅니다.
+* 이처럼 비용 함수에 `alpha값`으로 <span style="color:red">페널티</span>를 부여해 회귀 계수 값의 크기를 감소시켜 과적합을 개선하는 방식을 규제(`Regulation`)라고 부릅니다.
 * 규제는 크개 `L2방식`과 `L1방식`으로 구분합니다. `L2규제`는 위에서 설명한 바와 같이 `alpha * ||W||_2^2` 와 같이 <span style="color:red">`W의 제곱`에 대해 `페널티`를 부여하는 방식</span>을 말합니다. `L2규제`를 적용한 회귀를 릿지 회귀라고 함
-* 라쏘회귀는 `L1규제`를 적용한 회귀입니다. `L1`규제는 `alpha * ||W||_1`와 같이 <span style="color:red">`W`의 절댓값에 대해 페널티를 부여</span>합니다. `L1규제`를 적용하면 영향력이 크지 않은 회귀 계수값을 `0`으로 변환합니다.
+* 라쏘회귀는 `L1규제`를 적용한 회귀입니다. `L1`규제는 `alpha * ||W||_1`와 같이 <span style="color:red">`W`의 절댓값에 대해 페널티를 부여</span>합니다. **`L1규제`를 적용하면 영향력이 크지 않은 회귀 계수값을 `0`으로 변환**합니다.
 * `ElasticNet:L2, L1`규제를 함께 결합한 모델입니다. 주로 피처가 많은 데이터 세트에서 적용되며, `L1`규제로 피처의 갯수를 줄임과 동시에 L2규제로 계수 값의 크기를 조정합니다.
+
+##### Ridge회귀
+
+* 사이킷런은 릿지 회귀를 위해 `sklearn.linear_model import Ridge`클래스를 제공
+
+##### Lasso회귀
+
+W의 절댓값에 페널티를 부여하는 L1규제를 선형회귀에 적용 한 것이 라쏘회귀.
+
+즉, L1규제는 `alpha * ||W||_1` 를 의미하며, 라쏘 회귀 비용함수의 목표는 RSS(W) + `alpha * ||W||_1`식을 최소화하는 W를 찾는것.
+
+L2규제가 회귀 계수의 크기를 감소시키는데 반해, <span style="color:red">L1규제는 불필요한 회귀 계수글 급격하게 감소시켜 0으로 만들고 제거합니다.</span> 이러한 측면에서 L1규제는 적절한 피처만 회귀에 포함시키는 피처 셀렉션의 특성을 가짐.
+
+사이킷런은 Lasso클래스를 통해 라쏘 회귀를 구현.
+
+##### 엘라스틱넷 회귀
+
+* 엘라스틱넷 회귀는 L2규제와 L1규제를 결합한 회귀.따라서 엘라스틱넷 회귀 비용함수의 목표는 아래식을 최소하는 W값 찾는 것
+
+![elastic_lossfunc](https://user-images.githubusercontent.com/70785000/123537838-90295600-d76c-11eb-8927-1ad9c2010241.PNG)
+
+* 엘라스틱넷은 라쏘 회귀가 서로 상관관계가 높은 피처들의 경우,이들 피처중에서 중요 피처만을 선택하고 다른 피처들은 모두 회귀 계수를 0으로 만드는 성향이 있어, alpha값에 따라 회귀 계수의 값이 급격히 변동 할 수 도 있는데, 엘라스틱 넷 회귀는 이를 완화하기 위해 L2규제를 라쏘 회귀에 추가한 것.
+* 구현클래스 : `sklearn.linear_model import ElasticNet`
+* 주요 생성 파라미터  : `alpha`와 `l1_ratio`이며, `ElasticNet클래스의 alpha`는 `Ridge`와 `Lasso`클래스의 `alpha`값과는 다름에 유의.
+* **엘라스틱넷의 규제는 a L1규제 + b L2 규제로 정의될 수 있습니다. **
+
+| `ElasticNet alpha`파라미터                                   | `ElasticNet l1_ratio`파라미터                                |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 이때 `a`는 L1규제의 `alpha`값, b는 L2규제의 `alpha`값<br />따라서 `ElasticNet클래스의 alpha파라미터 값은 a + b` | `ElasticNet클래스`의 `l1_ratio파라미터 값`은 `a / (a + b)`입니다.<br />`l1_ratio`가 `0`이면 `a`가 `0`이므로 `L2규제`와 동일<br />`l1_ratio`가 `1`이면 `b가 0이므로 L1규제와 동일`<br /> `0 < l1_ratio < 1`이면 `L1과 L2`규제를 함께 적절히 적용합니다. |
+
+```
+만일, 엘라스틱넷의 alpha가 10, l1_ratio가 0.7이면 
+L1_ratio = 0.7 = a / a + b = 7/10이므로 a = 7이고 L1 alpha값은 7이고 , L2 alpha값은 3입니다.
+```
+
+##### 선형 회귀 모델을 위한 데이터 변환
+
+회귀모델과 같은 선형 모델은 일반적으로 피처와 타겟값 간에 선형의 관계가 있다고 가정하고, 이러한 최적으로 선형함수를 찾아내 결과값을 예측합니다.
+
+또한 선형 회귀 모델은 피처값과 타깃값의 분포가 정규 분포( 즉 평균을 중심으로 종 모양으로 데이터 값이 분포된 형태) 형태를 매우 선호합니다.
+
+| ![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTncyhuNRuk7f5W52BSZcHcONFMGjrY69MbPQ&usqp=CAU) | ![](data:image/png;base64,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) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+
+* 선형회귀 모델은 종모양의 정규분포 형태를 선호하고 그런 형태로 바꾼 다음에 학습 및 예측 평가를 해야 함
+
+###### 회귀를 위한 데이터 변환 방법
+
+| 변환 대상   | 설명                                                         |
+| ----------- | ------------------------------------------------------------ |
+| 타겟값 변환 | 회귀에서 타겟값은 반드시 정규 분포를 가져야 함. <br />이를 위해 주로 `로그변환을 적용` |
+| 피처값 변환 | 1)`StandardScaler클래스`를 이용해 `평균이 0, 분산이 1인 표준 정규 분포를 가진 데이터 세트로 변환`하거나 `MinMaxScaler클래스`를 이용해 `최솟값이 0이고 최댓값이 1인 값으로 정규화`를 수행 |
+|             | 2)스케일링/정규화를 수행한 데이터 세트에 다시 다항특성을 적용하여 변환하는 방법<br />1)번 방법을 통해 예측 성능 향상이 없을 경우 적용 |
+|             | 원래 값에` log함수`를 적용하면 보다 정규 분포에 가까운 형태로 값이 분포된다.<br />로그변환은 매우 우용한 변환이며, 실제로 선형 회귀에서는 앞에서 소개한 1, 2번 방법보다 로그 변환이 훨씬 많이 사용되는 변환방법<br />그 이유는 , 1번 방법은 크게 예측 성능향상의 기대가 어려운 경우가 많고, 2번 방법의 경우 피처의 갯수가 매우 많은 경우엔 다항변환으로 생성되는 피처의 갯수가 기하급수적으로 늘어나 과적합이 발생할 수 있기 때문 |
+
+###### 인코딩
+
+선형회귀의 데이터 인코딩은 일반적으로 레이블 인코딩이 아니라 <span style="color:red">원-핫 인코딩</span>을 적용합니다
+
+###### 선형회귀 모델에 대한 예측 성능 비교
