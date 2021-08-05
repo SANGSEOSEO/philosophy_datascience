@@ -36,3 +36,5 @@ You can check this out [Alexis Cook’s Titanic Tutorial](https://www.kaggle.com
 * [EDA-to-prediction-dietanic](https://github.com/SANGSEOSEO/philosophy_datascience/blob/master/08.Kaggle_Dacon/titanic/eda-to-prediction-dietanic.ipynb)
 * [titanic-data-analysis-using-ensemble-modeling](https://github.com/SANGSEOSEO/philosophy_datascience/blob/master/08.Kaggle_Dacon/titanic/titanic-data-analysis-using-ensemble-modeling.ipynb)
 
+* [intro-to-ensemble-stacking-in-classification](https://github.com/SANGSEOSEO/philosophy_datascience/blob/master/08.Kaggle_Dacon/titanic/intro-to-ensemble-stacking-in-classification.ipynb)
+
