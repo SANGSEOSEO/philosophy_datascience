@@ -6,6 +6,8 @@
 
  [차원의 저주 참조](https://bioinformaticsandme.tistory.com/197)
 
+[고급 선형대수](https://datascienceschool.net/02%20mathematics/03.00%203%EC%9E%A5%20%EA%B3%A0%EA%B8%89%20%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98.html)
+
 | ![1차원](https://user-images.githubusercontent.com/70785000/125038926-eb463b80-e0d0-11eb-8291-555ec2166ac6.PNG) | ![2차원](https://user-images.githubusercontent.com/70785000/125039037-0add6400-e0d1-11eb-9682-ce89f237097b.PNG) | ![다차원](https://user-images.githubusercontent.com/70785000/125039067-129d0880-e0d1-11eb-98d9-5e548e7b1b27.PNG) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `1차원`                                                      | `특정면적공간(2차원)`                                        | `특정입체 공간(다차원)`                                      |
@@ -204,5 +206,66 @@ PCA, 즉 주성분 분석은 이처럼 원본 데이터의 피처 개수에 비�
 3. 고유값이 가장 큰 순으로 `K개(LDA변환 차수만큼) 추출`합니다.
 4. 고유값이 가장 큰 수능로 `K개(LDA변환 차수만큼) 추출`합니다. 고유값이 가장 큰 순으로 추출된 고유벡터를 이용해 새롭게 입력 데이터를 변환합니다.
 
+### SVD(Singular Value Decomposition)
 
+SVD역시 PCA와 유사한 행렬 분해 기법을 이용.PCA의 경우, 정방행렬(즉, 행과 열의 크기가 같은 행렬)만을 고유벡터로 분해할 수 있지만, SVD는 정방행렬뿐만 아니라 행과 열의 크기가 다른 행렬에도 적용가능.
+
+[SVD Article](https://www.mdpi.com/1996-1073/14/8/2284/htm)
+
+
+
+###### 고유값 분해
+
+[고유값 분해 참조](https://bkshin.tistory.com/entry/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-19-%ED%96%89%EB%A0%AC)
+
+
+
+###### 특이값 분해
+
+[특이값 분해 참조](https://bkshin.tistory.com/entry/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-20-%ED%8A%B9%EC%9D%B4%EA%B0%92-%EB%B6%84%ED%95%B4Singular-Value-Decomposition)
+
+SVD는 특이값 분해로 불리며, 행렬 U와 V에 속한 벡터는 특이벡터(singluar vector)이며 모든 특이벡터는 서로 직교하는 성질을 가집니다.
+
+$$\sum\ $$는 대각행렬이며, 행렬의 대각에 위치한 값만이 0이 아니고, 나머지 위치의 값은 모두 0.
+
+$$\sum\$$이 위치한 0이 아닌 값이 바로 행렬 A의 특이값
+
+![SVD](https://user-images.githubusercontent.com/70785000/125402595-8d2a9880-e3ef-11eb-89f1-4fcb7f50148a.PNG)
+
+![https://www.mdpi.com/energies/energies-14-02284/article_deploy/html/images/energies-14-02284-g002.png](https://www.mdpi.com/energies/energies-14-02284/article_deploy/html/images/energies-14-02284-g002.png)
+$$
+A = U\sum\ V^T
+$$
+하지만 일반적으로는 아래와 같이 $$\sum\$$의 비대각인 부분과 대각원소 중에 특이값이 0인 부분도 모두 제거하고 제거된 $$\sum$$에 대응되는 U와 V도 원소도 함게 제거해 차원을 줄인 형태로 SVD를 적용
+
+###### SVD유형
+
+SVD유형에는 Full SVD, Compact SVD, Truncated SVD등이 있다.
+
+
+
+###### Truncated SVD 행렬 분해 의미
+
+* SVD는 차원 축소를 위한 행렬 분해를 통해 latent factor(잠재요인)를 찾을 수 있는데 이렇게 찾아진 Latent Factor는 많은 분야에 활용(추천엔진, 문서의 잠재 의미 분석등)
+* SVD로 차원 축소 행렬 분해된 후 다시 분해된 행렬을 이용하여 원복된 데이터셋은 잡음(Noise)이 제거된 형태로 재구성 될 수 있음
+* 사이킷런에서는 Truncated SVD로 차원을 축소할 때 원본 데이터에 U$$sigma$$를 적용하여 차원 축소
+
+![truncatedSVD](https://user-images.githubusercontent.com/70785000/125402217-1e4d3f80-e3ef-11eb-9627-d4298974ede6.PNG)
+
+###### SVD활용
+
+* 이미지 압축/변환
+* 추천엔진
+* 문서 잠재 의미 분석
+* 의사(peusdo) 역행렬을 통한 모델 예측
+
+### NMF(Non-Negative Matrix Factorization)
+
+#### NMF개요
+
+NMF는 Truncated SVD와 같이 낮은 랭크를 통한 행렬 근사(Low-Rank Approximation)방식의 변형.
+
+NMF는 원본 행렬 내의 모든 원소 값이 모두 양수라는 게 보장되면 다음과 같이 좀 더 같단하게 두 개의 기반 양수 행렬로 분해될 수 있는 기법
+
+![nmf](https://user-images.githubusercontent.com/70785000/125416054-5efaafc6-da8f-4355-9c9a-21773e295b48.PNG)
 
