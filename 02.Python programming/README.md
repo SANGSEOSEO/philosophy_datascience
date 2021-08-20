@@ -22,3 +22,7 @@
 #### Fluent Python
 
 * TO DO List
+
+#### Python Library
+
+* Appendix - 인코딩 및 디코딩
