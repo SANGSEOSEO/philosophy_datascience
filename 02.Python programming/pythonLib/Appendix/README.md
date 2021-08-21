@@ -1,3 +1,5 @@
+
+
 ## 01.파이썬과 유니코드
 
 컴퓨터는 0과 1이라는 값만을 인식할 수 있는 기계장치이다. 컴퓨터가 문자를 인식할 수 있게 하려면 어떻게 해야 할까? 과거부터 지금까지 사용하는 유일한 방법은 다음과 비슷한 방법의 문자셋을 만드는 것이다.
@@ -153,11 +155,11 @@ with open('euc_kr.txt', encoding='euc-kr', mode='w') as f:
 
 만약 소스코드는 euc-kr로 인코딩되었는데 파일상단에는 utf-8로 명시되어져 있다면 문자열 처리하는 부분에서 인코딩 관련한 오류가 발생할 것이다.
 
-# 02 클로저와 데코레이터
+## 02 클로저와 데코레이터
 
 데코레이터를 이해하기 위해서는 먼저 클로저에 대한 이해가 필요하다. 클로저에 대해서 먼저 알아본 후 데코레이터에 대해서 알아보자.
 
-## 클로저
+### 클로저
 
 클로저는 간단히 말해 함수 내에 내부 함수(inner function)를 구현하고 그 내부 함수를 리턴하는 함수를 말한다. 이 때 외부 함수는 자신이 가지고 있는 변수값 등을 내부 함수에 전달하여 실행될 수 있게 한다.(**자바스크립트 개념의 클로저와 유사**)
 
@@ -208,9 +210,9 @@ if __name__ =="__main__":
 50
 ```
 
-`__call__`메소드를 이용해 좀 더 개선해보자. `__call__`함수는 Mul클래스로 만들어진 객체에 인수를 전달하여 바로 호출 할 수 있게 해주는 메소드.
+<span style="color:red">`__call__`</span>메소드를 이용해 좀 더 개선해보자. <span style="color:red">`__call__`함수</span>는 Mul클래스로 만들어진 객체에 인수를 전달하여 바로 호출 할 수 있게 해주는 메소드.
 
-<span style='color:red'>`__call__`<span>메소드를 이용하면 아래 mul3객체를 mul3(10)객체 처럼 쓸 수 있다.
+<span style="color:red">`__call__`</span>메소드를 이용하면 아래 mul3객체를 mul3(10)객체 처럼 쓸 수 있다.
 
 ```
 # -*- coding: utf-8 -*-
@@ -265,7 +267,7 @@ if __name__ == "__main__":
 
 이러한 mul과 같은 함수를 파이썬에서는 **클로저(Closure)**라고 한다.
 
-## 데코레이터
+### 데코레이터
 
 다음은 "함수가 실행됩니다" 라는 문자열을 출력하는 myfunc 함수이다.
 
@@ -442,5 +444,339 @@ TypeError: wrapper() takes 0 positional arguments but 1 was given
 
 데코레이터 함수는 기존 함수의 입력 인수에 상관없이 동작하도록 만들어야 한다. 왜냐하면 데코레이터는 기존함수가 어떤 입력 인수를 취할지 알 수 없기 때문이다. 따라서 이렇게 전달받아야 하는 기존 함수의 입력 인수를 알 수 없는 경우에는 `*args`와 `**kwargs` 기법을 이용하여 해결해야 한다.
 
+| **`*args`, `**kwargs`**<br/><br/>`*args`는 모든 입력 인수를 튜플로 변환해 주는 매개변수이고 `**kwargs`는 모든 key=value 형태의 입력 인수를 딕셔너리로 변환해 주는 매개변수이다. |
+| ------------------------------------------------------------ |
 
+아래와 같은 인자를 갖는 함수를 호출한다고 한다면,
+
+```
+def func(*args, **kwargs):
+    print(args)
+    print(kwargs)   
+    
+# 수행
+func(1, 2, 3, name="foo", age=3)
+```
+
+위와 같이 func 함수에 `*args`, `**kwargs` 매개변수를 사용하면 다양한 입력 인수를 모두 처리할 수 있다. 
+
+1, 2, 3 과 같은 일반적인 입력은 args 튜플에 저장되고 name='foo' 와 같은 형태의 입력은 kwargs 딕셔너리에 저장된다.
+
+[실행결과]
+
+```
+(1, 2, 3)
+{'name': 'foo', 'age': 3}
+```
+
+그래서 다음과 같이 해당 함수부분을 수정했다.
+
+```
+import time
+
+def elapsed(origianl_func): 
+    """
+    Parameters
+    ----------
+    origianl_func : function
+        수행시간 측정
+    Returns
+    -------
+    wrapper.
+
+    """
+    def wrapper(*args, **kwargs):
+        """
+        args - 튜플형태로 인자를 받음
+        kwargs - 키,값 형태의 딕셔너리 타입
+        """
+        start  = time.time()
+        result = origianl_func(*args, **kwargs) # 기존 함수 수행
+        end = time.time()
+        print("함수 수행시간 : %f 초" %(end - start)) # 기존 함수의 수행시간 측정
+        return result  # 기존 함수의 수행결과를 리턴
+    return wrapper        
+
+@elapsed
+def myfunc(msg):
+    print("'%s'를 출력합니다." %msg)  
+
+
+myfunc("You need python")
+```
+
+wrapper 함수의 매개변수로 `*args`와 `**kwargs`를 추가하고 기존 함수 수행시 `*args`와 `**kwargs`를 인수로 전달하여 호출
+
+결과는 다음과 같다.
+
+```
+'You need python'를 출력합니다.
+함수 수행시간 : 0.001002 초
+```
+
+## 03 이터레이터와 제너레이터
+
+간단하게 사용하는 리스트의 반복 예를 하나 들어보자
+
+```
+for a in [1, 2, 3]:
+    print(a)
+```
+
+위와 같이 반복이 가능한 객체를 iterable객체라고 한다.
+
+### 이터레이터란?
+
+그렇다면 이터레이터(iterator)란 무엇일까?
+
+이터레이터는 next 함수 호출 시 계속 그 다음 값을 리턴해 주는 객체이다. 리스트는 iterable하다는 것을 이미 알아보았다. 그렇다면 리스트는 iterator일까? 다음과 같이 확인 해 보자.
+
+```
+a =[1, 2, 3]
+next(a)   
+```
+
+호출했더니 에러가 난다. 리스트는 Iterable객체가 아닌가?
+
+그렇다. 반복가능하다고 해서 - iterable - iterable객체는 아닌것이다.
+
+```
+raceback (most recent call last):
+
+  File "C:\Users\cello\.spyder-py3\temp.py", line 6, in <module>
+    next(a)
+
+TypeError: 'list' object is not an iterator
+```
+
+하지만 iterable하다면 다음과 같이 iter 함수를 이용하여 이터레이터로 만들 수 있다.
+
+```
+>>> a = [1, 2, 3]
+>>> ia = iter(a)
+>>> type(ia)
+<class 'list_iterator'>
+```
+
+`next함수`를 호출하면 next를 호출할때 마다 순서대로 값이 출력됨을 알 수 있다.
+
+이터레이터는 더 이상 반환할 값이 없을 때는 StopIterator 예외가 발생하게 된다.
+
+하지만 이터레이터의 값을 가져오는 가장 일반적인 방법은 다음과 같이 for문을 이용하는 것이다.
+
+```
+>>> next(ia)
+1
+>>> next(ia)
+2
+>>> next(ia)
+3
+>>> next(ia)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+StopIteration
+```
+
+```
+>>> a = [1, 2, 3]
+>>> ia = iter(a)
+>>> for i in ia:
+...     print(i)
+```
+
+이터레이터는 for문을 이용하여 반복하고 난 후에는 다시 반복하더라도 더 이상 그 값을 다시 가져오지 못한다. 이터레이터는 next로 그 값을 읽어 들이면 다시 그 값을 읽을 수 없는 특징이 있다.
+
+### 이터레이터 만들기
+
+리스트를 iter 함수를 이용하여 이터레이터로 만들 수 있었다. 이번에는 iter함수를 이용하지 말고 직접 이터레이터를 만드는 방법에 대해서 알아보자.
+
+이터레이터는 클래스에 <span style="color:red">`__iter__` 와 `__next__`</span>라는 두개의 메서드를 구현하면 만들 수 있다.
+
+다음의 예를 보자.
+
+```
+class MyIterator:
+    def __init__(self, data):
+        self.data = data
+        self.position = 0
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self.position >= len(self.data):
+            raise StopIteration
+        result = self.data[self.position]
+        self.position += 1
+        return result
+    
+
+if __name__ == "__main__":
+    i = MyIterator([1, 2, 3])
+    
+    for item in a:
+        print("항목 출력", item, end=' ')
+```
+
+MyIterator 클래스는 이터레이터 객체를 생성하기 위하여 `__iter__` 메서드와 `__next__` 메서드를 구현하였다. 
+
+`__iter__` 메서드는 이터레이터 객체를 리턴해 주는 메서드이므로 MyIterator 클래스에 의해 생성되는 객체를 의미하는 self를 리턴하도록 했다.
+
+ `__next__` 메서드는 next 함수 호출 시 수행되므로 MyIterator 객체 생성시 전달한 데이터를 하나씩 리턴하도록 하고 더 이상 리턴할 값이 없게 되면 StopIteration 예외를 발생시키도록 구현.
+
+이제 위 코드를 실행하면 다음과 같은 결과를 확인 할 수 있다.
+
+```
+runcell(0, 'C:/Users/cello/.spyder-py3/temp.py')
+항목 출력 1 항목 출력 2 항목 출력 3 
+```
+
+이번에는 역순으로 출력되도록 해보자
+
+```
+class ReverseItertor:
+    def __init__(self, data):
+        self.data = data
+        self.position = len(self.data) - 1
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self.position < 0:
+            raise StopIteration
+        result = self.data[self.position]
+        self.position -= 1
+        return result
+    
+
+if __name__ == "__main__":
+    i = ReverseItertor([1, 2, 3, 4, 5])
+    
+    for item in i:
+        print("역순출력", item, end=' ')
+```
+
+실행결과는 다음과 같다.
+
+```
+역순출력 5 역순출력 4 역순출력 3 역순출력 2 역순출력 1 
+```
+
+### 제너레이터란?
+
+보통 함수는 하나의 값을 리턴한다. 그 값은 정수, 리스트, 딕셔너리등이 될 수 있을 것이다. 
+
+그런데 만약 함수가 하나의 값을 리턴하는 것이 아니라 연속된 값을 순차적으로 리턴할 수 있다면 어떨까?
+
+이러한 개념에서 만들어진 것이 바로 제너레이터(generator)이다.
+
+제너레이터는 이터레이터와 마찬가지로 next 호출시 그 값을 순차적으로 얻어 낼 수 있다. 
+
+제너레이터는 순차적인 결과값을 리턴하기 위해 return 대신 yield 키워드를 사용한다.
+
+가장 간단한 제너레이터의 예를 보자.
+
+```
+def myGen():
+    yield 'a'
+    yield 'b'
+    yield 'c'
+# 수행    
+g = myGen()
+print(type(g))
+```
+
+[결과]
+
+```
+<class 'generator'>
+```
+
+순차적으로 실행시마다 값을 생성해 줌을 알 수 있다.
+
+```
+print(next(g))
+print(next(g))
+print(next(g))
+```
+
+```
+<class 'generator'>
+a
+b
+c
+```
+
+위와 같이 제너레이터 객체 g에 next함수를 실행하면 mygen 함수의 첫번째 yield 문에 의해서 'a' 값이 리턴된다. 
+
+여기서 재밌는 점은 제너레이터는 **yield**라는 문장을 만나게 되면 그 값을 리턴하고 현재의 상태를 그대로 기억한다는 점이다. 
+
+이건 마치 음악 플레이어를 재생하다가 포즈(pause)로 멈추어 놓은 것과 비슷한 모양새이다. 이러한 방식을 전문 용어로 **코루틴(Coroutine)**이라고 한다.
+
+> 제너레이터는 이러한 이유로 코루틴(coroutine)이라고도 불리운다.
+
+> 모든 제너레이터는 이터레이터를 만들어 내기 때문에 제너레이터 객체는 이터레이터라고 할 수 있다.
+
+### 제너레이터 표현식
+
+이번에는 다음의 예를 보자.
+
+```
+def myGen():
+    for i in range(1, 1000):
+        result =  i **2
+        yield result        
+        
+gen = myGen()
+
+print(next(gen))
+print(next(gen))
+print(next(gen))
+```
+
+[결과]
+
+```
+1
+4
+9
+```
+
+위의 제너레이터 표현식(generator expression)을 아래와 같이 튜플 comprehension으로 가능함을 기억하자.
+
+```
+gen2 = (i ** 2 for i in range(1, 1000))
+```
+
+### 제너레이터와 이터레이터
+
+지금까지 살펴본 제너레이터는 이터레이터와 상당히 비슷하다는 것을 알 수 있다. 
+
+클래스를 이용하여 이터레이터를 작성하면 좀 더 복잡한 행동을 하도록 만들 수 있다. 
+
+반면에 제너레이터 표현식 같은 것을 이용하면 정말 간단하게 이터레이터를 만들 수 있다. 
+
+따라서 여러분이 만들어 낼 이터레이터의 성격에 따라 클래스로 작성할 것인지 제너레이터로 작성할 것인지를 선택해야 한다.
+
+보통 간단한 경우라면 제너레이터 함수나 제너레이터 표현식을 사용하는 것이 가독성 및 유지보수 측면에서 유리하다.
+
+다음은 `(i * i for i in range(1, 1000))` 제너레이터를 이터레이터 클래스로 구현한 예이다.
+
+```
+class MyIterator:
+    
+    def __init__(self):
+        self.data = 1
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        result = self.data ** 2
+        self.data += 1
+        if self.data >= 1000:
+            raise StopIteration
+        result result
+```
 
