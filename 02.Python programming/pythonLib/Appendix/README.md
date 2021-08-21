@@ -153,3 +153,294 @@ with open('euc_kr.txt', encoding='euc-kr', mode='w') as f:
 
 만약 소스코드는 euc-kr로 인코딩되었는데 파일상단에는 utf-8로 명시되어져 있다면 문자열 처리하는 부분에서 인코딩 관련한 오류가 발생할 것이다.
 
+# 02 클로저와 데코레이터
+
+데코레이터를 이해하기 위해서는 먼저 클로저에 대한 이해가 필요하다. 클로저에 대해서 먼저 알아본 후 데코레이터에 대해서 알아보자.
+
+## 클로저
+
+클로저는 간단히 말해 함수 내에 내부 함수(inner function)를 구현하고 그 내부 함수를 리턴하는 함수를 말한다. 이 때 외부 함수는 자신이 가지고 있는 변수값 등을 내부 함수에 전달하여 실행될 수 있게 한다.(**자바스크립트 개념의 클로저와 유사**)
+
+알쏭 달쏭한 설명이지만 예제를 보면 쉽게 이해할 수 있다.
+
+어떤 수에 항상 3을 곱해서 리턴해 주는 함수를 생각해 보자. 아마도 다음과 같은 함수를 만들 수 있을 것이다.
+
+```
+>>> def mul3(n):
+...    return n * 3
+```
+
+이번에는 5를 곱해서 리턴해주는 함수를 만든다.
+
+```
+>>> def mul5(n):
+...    return n * 5
+```
+
+하지만, 필요에 따라 이렇게 함수를 만드는것은 비효율적이다.
+
+그래서 우리는 아래와 같이 클래스를 만들게 된다
+
+```
+# -*- coding: utf-8 -*-
+"""
+class example
+"""
+class Mul:
+    def __init__(self, m):
+        self.m = m
+        
+    def mul(self, n):
+        return self.m * n
+
+if __name__ =="__main__":
+    mul3 = Mul(3)
+    mul5 = Mul(5)    
+    
+    print(mul3.mul((10)))
+    print(mul5.mul(10))
+```
+
+결과는 다음과 같다
+
+```
+30
+50
+```
+
+`__call__`메소드를 이용해 좀 더 개선해보자. `__call__`함수는 Mul클래스로 만들어진 객체에 인수를 전달하여 바로 호출 할 수 있게 해주는 메소드.
+
+<span style='color:red'>`__call__`<span>메소드를 이용하면 아래 mul3객체를 mul3(10)객체 처럼 쓸 수 있다.
+
+```
+# -*- coding: utf-8 -*-
+"""
+class example
+"""
+
+class Mul:
+    def __init__(self, m):
+        self.m = m
+        
+    #def mul(self, n):
+     #   return self.m * n
+    
+    def __call__(self, n):
+        return self.m * n
+    
+
+
+if __name__ =="__main__":
+    mul3 = Mul(3)  #30출력
+    mul5 = Mul(5)  # 50출력   
+    #호출방법이 달라짐에 유의
+    print(mul3((10)))
+    print(mul5(10))
+```
+
+결과는 위의 것과 동일하다.
+
+다음과 같은 방법으로도 시도해보면.
+
+```
+def mul(m):
+    def wrapper(n):
+        return m * n
+    return wrapper
+
+
+if __name__ == "__main__":
+    mul3 = mul(3)
+    mul5 = mul(5)
+
+    print(mul3(10))  # 30 출력
+    print(mul5(10))  # 50 출력
+```
+
+바깥 함수(mul)안에 안쪽 함수(wrapper)가 구현되어 있다. 그리고 바깥 함수는 안쪽 함수 wrapper를 리턴한다. 
+
+함수에서 함수를 리턴하는 것이 생소할 수 있겠지만 파이썬은 이것이 가능하다.
+
+재밌는 사실은 mul 함수에서 wrapper 함수를 리턴할 때 mul 함수 호출시 인수로 받은 m의 값이 wrapper 함수에 저장되어 리턴된다는 점이다. 이것은 마치 클래스가 특정한 값을 설정하여 객체를 만들어 내는 과정과 매우 흡사하다.
+
+이러한 mul과 같은 함수를 파이썬에서는 **클로저(Closure)**라고 한다.
+
+## 데코레이터
+
+다음은 "함수가 실행됩니다" 라는 문자열을 출력하는 myfunc 함수이다.
+
+```
+def myfunc():
+    print("함수가 실행됩니다.")
+```
+
+그런데 이 함수의 수행시간을 측정해야 한다면 어떻게 해야 할까?
+
+함수의 수행시간은 함수가 시작하는 순간의 시간과 함수가 종료되는 순간의 시간 차이를 구하면 알 수 있다. 따라서 다음과 같이 코드를 수정하면 함수의 총 수행시간을 측정할 수 있다.
+
+```
+import time
+
+def myFunc():
+    
+    sTime = time.time()
+    print("함수가 실행됩니다.")
+    eTime = time.time()
+    
+    print("총 수행 시간 : {}".format(eTime - sTime))
+    
+if __name__ == "__main__":
+    myFunc()
+```
+
+실행결과는 다음과 같다.
+
+```
+runcell(0, 'C:/Users/cello/.spyder-py3/temp.py')
+함수가 실행됩니다.
+총 수행 시간 : 0.0
+```
+
+하지만 수행시간을 측정해야 하는 함수가 무수히 많다면 어떻게 해야 하지?
+
+그 모든 함수를 다 수정해야 하나?
+
+```
+import time
+
+def elapsed(origianl_func): 
+    """
+    Parameters
+    ----------
+    origianl_func : myfunc
+        수행시간 측정
+    Returns
+    -------
+    wrapper.
+
+    """
+    def wrapper():
+        """
+        장식된 함수를 수행한 결과를 리턴
+        """
+        start  = time.time()
+        result = origianl_func() # 기존 함수 수행
+        end = time.time()
+        print("함수 수행시간 : %f 초" %(end - start)) # 기존 함수의 수행시간 측정
+        return result  # 기존 함수의 수행결과를 리턴
+    return wrapper        
+
+
+def myfunc():
+    print("함수가 실행됩니다.")
+    
+    
+decorated_myfunc = elapsed(myfunc)  # 장식된 함수를 호출하면 
+decorated_myfunc()
+```
+
+elapsed 함수로 클로저를 만들었다. elapsed 함수는 함수를 인수로 받는다. 파이썬은 함수도 객체이기 때문에 함수 자체를 인수로 전달하는 것이 가능하다.
+
+이제 `decorated_myfunc = elapsed(myfunc)`로 생성된 decorated_myfunc를 `decorated_myfunc()` 처럼 실행하면 실제로는 elapsed 내부의 wrapper 함수가 실행되고 wrapper 함수는 전달 받은 myfunc 함수를 수행하고 수행시간도 함께 출력할 것이다.
+
+클로저를 이용하면 기존 함수에 뭔가 추가적인 부가 기능을 덧붙이기가 아주 편리하다. 이렇게 기존 함수의 변경 없이 추가적인 기능을 덧붙일 수 있도록 해 주는 elapsed 함수와 같은 클로저를 **데코레이터(Decorator)**라고 한다.
+
+> 영어 단어 'decorate'는 "장식하다" 라는 뜻이다. 그런 의미에서 데코레이터는 함수를 꾸며주는 함수라고 생각해도 좋을 것이다.
+
+수행 결과는 다음과 같다.
+
+```
+함수가 실행됩니다.
+함수 수행시간 : 0.000000 초
+```
+
+파이썬 데코레이터는 다음처럼 `@`를 이용한 어노테이션을 사용할수도 있다.
+
+```
+import time
+
+def elapsed(origianl_func): 
+    """
+    Parameters
+    ----------
+    origianl_func : function
+        수행시간 측정
+    Returns
+    -------
+    wrapper.
+
+    """
+    def wrapper():
+        start  = time.time()
+        result = origianl_func() # 기존 함수 수행
+        end = time.time()
+        print("함수 수행시간 : %f 초" %(end - start)) # 기존 함수의 수행시간 측정
+        return result  # 기존 함수의 수행결과를 리턴
+    return wrapper        
+
+@elapsed
+def myfunc():
+    print("함수가 실행됩니다.")
+    
+
+# @elapsed 어노테이션으로 인해 더이상 필요하지 않다.    
+# decorated_myfunc = elapsed(myfunc)
+# decorated_myfunc()
+
+myfunc()
+```
+
+수행결과는 아래와 같다.
+
+```
+함수가 실행됩니다.
+함수 수행시간 : 0.000000 초
+```
+
+그렇다면 myfunc함수를 다음과 같이 수행해보자.
+
+```
+import time
+
+def elapsed(origianl_func): 
+    """
+    Parameters
+    ----------
+    origianl_func : function
+        수행시간 측정
+    Returns
+    -------
+    wrapper.
+
+    """
+    def wrapper():
+        start  = time.time()
+        result = origianl_func() # 기존 함수 수행
+        end = time.time()
+        print("함수 수행시간 : %f 초" %(end - start)) # 기존 함수의 수행시간 측정
+        return result  # 기존 함수의 수행결과를 리턴
+    return wrapper        
+
+@elapsed
+def myfunc(msg):
+    print("'%s'를 출력합니다." %msg)  
+
+
+myfunc("You need python")
+```
+
+원래 함수가 인자를 받도록 수정하고, 수행해보면 아래와 같은 오류가 난다.
+
+```
+line 27, in <module>
+    myfunc("You need python")
+
+TypeError: wrapper() takes 0 positional arguments but 1 was given
+```
+
+오류의 원인은 myfunc 함수는 입력인수를 필요로 하지만 elapsed 함수 내의 wrapper 함수는 전달받은 myfunc 함수를 입력인수 없이 호출하기 때문이다.
+
+데코레이터 함수는 기존 함수의 입력 인수에 상관없이 동작하도록 만들어야 한다. 왜냐하면 데코레이터는 기존함수가 어떤 입력 인수를 취할지 알 수 없기 때문이다. 따라서 이렇게 전달받아야 하는 기존 함수의 입력 인수를 알 수 없는 경우에는 `*args`와 `**kwargs` 기법을 이용하여 해결해야 한다.
+
+
+
