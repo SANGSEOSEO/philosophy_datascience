@@ -1,5 +1,7 @@
 
 
+
+
 ## 01.파이썬과 유니코드
 
 컴퓨터는 0과 1이라는 값만을 인식할 수 있는 기계장치이다. 컴퓨터가 문자를 인식할 수 있게 하려면 어떻게 해야 할까? 과거부터 지금까지 사용하는 유일한 방법은 다음과 비슷한 방법의 문자셋을 만드는 것이다.
@@ -778,5 +780,427 @@ class MyIterator:
         if self.data >= 1000:
             raise StopIteration
         result result
+```
+
+### 제너레이터의 쓰임새
+
+이번에는 제너레이터의 쓰임새에 대해서 알아보자. 약간은 이해하기 힘든 이 제너레이터라는 것은 어디에 활용하면 좋을까?
+
+제너레이터의 가장 큰 이점 중 하나는 대량의 데이터를 처리할 때이다.
+
+다음은 파일을 한줄씩 읽어서 처리하는 예제이다.
+
+```
+with open('bigdata.txt') as f:
+    for line in f:
+        # process the line
+```
+
+파이썬은 기본적으로 파일 객체를 제너레이터로 만들어 처리한다. 이렇게 제너레이터를 사용하면 파일을 모두 읽어서 메모리에 올려 놓은 후에 처리하는 것이 아니라 한줄씩 순서대로 처리하게 만들어 주기 때문에 작은 메모리만으로 대용량 파일 처리가 가능해 진다.
+
+한 가지 예를 더 들어보자.
+
+```
+# -*- coding: utf-8 -*-
+"""
+문자열을 출력하는데 1초걸리도록 대기를 걸고 
+5번을 반복하도록 기능을 iterator로 변경 
+
+@author: cello
+"""
+
+import time
+
+def longtime_job():
+    
+    print("jobstart")
+    time.sleep(1) 
+    return "Done"
+
+
+# 수행
+list_job = iter([longtime_job() for i in range(5)])
+print(next(list_job))
+```
+
+수행결과는 다음과 같다.
+
+1초에 한번씩 "jonstart"를 찍어주고 "Done"를 출력
+
+```
+jobstart
+jobstart
+jobstart
+jobstart
+jobstart
+Done
+
+```
+
+리스트 생성시에 이미 5개의 함수가 모두 수행되기 때문에 위와 같은 결과가 출력된다.
+
+이번에는 위 예제에 제너레이터 기법을 도입해 보자. 프로그램은 다음과 같이 수정될 것이다.
+
+```
+# -*- coding: utf-8 -*-
+"""
+문자열을 출력하는데 1초걸리도록 대기를 걸고 
+5번을 반복하도록 기능을 generator로 변경 
+
+@author: cello
+"""
+
+import time
+
+def longtime_job():
+    
+    print("jobstart")
+    time.sleep(1) 
+    return "Done"
+
+
+# 수행
+#list_job = iter([longtime_job() for i in range(5)])
+list_job = (longtime_job() for i in range(5))  # generator로 변경
+print(next(list_job))
+```
+
+출력결과는 한번만 먼저 찍일것
+
+```
+jobstart
+Done
+```
+
+그 다음에 또 한번 `next`를 호출하면..
+
+```
+jobstart
+Done
+jobstart
+Done
+```
+
+위와 같이 필요할때 마다 즉, 호출시마다 값이 출력됨을 알 수 있다.
+
+> 이러한 방식을 "느긋한 계산법(Lazy evaluation)" 이라고 부른다.
+
+## 4 파이썬 타입 어노테이션
+
+파이썬 3.5 버전부터 변수와 함수에 타입을 지정할 수 있는 타입 어노테이션 기능이 추가 되었다.
+
+### 파이썬은 동적 프로그래밍 언어
+
+a 변수에 1이라는 값을 대입하고 type 함수를 수행해 보자.
+
+```
+from IPython.display import display
+
+a = 1
+display(type(a))  # class int
+```
+
+정수형임을 알수 있다.
+
+다음 예를 한번 보자.
+
+```
+>>> a = "1"
+>>> type(a)
+<class 'str'>
+```
+
+a 변수의 타입이 `str` 형으로 변경되었다. 이렇게 프로그램 실행 도중에 변수의 타입이 동적으로 변경 되기 때문에 파이썬은 동적(Dynamic) 프로그래밍 언어라고 한다.
+
+### 자바는 정적 프로그래밍 언어
+
+파이썬과 달리 자바는 정수형(int) 변수 a에 1이라는 값을 대입하고 다시 "1" 이라는 문자열을 대입할 경우 컴파일 에러가 발생한다.
+
+```
+int a = 1;  // a 변수를 int형으로 지정
+a = "1";  // a 변수에 문자열을 대입할 수 없으므로 컴파일 에러
+```
+
+자바는 한번 변수에 타입을 지정하면, 지정한 타입외에 다른 타입은 사용할 수 없기 때문에 정적(Static) 프로그래밍 언어라고 한다.
+
+### 동적 언어의 장단점
+
+파이썬과 같은 동적 언어는 타입에 자유로워 유연한 코딩이 가능하여, 쉽고 빠르게 프로그램을 작성할 수 있다. 그리고 타입 체크를 위한 코드들이 생략되어 비교적 깔끔한 소스코드를 생성할 수 있다. 하지만 프로젝트의 규모가 커질수록 타입의 오사용으로 인한 버그가 생길 확률도 늘어나게 된다.
+
+> > 안전성을 선호하는 금융권 프로젝트에서는 이러한 이유로 동적 언어보다는 정적 언어를 메인 언어로 선택하는 경향이 크다.
+
+### 파이썬 타입 어노테이션
+
+파이썬은 3.5 버전부터는 타입 어노테이션을 지원하기 시작한다. 다만 정적 언어에서와 같은 적극적인 타입 체크가 아니라 타입 어노테이션(Annotation), 즉 타입에 대한 힌트를 알려주는(hinting) 정도이다. 동적 언어의 장점을 잃지 않고 기존에 작성된 코드들과의 호환성을 생각하면 당연한 선택일 것이다.
+
+타입 어노테이션은 다음과 같이 사용한다
+
+```
+num: int = 1
+```
+
+변수명 뒤에 `:`다음에 변수 타입을 지정해준다.(annotation)
+
+```
+def add(a: int, b: int) -> int:
+    return a + b
+
+
+# 수행 
+sum = add(3, 10)
+print(sum)
+```
+
+함수의 매개변수에도 동일한 규칙을 적용하여 매개변수의 타입을 명시할 수 있다. 그리고 함수의 리턴 값도 `-> 타입` 처럼 사용하여 리턴값의 타입을 명시할 수 있다.
+
+> 어노테이션 타입으로 정수는 `int`, 문자열은 `str`, 리스트는 `list`, 튜플은 `tuple`, 딕셔너리는 `dict`, 집합은 `set`, 불은 `bool`을 사용한다.
+
+### mypy
+
+하지만 파이썬 어노테이션을 사용하더라도 다음과 같이 사용할 수 있다.
+
+```
+# -*- coding: utf-8 -*-
+"""
+test
+
+@author: cello
+"""
+def add(a: int, b: int) -> int:
+    return a + b
+
+
+# 수행 
+sum = add(3, 10)
+print(sum)
+
+sum = add(3, 10.45)
+print(sum)
+```
+
+```
+runcell(0, 'C:/Users/cello/.spyder-py3/untitled1.py')
+13
+13.45
+```
+
+add 함수의 b 매개변수는 int형이지만 3.4와 같은 float형의 데이터를 사용해도 위 파이썬 코드는 문제없이 돌아간다. 왜냐하면 파이썬 타입 어노테이션은 체크가 아닌 힌팅이기 때문이다.
+
+```
+파이참과 같은 파이썬 전용 IDE를 사용할 경우에는 타입이 맞지 않는다는 경고 메시지를 볼 수 있다.
+```
+
+보다 적극적으로 파이썬 어노테이션을 활용하기 위해서는 mypy를 사용하는 것이 좋다. mypy는 파이썬 표준 라이브러리가 아니므로 다음과 같이 설치를 하고 난 후에 사용이 가능하다.
+
+```
+pip install mypy
+```
+
+설치후 위의 함수를 재수행해보되 타입이 맞지않게 수행해본다.
+
+> 파이썬 타입 어노테이션은 요새 쓰임이 점점 증가하는 추세이다. 많은 프로젝트와 라이브러리들에서 파이썬 타입 어노테이션이 적용된 코드들이 심심치 않게 발견된다.
+
+## 05 str과 repr
+
+파이썬 내장함수에는 `str`과 `repr`이라는 어찌보면 매우 비슷한 기능을 하는 함수가 있다. str과 repr은 모두 객체를 문자열로 리턴하는 함수이다. 하지만 두개의 함수에는 약간의 차이가 있다.
+
+### str과 repr의 차이점
+
+어떤 차이가 있는지 예제를 보며 알아보자. 먼저 숫자에 적용해 보자.
+
+```/
+
+# -*9- coding: utf-8 -*-
+"""
+str과 repr의 차이점
+
+@author: cello
+"""
+A = 123
+print(str(A))
+
+print(repr(A))
+```
+
+결과는?
+
+```
+123
+123
+```
+
+숫자형인 경우에는 차이가 없다. 
+
+그렇다면 변수를 문자형으로 바꾸도 다시 시도
+
+```
+ A = "Life is too short.you need python"
+
+print(str(A))
+
+print(repr(A))
+```
+
+```
+Life is too short.you need python
+'Life is too short.you need python'
+```
+
+문자열은 str과 repr이 다른 결과값을 리턴했다. str은 문자열 그대로를 리턴했는데 repr은 단일인용부호(')가 좌우로 감싸여진 형태의 문자열을 리턴했다.
+
+왜 그럴까?
+
+한가지 예를 더 들어보자.
+
+```/
+import datetime
+
+a = datetime.datetime(2021, 8, 25)
+print(str(a))
+```
+
+결과는?
+
+```
+2021-08-25 00:00:00
+```
+
+`repr`로 다시 시도해보면?
+
+```
+import datetime
+
+a = datetime.datetime(2021, 8, 25)
+print(str(a))
+print(repr(a))
+```
+
+결과는?
+
+```
+2021-08-25 00:00:00
+datetime.datetime(2021, 8, 25, 0, 0)
+```
+
+datetime 모듈로 만들어진 객체는 매우 다른 결과를 리턴했다.
+
+str과 repr에는 다음과 같은 차이점들이 있다.
+
+| 구분        | str                          | repr                                   |
+| :---------- | :--------------------------- | :------------------------------------- |
+| 성격        | 비공식적인 문자열을 출력     | 공식적인 문자열을 출력                 |
+| 사용목적    | 사용자가 보기 쉽게 하기 위해 | **문자열로 객체를 다시 생성하기 위해** |
+| 누구를 위해 | 프로그램 사용자(end user)    | 프로그램 개발자(developer)             |
+
+repr의 사용목적을 보면 "문자열로 객체를 다시 생성하기 위해" 라고 되어 있다. 
+
+문자열로 객체를 생성하기 위해서는 eval 함수를 사용한다. 즉, 다음과 같이 datetime 객체를 repr로 생성한 문자열에 다시 eval 함수를 수행하면 datetime객체가 만들어 져야 한다는 말이다.
+
+```
+>>> a = datetime.datetime(2017, 9, 27)
+>>> b = repr(a)
+>>> eval(b)
+datetime.datetime(2017, 9, 27, 0, 0)
+```
+
+위 예제에서 알아본 문자열도 마찬가지이다.
+
+```
+>>> a = "Life is too short"
+>>> b = repr(a)
+>>> eval(b)
+'Life is too short'
+```
+
+하지만 str 함수로 리턴된 문자열을 eval 함수로 수행했을 때는 다음과 같은 오류가 발생한다.
+
+```
+>>> a = "Life is too short"
+>>> b = str(a)
+>>> eval(b)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<string>", line 1
+    Life is too short
+                    ^
+SyntaxError: unexpected EOF while parsing
+```
+
+문자열을 repr로 호출했을때 왜 단일 인용부호(`'`)가 덧붙여서 나왔는지 이제 이해가 될 것이다.
+
+### 클래스의 __str__ 과 __repr__
+
+이번에는 사용자가 만든 클래스에서 repr과 str이 어떻게 적용되는지 확인해 보자.
+
+```
+class MyRepr:
+    pass
+
+# 수행
+obj = MyRepr()
+
+print(repr(obj))
+print(str(obj))
+```
+
+결과는 아래와 같다.
+
+```
+runcell(0, 'C:/Users/cello/untitled10.py')
+<__main__.MyRepr object at 0x000001902938E9A0>
+<__main__.MyRepr object at 0x000001902938E9A0>
+```
+
+repr이나 str로 객체 출력 시 디폴트 문자열이 출력되는 것을 확인 할 수 있다. 이번에는 repr 호출 시 의미있는 문자열이 출력되도록 다음과 같이 수정해 보자.
+
+```
+class MyRepr:
+    def __repr__(self):
+        return "Hello MyRepr"
+
+
+obj = MyRepr()
+
+print(repr(obj))
+print(str(obj)).
+```
+
+클래스에 <span style='color:red'>`__repr__` </span>메서드를 구현하면 repr 호출시 <span style='color:red'>`__repr__` </span>메서드가 수행된다. 따라서 repr로 obj 출력 시 다음과 같은 문자열이 출력될 것이다.
+
+```
+Hello Python
+Hello Python
+```
+
+repr은 객체 출력 시 <span style='color:red'>`__repr__` </span>메서드가 없으면 <span style='color:red'>`__str__` </span>메서드를 호출하지 않고 디폴트 값을 출력한다는 점을 알 수 있다. 
+
+즉 str은 <span style='color:red'>`__str__` </span>메서드가 없을 경우<span style='color:red'> `__repr__`</span>메서드를 참조하지만 repr은 오직 <span style='color:red'>`__repr__` </span>메서드만 참조한다는 사실을 알 수 있다.
+
+이번에는 repr의 사용 목적인 "문자열로 다시 객체를 생성"을 만족하기 위해서 다음과 같이 코드를 수정해 보자.
+
+> repr의 출력 문자열을 eval 함수를 이용하여 다시 객체로 만들 수 있어야 한다는 것은 필수 조건은 아니다. 다만 권고사항 정도라고 보면 된다
+
+```
+# -*- coding: utf-8 -*-
+class MyRepr:
+    def __repr__(self):
+        return "MyRepr()"
+    
+    def __str__(self):
+        return "Hello MyRepr"
+    
+    
+#수행
+obj = MyRepr()    
+
+obj_repr = repr(obj)
+new_obj = eval(obj_repr)
+print(type(new_obj))
+```
+
+repr 호출시 "MyRepr()"을 리턴하여 eval 수행 시 `MyRepr()`이 수행되어 새로운 MyRepr 클래스의 객체가 생성되는 것을 확인할 수 있다.
+
+```
+<class '__main__.MyRepr'>
 ```
 
