@@ -7,3 +7,4 @@
 ## 업데이트 내역
 
 * Text handling  - `textwrap library`
+* Regular Expression
