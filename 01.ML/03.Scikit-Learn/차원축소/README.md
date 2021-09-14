@@ -249,6 +249,7 @@ SVD유형에는 Full SVD, Compact SVD, Truncated SVD등이 있다.
 * SVD는 차원 축소를 위한 행렬 분해를 통해 latent factor(잠재요인)를 찾을 수 있는데 이렇게 찾아진 Latent Factor는 많은 분야에 활용(추천엔진, 문서의 잠재 의미 분석등)
 * SVD로 차원 축소 행렬 분해된 후 다시 분해된 행렬을 이용하여 원복된 데이터셋은 잡음(Noise)이 제거된 형태로 재구성 될 수 있음
 * 사이킷런에서는 Truncated SVD로 차원을 축소할 때 원본 데이터에 U$$sigma$$를 적용하여 차원 축소
+* 대각 원소 가운데 상위 r개만 추출하여 차원을 축소
 
 ![truncatedSVD](https://user-images.githubusercontent.com/70785000/125402217-1e4d3f80-e3ef-11eb-9627-d4298974ede6.PNG)
 
