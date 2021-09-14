@@ -161,13 +161,7 @@ print("{}주식을 {}개 보유".format(s["name"], s["shares"]))
 ```
 GOOG주식을 100개 보유
 ```
-
 To add or modify values assign using the key names.
-
-To add or modify values assign using the key names.
-
-
-
 ```python
 # to add or modify values assign using the key names
 s["shares"] = 75
@@ -289,7 +283,7 @@ Although you can't change tuple contents, you can always create a completely new
 >>>
 ```
 
-Whenever you reassing an existing variable name like this, the old value is discarded. Although the above assignment might look like you are modifying the tuple, you are actually creating a new tuple and throwing the old one away.
+Whenever you reassign an existing variable name like this, the old value is discarded. Although the above assignment might look like you are modifying the tuple, you are actually creating a new tuple and throwing the old one away.
 
 Tuples are often used to pack and unpack values into variables. Try the followng.
 
