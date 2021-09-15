@@ -72,6 +72,7 @@ for s in portfolio:
     total += int(s["shares"]) * float(s["price"])
 print(f"{total:.2f}")
 
+# 보기 좋게 표시
 from pprint import pprint
 pprint(portfolio)
 
