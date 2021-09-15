@@ -47,13 +47,15 @@
 
 > class sklearn.cluster.KMeans(n_clusters=8, init='k-means++', n_init=10, max_iter=300, tol=0.0001, precompute_distances='auto', verbose=0, random_state=None, copy_x=True, n_jobs=1, algorithm='auto')
 
+`n_clusters` - 중심점갯수를 설정, 
+
 #### 주요 파라미터
 
 * KMeans초기화 파라미터 중 가장 중요한 파라미터는 `n_cluster`이며, 이는 군집화 개수 , 즉 준집 중심점 갯수를 의미
-* `init`는 초기에 군집 중심점의 좌표를 설정할 방식을 말하며 보통은 임으로 중심을 설정하지 않고 일반적으로 `k-means++`방식으로 최초 설정
+* `init`는 초기에 군집 중심점의 좌표를 설정할 방식을 말하며 보통은 임의로 중심을 설정하지 않고 일반적으로 `k-means++`방식으로 최초 설정
 * `max_iter`는 최대 반복 횟수이며, 이 횟수 이전에 모든 데이터의 중심점이 이동이 없으면 종료합니다.
 
 #### 주요 속성
 
-* `labels` : 각 데이터 포인트가 속한 군집 중심점 레이블
+* `labels_` : 각 데이터 포인트가 속한 군집 중심점 레이블
 * `cluster_centers_`: 각 군집 중심점 좌표(Shape)는  `군집 갯수, 피처갯수` . 이를 이용하면 군집 중심점 좌표가 어디인지 시각화가 가능
