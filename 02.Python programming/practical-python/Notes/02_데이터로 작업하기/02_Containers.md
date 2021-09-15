@@ -361,52 +361,177 @@ for _, share, price in portfolio:
 
 ### Exercise 2.5: List of Dictionaries
 
-Take the function you wrote in Exercise 2.4 and modify to represent each
-stock in the portfolio with a dictionary instead of a tuple.  In this
-dictionary use the field names of "name", "shares", and "price" to
-represent the different columns in the input file.
+Take the function you wrote in Excercise 2.4 and modify to represent each stock in the portfolio with a dictionary instead of a tuple. In this dictionary use the field names of "names", "shares", and "price" to represent the different columns in the input file.
 
-Experiment with this new function in the same manner as you did in
-Exercise 2.4.
+Experiment with this new function in the same manner as you did in Exercise 2.4.
 
 ```python
+def read_portfolio(filename:str):
+    '''
+    Excercise 2-5
+    :param fiename:
+    :return List with dictionary collections.
+    '''
+    portfolio = []
+    TARGET_FILE = "../Data/"+filename
 
+    key_cols = []
+    with open(TARGET_FILE, 'rt') as f:
+        rows = csv.reader(f)
+        header = next(rows)
+        key_cols = header  # initialize 
+
+        result_list = []
+        for row in rows:
+            result = dict()
+            #print(row, type(row))  # list datatype
+
+            result[key_cols[0]] = row[0].replace('"', '')
+            result[key_cols[1]] = int(row[1])
+            result[key_cols[2]] = float(row[2])
+            result_list.append(result)
+    return result_list
+
+# 수행
+portfolio = read_portfolio("portfolio.csv")
+print(portfolio[0])
+print(portfolio[1])
+print("Shares : ", portfolio[1]['shares'])
+
+total = 0.0
+for s in portfolio:
+    total += int(s["shares"]) * float(s["price"])
+print(f"{total:.2f}")
 ```
 
-
+**result is the following**
 
 ```python
+{'name': 'AA', 'shares': 100, 'price': 32.2}
+{'name': 'IBM', 'shares': 50, 'price': 91.1}
+Shares :  50
+44671.15
+```
 
+Here, you will notice that the different fields for each entry are accessed by key names instead of numeric column numbers. This is often preferred because the resulting code is easier to read later.
+
+Viewing large dictionaries and lists can be messy. To clean up the output for debugging, cosider using `pprint` function.
+
+```
+from pprint import pprint
+pprint(portfolio)
+```
+
+```
+[{'name': 'AA', 'price': 32.2, 'shares': 100},
+ {'name': 'IBM', 'price': 91.1, 'shares': 50},
+ {'name': 'CAT', 'price': 83.44, 'shares': 150},
+ {'name': 'MSFT', 'price': 51.23, 'shares': 200},
+ {'name': 'GE', 'price': 40.37, 'shares': 95},
+ {'name': 'MSFT', 'price': 65.1, 'shares': 50},
+ {'name': 'IBM', 'price': 70.44, 'shares': 100}]
 ```
 
 ### Exercise 2.6: Dictionaries as a container
 
-A dictionary is a useful way to keep track of items where you want to
-look up items using an index other than an integer.  In the Python
-shell, try playing with a dictionary:
+A dictionary is a useful way to keep track of items where you wanto to look up items using an index other than an integer. 
+
+In the Python shell, try playing with a dictionary:
 
 ```python
-
+>>> prices = {}
+>>> prices["IBM"] = 92.45
+>>> prices["MSFT"] = 45.12
+>>> prices
+{'IBM': 92.45, 'MSFT': 45.12}
+>>> prices["AAPL"]
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+KeyError: 'AAPL'
+>>> 'AAPL' in prices
+False
 ```
 
-
+The file `Data/prices.csv` contains a series of lines with stock prices. The file looks something like this.
 
 ```csv
-
+"AA",9.22
+"AXP",24.85
+"BA",44.85
+"BAC",11.27
+"C",3.72
+...
 ```
 
+Write a function `read_prices(filename)` that reads a set of prices such as this into a dictionary where the keys of the dictionary are the stock names and the values in the dictionary are the stock prices.
 
+To do this, start with an empty dictionary and start inserting values into it just as you did above. However, you are reading the values from a file now.
+
+We'll use this data structure to quickly lookup the price of a given stock name.
+
+A few little tips that you'll need for this part. First, make sure you use the `csv` module just as you did before -- there's no need to reinvent the wheel here.
 
 ```python
-
+>>> f = open("../Data/prices.csv", "rt")
+>>> rows = csv.reader(f)
+>>> for row in rows:
+       print(row)
+        
+>>> ['AA', '9.22']
+['AXP', '24.85']
+['BA', '44.85']
+..............
 ```
 
+The other little complication is that the `Data/prices.csv` file may have some blank lines in  it. Notice how the last row of data above is an empty list - meaning no data was present on that line.
 
+There's a possibilities that this could cause your program to die with an exception. Use the `try` and `except` statement to catch this as appropriate. Thought: would it be better to guard against bad data with an `if` - statement instead?
+
+Once you have written your `read_prices()` function, test it interactively to make sure it works.
 
 ```python
+def read_prices(filename: str):
+    '''
+    Excercies 2-6
+    :param filename:
+    :return:
+    '''
+    TARGET_DIR = "../Data/"+filename
+    with open(TARGET_DIR, "rt") as f:
+        pricesList = csv.reader(f)
 
+        prices = {}
+        for lst in pricesList:
+            try:
+                prices[lst[0]] = lst[1]
+            except IndexError:
+                pass
+    return prices
+
+# 수행
+prices = read_prices("prices.csv")
+print(prices["IBM"])
+print(prices["MSFT"])
+```
+
+```
+106.28
+20.89
 ```
 
 ### Exercise 2.7: Finding out if you can retire
+
+Tie all of this work together by adding a few additional statements to your `report.py` program that computes gain/logss.
+
+These statements should take the list of stocks in Excercise 2.5 and the dictionary of prices in Excercise 2.6 and compute the current value of the portfolio along with the gain/loss.
+
+```
+# Compute the current value of the portfolio
+total_value = 0.0
+for s in portfolio:
+    total_value += int(s["shares"]) * float(prices[s["name"]])
+
+print(f" total value : {total_value: .2f}")  # total value :  28686.10
+```
 
 [Contents](../Contents.md) \| [Previous (2.1 Datatypes)](01_Datatypes.md) \| [Next (2.3 Formatting)](03_Formatting.md)
