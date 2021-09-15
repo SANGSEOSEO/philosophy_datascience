@@ -1,35 +1,55 @@
 # report.py
 import csv
-def read_porfolio(filename):
-    '''
 
-    :param filename:
-    :return: composite list with nested tuple
+def read_portfolio(filename):
+    '''
+    Read a stock portfolio file into a list of dictionaries with keys
+    name, shares, and price.
     '''
     portfolio = []
-    TARGET_FILE = "../Data/"+ filename
-    with open(TARGET_FILE, 'rt') as f:
+    with open(filename) as f:
         rows = csv.reader(f)
         headers = next(rows)
 
         for row in rows:
-            holdings = (row[0], int(row[1]), float(row[2]))
-            portfolio.append(holdings)
+            stock = {
+                 'name'   : row[0],
+                 'shares' : int(row[1]),
+                 'price'   : float(row[2])
+            }
+            portfolio.append(stock)
+
     return portfolio
 
-# process
-portfolio = read_porfolio("portfolio.csv")
-print(portfolio)
+def read_prices(filename):
+    '''
+    Read a CSV file of price data into a dict mapping names to prices.
+    '''
+    prices = {}
+    with open(filename) as f:
+        rows = csv.reader(f)
+        for row in rows:
+            try:
+                prices[row[0]] = float(row[1])
+            except IndexError:
+                pass
 
-# Total Cost
+    return prices
+
+portfolio = read_portfolio('../../Work/Data/portfolio.csv')
+prices    = read_prices('../../Work/Data/prices.csv')
+
+# Calculate the total cost of the portfolio
 total_cost = 0.0
-for row in portfolio:
-    total_cost += int(row[1]) * float(row[2])
-print(f"{total_cost:.2f}")
+for s in portfolio:
+    total_cost += s['shares']*s['price']
 
+print('Total cost', total_cost)
 
-# tuple unpacking
-total_cost = 0.0
-for _, share, price in portfolio:
-    total_cost += int(share) * float(price)
-print("After tuple unpacking Total Cost : {:.2f}".format(total_cost))
+# Compute the current value of the portfolio
+total_value = 0.0
+for s in portfolio:
+    total_value += s['shares']*prices[s['name']]
+
+print('Current value', total_value)
+print('Gain', total_value - total_cost)
