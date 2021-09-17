@@ -13,7 +13,7 @@
 
 #### Practical Python
 
-* 함수, 모듈, 에러체킹
+* 함수, 모듈, 에러체킹, formatting
 
 #### Python CookBook
 
