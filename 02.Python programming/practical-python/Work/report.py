@@ -112,7 +112,7 @@ print(f" total value : {total_value: .2f}")
 
 def make_report(portfolio, prices):
     '''
-    주식 레포트 만들기 - Excercise 2-9
+    주식 레포트 만들기 - Excercise 2-9, Excercise 2-10
     :param portfolio:
     :param prices:
     :return:
@@ -121,9 +121,9 @@ def make_report(portfolio, prices):
     for holder in portfolio:
         result = tuple()
         Change = float(holder['price']) - float(prices[holder['name']])
-        result = (holder['name'], holder['shares'], prices[holder['name']], Change)
+        result = (holder['name'], holder['shares'], float(prices[holder['name']]), Change)
         stockList.append(result)
-    print("StockList : ", stockList)
+
     return stockList
 
 # 수행해보자
@@ -134,6 +134,19 @@ report = make_report(portfolio, prices)
 for r in report:
     print(r)
 
-#
-#
+# Excercise 2-10
+for r in report:
+    print(f"%10s %10d %10.2f %10.2f" %r)
+
+for name, shares, price, change in report:
+    print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
+
+#Excercise 2-11
+headers = ('name', 'shares', 'price', 'change')
+print("%10s %10s %10s %10s" %headers)
+print(("-" * 10 + ' ') * len(headers))
+
+dollarMark  = '$'
+for name, shares, price, change in report:
+    print(f'{name:>10s} {shares:>10d} {dollarMark+str(price):>10s} {change:>10.2f}')
 
