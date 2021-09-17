@@ -222,7 +222,7 @@ def make_report(portfolio, prices):
     for holder in portfolio:
         result = tuple()
         Change = float(holder['price']) - float(prices[holder['name']])
-        result = (holder['name'], holder['shares'], prices[holder['name']], Change)
+        result = (holder['name'], holder['shares'], float(prices[holder['name']]), Change)
         stockList.append(result)
     print("StockList : ", stockList)
     return stockList
@@ -250,42 +250,138 @@ def make_report(portfolio, prices):
 
 ### Exercise 2.10: Printing a formatted table
 
-```python
+Redo the `for-loop in Excercise 2.9, but change the print statement to format the tuples.
 
+```python
+>>> for r in report:
+       print(f"%10s %10d %10.2f %10.2f" %r)
+
+        AA        100       9.22      22.98
+       IBM         50     106.28     -15.18
+       CAT        150      35.46      47.98
+      MSFT        200      20.89      30.34
+        GE         95      13.48      26.89
+      MSFT         50      20.89      44.21
+       IBM        100     106.28     -35.84        
 ```
 
-
+You can also expand the values and use f-strings. For example:
 
 ```python
+>>> for name, shares, price, change in report:
+       print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
 
+        AA        100       9.22      22.98
+        IBM         50     106.28     -15.18
+        CAT        150      35.46      47.98
+        MSFT        200      20.89      30.34
+        GE         95      13.48      26.89
+        MSFT         50      20.89      44.21
+        IBM        100     106.28     -35.84
+        AA        100       9.22      22.98
+        IBM         50     106.28     -15.18
+        CAT        150      35.46      47.98
+        MSFT        200      20.89      30.34
+        GE         95      13.48      26.89
+        MSFT         50      20.89      44.21
+        IBM        100     106.28     -35.84
+```
+
+Take the above statements and add them to your `report.py` program. Have your program take the output of the `make_report()` function and print a nicely formatted table as shown.
+
+```
+def make_report(portfolio, prices):
+    '''
+    주식 레포트 만들기 - Excercise 2-9, Excercise 2-10
+    :param portfolio:
+    :param prices:
+    :return:
+    '''
+    stockList = []
+    for holder in portfolio:
+        result = tuple()
+        Change = float(holder['price']) - float(prices[holder['name']])
+        result = (holder['name'], holder['shares'], float(prices[holder['name']]), Change)
+        stockList.append(result)
+    print("StockList : ", stockList)
+    for name, shares, price, change in stockList:
+        print(f"{name: 10s} {shares: 10d} {price: 10.2f} {chage:10.2f}")
+
+    return stockList
 ```
 
 ### Exercise 2.11: Adding some headers
 
 ```python
+#Excercise 2-11
+headers = ('name', 'shares', 'price', 'change')
+print("%10s %10s %10s %10s" %headers)
+print(("-" * 10 + ' ') * len(headers))
 
+for name, shares, price, change in report:
+    print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
 ```
 
-
+*result is following.*
 
 ```python
-
+---------- ---------- ---------- ---------- 
+        AA        100       9.22      22.98
+       IBM         50     106.28     -15.18
+       CAT        150      35.46      47.98
+      MSFT        200      20.89      30.34
+        GE         95      13.48      26.89
+      MSFT         50      20.89      44.21
+       IBM        100     106.28     -35.84
 ```
 
-
+Suppose you had a tuple of header names like this.
 
 ```python
-
+headers = ('name', 'shares', 'price', 'change')
 ```
 
-```
+Add code to your program that takes the above the tuple of headers and creates a string where each header names is right-aligned in a 10-character wide field and each field is separated by a single space.
 
+```
+print(('*' * 10+ ' ') * len(headers))
 ```
 
 ### Exercise 2.12: Formatting Challenge
 
+How would you modify your code so that the price includes the currency symbol `$` and the output like this.
+
+```
+Name     Shares      Price     Change
+---------- ---------- ---------- ----------
+        AA        100      $9.22     -22.98
+       IBM         50    $106.28      15.18
+       CAT        150     $35.46     -47.98
+      MSFT        200     $20.89     -30.34
+        GE         95     $13.48     -26.89
+      MSFT         50     $20.89     -44.21
+       IBM        100    $106.28      35.84
 ```
 
+*Code here*
+
+```
+>>> dollarMark  = '$'
+>>>for name, shares, price, change in report:
+      print(f'{name:>10s} {shares:>10d} {dollarMark+str(price):>10s} {change:>10.2f}')
+```
+
+*results is following*
+
+```
+---------- ---------- ---------- ---------- 
+        AA        100      $9.22      22.98
+       IBM         50    $106.28     -15.18
+       CAT        150     $35.46      47.98
+      MSFT        200     $20.89      30.34
+        GE         95     $13.48      26.89
+      MSFT         50     $20.89      44.21
+       IBM        100    $106.28     -35.84
 ```
 
 [Contents](../Contents.md) \| [Previous (2.2 Containers)](02_Containers.md) \| [Next (2.4 Sequences)](04_Sequences.md)
