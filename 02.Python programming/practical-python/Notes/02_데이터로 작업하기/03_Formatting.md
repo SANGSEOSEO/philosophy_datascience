@@ -208,6 +208,46 @@ Add this function to your `report.py` file. Here's how it should work if you try
 >>>
 ```
 
+This is the script from `report.py`.
+
+```
+def make_report(portfolio, prices):
+    '''
+    주식 레포트 만들기 - Excercise 2-9
+    :param portfolio:
+    :param prices:
+    :return:
+    '''
+    stockList = []
+    for holder in portfolio:
+        result = tuple()
+        Change = float(holder['price']) - float(prices[holder['name']])
+        result = (holder['name'], holder['shares'], prices[holder['name']], Change)
+        stockList.append(result)
+    print("StockList : ", stockList)
+    return stockList
+
+# 수행해보자
+>>> portfolio = read_portfolio("portfolio.csv")
+>>> prices = read_prices("prices.csv")
+>>> report = make_report(portfolio, prices)
+
+>>> for r in report:
+       print(r)
+```
+
+*result is the following*
+
+```
+('AA', 100, '9.22', 22.980000000000004)
+('IBM', 50, '106.28', -15.180000000000007)
+('CAT', 150, '35.46', 47.98)
+('MSFT', 200, '20.89', 30.339999999999996)
+('GE', 95, '13.48', 26.889999999999997)
+('MSFT', 50, '20.89', 44.209999999999994)
+('IBM', 100, '106.28', -35.84)
+```
+
 ### Exercise 2.10: Printing a formatted table
 
 ```python
