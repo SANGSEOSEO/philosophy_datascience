@@ -25,7 +25,7 @@
 
 군집중심점(Centroid)기반 클러스터링
 
-![](D:\philosophy_datascience\01.ML\03.Scikit-Learn\Clustering\K평균군집_동작시각화.png)
+![K평균군집_동작시각화](https://user-images.githubusercontent.com/70785000/133865224-74a2f128-ce8b-42f9-9709-cfb5b9ebbd9b.png)
 
 #### 장점
 
