@@ -26,7 +26,7 @@
 군집중심점(Centroid)기반 클러스터링
 
 ```
-그림이 들어갈 곳
+![K평균군집_동작시각화](https://user-images.githubusercontent.com/70785000/133864925-971cffc7-4281-4120-b77d-167141d42eda.png)
 ```
 
 #### 장점
