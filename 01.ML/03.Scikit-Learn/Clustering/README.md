@@ -25,9 +25,7 @@
 
 군집중심점(Centroid)기반 클러스터링
 
-```
-![K평균군집_동작시각화](https://user-images.githubusercontent.com/70785000/133864925-971cffc7-4281-4120-b77d-167141d42eda.png)
-```
+![](D:\philosophy_datascience\01.ML\03.Scikit-Learn\Clustering\K평균군집_동작시각화.png)
 
 #### 장점
 
@@ -42,8 +40,6 @@
 * 이상치 데이터에 취약
 
 ### 사이킷런 KMean클래스
-
-[사이킷런 참조](https://datascienceschool.net/03%20machine%20learning/16.02%20K-%ED%8F%89%EA%B7%A0%20%EA%B5%B0%EC%A7%91%ED%99%94.html)
 
 사이킷런 패키지는 K-평균을 구현하기 위해 KMeans클래스를 제공합니다. KMeans클래스는 다음과 같은 초기화 파라미터를 가지고있습니다.
 
