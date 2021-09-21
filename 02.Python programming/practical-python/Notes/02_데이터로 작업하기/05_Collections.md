@@ -2,7 +2,7 @@
 
 # 2.5 collections module
 
-The `collections` module provides a number of usefule objects for data handling. 
+The `collections` module provides a number of useful objects for data handling. 
 
 This part briefly introduces some of these features.
 
