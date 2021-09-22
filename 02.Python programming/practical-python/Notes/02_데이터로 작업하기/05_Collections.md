@@ -2,7 +2,7 @@
 
 # 2.5 collections module
 
-The `collections` module provides a number of useful objects for data handling. 
+The `collections` module provides a number of usefule objects for data handling. 
 
 This part briefly introduces some of these features.
 
@@ -117,40 +117,83 @@ bash % python3 -i report.py
 
 ### Exercise 2.18: Tabulating with Counters
 
+Suppose you wanted to tabulate the total number of shares of each stocks. This is easy using `Counter` objects. 
 
-
-```python
-
-```
-
-
+Try it:
 
 ```python
+# Exercise 2.18 : Tabulating with Counters
+from Work import report
 
+portfolio = report.read_portfolio("portfolio.csv")
+from collections import Counter
+
+holdings = Counter()
+for s in portfolio:
+    holdings[s['name']] += s['shares']
+
+print(holdings)
+
+>>>
+Counter({'MSFT': 250, 'IBM': 150, 'CAT': 150, 'AA': 100, 'GE': 95})
 ```
 
+Carefully observe how the multiple entries for `MSFT` and `IBM`  in `portfolio` get combined into a single entry here.
 
+You can use a Counter just like a dictionary to retrieve individual values:
 
 ```python
+print(dir(holdings))
+>>>
+['__add__', '__and__', '__class__', '__contains__', '__delattr__', '__delitem__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__iadd__', '__iand__', '__init__', '__init_subclass__', '__ior__', '__isub__', '__iter__', '__le__', '__len__', '__lt__', '__missing__', '__module__', '__ne__', '__neg__', '__new__', '__or__', '__pos__', '__reduce__', '__reduce_ex__', '__repr__', '__reversed__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__sub__', '__subclasshook__', '__weakref__', '_keep_positive', 'clear', 'copy', 'elements', 'fromkeys', 'get', 'items', 'keys', 'most_common', 'pop', 'popitem', 'setdefault', 'subtract', 'update', 'values']
 
+>>> print(holdings["IBM"], holdings["MSFT"])
+>>>
+150 250
 ```
 
-
+If you want to rank the values, do this.
 
 ```python
-
+print(holdings.most_common(3))
+>>>
+[('MSFT', 250), ('IBM', 150), ('CAT', 150)]
 ```
 
-
+Let's grab another portfolio of stocks and make a new Counter.
 
 ```python
+portfolio2 = report.read_portfolio("portfolio2.csv")
+holdings2 = Counter()
 
+for s in portfolio2:
+    holdings2[s['name']] += s['shares']
+
+print(holdings2)
+>>>
+Counter({'HPQ': 250, 'GE': 125, 'AA': 50, 'MSFT': 25})
 ```
 
+Finally, let's combine all of the holdings doing one simple operations:
 
+```python
+>>> print(holdings)
+Counter({'MSFT': 250, 'IBM': 150, 'CAT': 150, 'AA': 100, 'GE': 95})
+
+>>> print(holdings2)
+Counter({'HPQ': 250, 'GE': 125, 'AA': 50, 'MSFT': 25})
+
+>>> combined = holdings + holdings2
+>>> print("combined : ", combined)
+combined : Counter({'MSFT': 275, 'HPQ': 250, 'GE': 220, 'AA': 150, 'IBM': 150, 'CAT': 150})
+```
+
+This is only a small taste of what counters provide. However, if you ever find yourself needing to tabulate values, you should consider using one.
 
 ### Commentary: collections module
 
+The `collections` module is one of the most useful library modules in all of Python. In fact, we could do an extended tutorial on just that.
 
+However, doing so now would also be a distraction. For now, put `collections` on your list of bedtime reading for later.
 
 [Contents](../Contents.md) \| [Previous (2.4 Sequences)](04_Sequences.md) \| [Next (2.6 List Comprehensions)](06_List_comprehension.md)
