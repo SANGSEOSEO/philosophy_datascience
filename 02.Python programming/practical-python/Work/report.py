@@ -1,5 +1,7 @@
 # report.py
 import csv
+
+TARGET_DIR = 'C:/PythonProject/PractialPython/Work/Data/'
 def read_porfolio(filename):
     '''
     Excercise 2-4
@@ -7,7 +9,7 @@ def read_porfolio(filename):
     :return: composite list with nested tuple
     '''
     portfolio = []
-    TARGET_FILE = "../Data/"+ filename
+    TARGET_FILE = TARGET_DIR + filename
     with open(TARGET_FILE, 'rt') as f:
         rows = csv.reader(f)
         headers = next(rows)
@@ -16,6 +18,7 @@ def read_porfolio(filename):
             holdings = (row[0], int(row[1]), float(row[2]))
             portfolio.append(holdings)
     return portfolio
+
 
 # process
 portfolio = read_porfolio("portfolio.csv")
@@ -27,7 +30,6 @@ for row in portfolio:
     total_cost += int(row[1]) * float(row[2])
 print(f"{total_cost:.2f}")
 
-
 # tuple unpacking
 total_cost = 0.0
 for _, share, price in portfolio:
@@ -35,14 +37,14 @@ for _, share, price in portfolio:
 print("After tuple unpacking Total Cost : {:.2f}".format(total_cost))
 
 
-def read_portfolio(filename:str):
+def read_portfolio(filename: str):
     '''
     Excercise 2-5
     :param fiename:
     :return List with dictionary collections.
     '''
     portfolio = []
-    TARGET_FILE = "../Data/"+filename
+    TARGET_FILE = TARGET_DIR + filename
 
     key_cols = []
     with open(TARGET_FILE, 'rt') as f:
@@ -53,13 +55,14 @@ def read_portfolio(filename:str):
         result_list = []
         for row in rows:
             result = dict()
-            #print(row, type(row))
+            # print(row, type(row))
 
             result[key_cols[0]] = row[0].replace('"', '')
             result[key_cols[1]] = int(row[1])
             result[key_cols[2]] = float(row[2])
             result_list.append(result)
     return result_list
+
 
 # 수행
 portfolio = read_portfolio("portfolio.csv")
@@ -73,12 +76,14 @@ for s in portfolio:
 print(f"{total:.2f}")
 
 from pprint import pprint
+
 pprint(portfolio)
 
-f = open("../Data/prices.csv", "rt")
+f = open(TARGET_DIR+"prices.csv", "rt")
 rows = csv.reader(f)
 for row in rows:
     print(row)
+
 
 def read_prices(filename: str):
     '''
@@ -86,8 +91,8 @@ def read_prices(filename: str):
     :param filename:
     :return:
     '''
-    TARGET_DIR = "../Data/"+filename
-    with open(TARGET_DIR, "rt") as f:
+    TARGET_FILE = TARGET_DIR + filename
+    with open(TARGET_FILE, "rt") as f:
         pricesList = csv.reader(f)
 
         prices = {}
@@ -97,6 +102,7 @@ def read_prices(filename: str):
             except IndexError:
                 pass
     return prices
+
 
 # 수행
 prices = read_prices("prices.csv")
@@ -109,6 +115,7 @@ for s in portfolio:
     total_value += int(s["shares"]) * float(prices[s["name"]])
 
 print(f" total value : {total_value: .2f}")
+
 
 def make_report(portfolio, prices):
     '''
@@ -126,6 +133,7 @@ def make_report(portfolio, prices):
 
     return stockList
 
+
 # 수행해보자
 portfolio = read_portfolio("portfolio.csv")
 prices = read_prices("prices.csv")
@@ -136,17 +144,16 @@ for r in report:
 
 # Excercise 2-10
 for r in report:
-    print(f"%10s %10d %10.2f %10.2f" %r)
+    print(f"%10s %10d %10.2f %10.2f" % r)
 
 for name, shares, price, change in report:
     print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
 
-#Excercise 2-11
+# Excercise 2-11
 headers = ('name', 'shares', 'price', 'change')
-print("%10s %10s %10s %10s" %headers)
+print("%10s %10s %10s %10s" % headers)
 print(("-" * 10 + ' ') * len(headers))
 
-dollarMark  = '$'
+dollarMark = '$'
 for name, shares, price, change in report:
-    print(f'{name:>10s} {shares:>10d} {dollarMark+str(price):>10s} {change:>10.2f}')
-
+    print(f'{name:>10s} {shares:>10d} {dollarMark + str(price):>10s} {change:>10.2f}')
