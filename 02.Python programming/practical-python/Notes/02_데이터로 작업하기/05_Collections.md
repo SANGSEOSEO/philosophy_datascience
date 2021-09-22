@@ -2,7 +2,7 @@
 
 # 2.5 collections module
 
-The `collections` module provides a number of usefule objects for data handling. 
+The `collections` module provides a number of useful objects for data handling. 
 
 This part briefly introduces some of these features.
 
@@ -107,7 +107,7 @@ with open(filename) as f:
 
 ## Exercises
 
-The `collections` module might be one of the most usefule library modules for dealing with special purpose kinds of data handling probleams such as tabulating and indexing.
+The `collections` module might be one of the most useful library modules for dealing with special purpose kinds of data handling problems such as tabulating and indexing.
 
 In this exercise, we'll look at a few simple examples. Start by running your `report.py` program so that you have the portfolio of stocks loaded in the interactive mode.
 
