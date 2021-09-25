@@ -14,12 +14,12 @@
 * Image검출, 세분화, 트랙킹
 * 이상 검출(Abnormaly detection)
 
-어떻게 유사성을 적용할 것인가?
+어떤 요소들을 유사성으로 정의할 것인가가 중요판단 요소로 작용함.
 
 ### 군집화 알고리즘
 
 * K-Means - Centroid기반의 알고리즘 가장 많이 활용
-* Mean Shift - Centroid기반
+* Mean Shift - Centroid기반인데 KMeans와는 조금 다르게 중심정이 이동하는 것이 차이가 있음
 * Gaussian Mixture Model - 데이터가 여러 개의 정규분포로 되어있고 가정하고, 이 데이터세트가 어느 정규분포에 속하는지에 따라 클러스터링 수행
 * DBSCAN - 데이터의 밀도에 따라서 군집화를 수행하는 알고리즘
 
