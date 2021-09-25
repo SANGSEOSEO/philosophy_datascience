@@ -5,6 +5,7 @@
 데이터 포인트들을 별개의 군집으로 그룹화 하는 것을 의미합니다.
 
 유사성이 높은 데이터들을 동일한 그룹으로 분류하고 서로 다른 군집들이 상이성을 가지도록 그룹화합니다.
+
 <img width="478" alt="cluster_img" src="https://user-images.githubusercontent.com/70785000/134755470-357e881d-5f5f-4d56-8f5e-baa6e9de1b58.png">
 
 ### 군집화 활용 분야
