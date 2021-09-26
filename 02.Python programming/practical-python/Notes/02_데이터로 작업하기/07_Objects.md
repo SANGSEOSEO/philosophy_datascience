@@ -1,5 +1,4 @@
-[['name', 'shares', 'price']
-['AA', '100', '32.20'] <class 'list'>Contents](../Contents.md) \| [Previous (2.6 List Comprehensions)](06_List_comprehension.md) \| [Next (3 Program Organization)](../03_Program_organization/00_Overview.md)
+[Previous (2.6 List Comprehensions)](06_List_comprehension.md) \| [Next (3 Program Organization)](../03_Program_organization/00_Overview.md)
 
 # 2.7 Objects
 
