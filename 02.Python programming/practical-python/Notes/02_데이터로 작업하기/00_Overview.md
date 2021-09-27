@@ -1,29 +1,16 @@
-[Contents](../Contents.md) \| [Prev (2 Working With Data)](../02_Working_with_data/00_Overview.md) \| [Next (4 Classes and Objects)](../04_Classes_objects/00_Overview.md)
+[Contents](../Contents.md) \| [Prev (1 Introduction to Python)](../01_Introduction/00_Overview.md) \| [Next (3 Program Organization)](../03_Program_organization/00_Overview.md)
 
-# 3. Program Organization
+# 2. Working With Data
 
-So far, we've learned some Python basics and have written some short scripts. However, as you start to write larger programs, you'll want to get organized.
+To write useful programs, you need to be able to work with data. This section introduces Pythons' core data structures of tuples, lists, sets, and dictionaries and discuss common data handling idoms. The last part of this section dives a little deeper into Python's underlying object model.
 
-This section dives into greater details on writing functions, handling errors, and introduces modules. 
+* [2.1 Datatypes and Data Structures](01_Datatypes.md)
+* [2.2 Containers](02_Containers.md)
+* [2.3 Formatted Output](03_Formatting.md)
+* [2.4 Sequences](04_Sequences.md)
+* [2.5 Collections module](05_Collections.md)
+* [2.6 List comprehensions](06_List_comprehension.md)
+* [2.7 Object model](07_Objects.md)
 
-By the end you should be able to write programs that are subdivided into functions across multiple files.
+[Contents](../Contents.md) \| [Prev (1 Introduction to Python)](../01_Introduction/00_Overview.md) \| [Next (3 Program Organization)](../03_Program_organization/00_Overview.md)
 
-We'll also give some useful code templates for writing more useful scripts.
-
-
-
-* [3.1 Fuctions and Script Writing](01_Script.md)
-
-* [3.2 More details on Functions](02_More_functions.md)
-
-* [3.3 Exception Handling](03_Error_checking.md)
-
-* [3.4 Modules](04_Modules.md)
-
-* [3.5 Main module](05_Main_module.md)
-
-* [3.6 Design Discussion about Embracing Flexibilty](06_Design_discussion.md)
-
-  ​
-
-[Contents](../Contents.md) \| [Prev (2 Working With Data)](../02_Working_with_data/00_Overview.md) \| [Next (4 Classes and Objects)](../04_Classes_objects/00_Overview.md)
