@@ -249,10 +249,6 @@ In this exercise, we're going to take this program and organize it a little more
 
 ### Exercise 3.1: Structuring a program as a collection of functions
 
-Modify your `report.py` program so that all major operations,
-including calculations and output, are carried out by a collection of
-functions. Specifically:
-
 Modify your `report.py` program so that all major operations, including calculations and output, are carried out by a collection of functions. Specifically:
 
 * Create a function `print_report(report)` that prints out the report.
