@@ -133,6 +133,20 @@ def make_report(portfolio, prices):
 
     return stockList
 
+def print_report(report):
+    """
+    Print a nicely formatted table
+    :param report:
+    :return:
+    """
+    headers = ('name', 'shares', 'price', 'change')
+    print("%10s %10s %10s %10s" %headers)
+    print(("-" * 10 + ' ') * len(headers))
+
+    for name, share, price, change in report:
+        print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
+
+
 
 # 수행해보자
 portfolio = read_portfolio("portfolio.csv")
