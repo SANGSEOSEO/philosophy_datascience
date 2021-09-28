@@ -247,12 +247,33 @@ for row in report:
 
 In this exercise, we're going to take this program and organize it a little more strongly around the use of functions.
 
+
+
 ### Exercise 3.1: Structuring a program as a collection of functions
 
-Modify your `report.py` program so that all major operations, including calculations and output, are carried out by a collection of functions. Specifically:
+Modify your `report.py` program so that all major operations, including calculations and output, are carried out by a collection of functions, Specifically:
 
 * Create a function `print_report(report)` that prints out the report.
 * Change the last part of the program so that it is nothing more than a series of function calls and no other computation.
+
+I've added this function in the end part.
+
+```python
+def print_report(report):
+    """
+    Print a nicely formatted table
+    :param  - report - list type
+    :return: None
+    """
+    headers = ('name', 'shares', 'price', 'change')
+    print("%10s %10s %10s %10s" %headers)
+    print(("-" * 10 + ' ') * len(headers))
+
+    for name, share, price, change in report:
+        print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
+```
+
+
 
 ### Exercise 3.2: Creating a top-level function for program execution
 
