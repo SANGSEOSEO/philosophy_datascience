@@ -37,4 +37,4 @@ You can check this out [Alexis Cook’s Titanic Tutorial](https://www.kaggle.com
 * [titanic-data-analysis-using-ensemble-modeling](https://github.com/SANGSEOSEO/philosophy_datascience/blob/master/08.Kaggle_Dacon/titanic/titanic-data-analysis-using-ensemble-modeling.ipynb)
 * [intro-to-ensemble-stacking-in-classification](https://github.com/SANGSEOSEO/philosophy_datascience/blob/master/08.Kaggle_Dacon/titanic/intro-to-ensemble-stacking-in-classification.ipynb)
 * [best-working-classifier-using-titanic-dataset](https://github.com/SANGSEOSEO/philosophy_datascience/blob/master/08.Kaggle_Dacon/titanic/best-working-classifier-using-titanic-dataset.ipynb)
-
+* [titanic for Python](https://github.com/SANGSEOSEO/philosophy_datascience/blob/master/08.Kaggle_Dacon/titanic/titanic-for-python.ipynb)
