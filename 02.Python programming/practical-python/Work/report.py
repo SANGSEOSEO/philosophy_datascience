@@ -146,6 +146,16 @@ def print_report(report):
     for name, share, price, change in report:
         print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
 
+def portfolio_report(portfoiloFileName: str, pricesFileName: str):
+    """
+    주식의 Portfolio파일명 주식 가격 파일명을 인자로 받아
+    주식 레포트 리턴
+    :return:
+    """
+    portfolio = read_portfolio(portfoiloFileName)
+    prices = read_prices(pricesFileName)
+    report = make_report(portfolio, prices)
+    print_report(report)
 
 
 # 수행해보자
