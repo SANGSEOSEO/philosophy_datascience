@@ -311,7 +311,110 @@ This is good except that you can't do any kind of useful calculation with the da
 In many caes, you're only interested in selected columns from a CSV file, not all of the data, Modify the `parse_csv()` function so that is optionally allows user-specified columns to be picked out as follows.
 
 ```python
-
+>>> # read csv data
+>>> from Work import fileparse
+>>> portfolio = fileparse.parse_csv("portfolio.csv")
+>>> print(portfolio)
+[{'name': 'AA', 'shares': '100', 'price': '32.20'}, {'name': 'IBM', 'shares': '50', 'price': '91.10'}, {'name': 'CAT', 'shares': '150', 'price': '83.44'}, {'name': 'MSFT', 'shares': '200', 'price': '51.23'}, {'name': 'GE', 'shares': '95', 'price': '40.37'}, {'name': 'MSFT', 'shares': '50', 'price': '65.10'}, {'name': 'IBM', 'shares': '100', 'price': '70.44'}]
 ```
+
+```python
+# Read Evaluate Print Loop for Exercise 3.4
+import csv
+select = ["name", "price"]
+with open("Work/Data/portfolio.csv", "rt") as f:
+    rows = csv.reader(f)
+    headers = next(rows)
+    print(headers, type(headers))
+
+    if select:
+        name_idx = [headers.index(col_name) for  col_name in select]
+        headers = select
+    else:
+        name_idx = []
+
+    records = []
+    for row in rows:
+        if not row:
+            continue
+        if name_idx:
+            row = [row[idx] for idx in name_idx]
+        record = dict(zip(headers, row))
+        records.append(record)
+
+>>> print("컬럼뽑아내기 :", records)
+[{'name': 'AA', 'shares': '100'}, {'name': 'IBM', 'shares': '50'}, {'name': 'CAT', 'shares': '150'}, {'name': 'MSFT', 'shares': '200'}, {'name': 'GE', 'shares': '95'}, {'name': 'MSFT', 'shares': '50'}, {'name': 'IBM', 'shares': '100'}]
+```
+
+```python
+# fileparse.py
+def parse_csv(filename, select=None):
+    """
+    컬럼을 리스트 타입 인자로 받아 원하는 컬럼만 뽑아서 리턴
+    :param filename:
+    :param select: list
+    :return: dictionary를 내포한 리스트
+    """
+    import csv
+
+    with open("Work/Data/"+filename, 'rt') as f:
+        rows = csv.reader(f)
+        # read the file header
+        headers = next(rows)
+
+        if select:
+            col_idx = [headers.index(name) for name in select]
+            headers = select
+        else:
+            col_idx = []
+
+        records = []
+
+        for row in rows:
+            if not row:
+                continue
+            if col_idx:
+                row = [row[idx] for idx in col_idx]
+            record = dict(zip(headers, row))
+            records.append((record))
+    return records
+```
+
+*Result*
+
+```python
+# Exercise 3-4
+>>>from Work import fileparse
+>>>shares_held = fileparse.parse_csv("portfolio.csv", ['name', 'shares'])
+>>>print(shares_held)
+[{'name': 'AA', 'shares': '100'}, {'name': 'IBM', 'shares': '50'}, {'name': 'CAT', 'shares': '150'}, {'name': 'MSFT', 'shares': '200'}, {'name': 'GE', 'shares': '95'}, {'name': 'MSFT', 'shares': '50'}, {'name': 'IBM', 'shares': '100'}]
+```
+
+There are a number of tricky bits to this part. Probably the most important one is the mapping of the column selections to row indices.
+
+For example, suppose the input file had the following headers.
+
+```python
+>>> headers = ["name", "date", "time", "shares", "price"]
+>>>
+```
+
+Now, suppose the selected columns were as follows:
+
+```python
+>>> select = ["name", "shares"]
+```
+
+To perform the proper selection, you have to map the selected column to column indices in the file. That's what this step is doing:
+
+```python
+>>> indices = [headers.index(column) for column in select]
+>>> indices
+[0, 3]
+```
+
+#### Exercise 3.5: Performing Type Conversion
+
+
 
 [Contents](../Contents.md) \| [Previous (3.1 Scripting)](01_Script.md) \| [Next (3.3 Error Checking)](03_Error_checking.md)
