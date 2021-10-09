@@ -415,6 +415,249 @@ To perform the proper selection, you have to map the selected column to column i
 
 #### Exercise 3.5: Performing Type Conversion
 
+Modify the `parse_csv()` function so that it optionally allows type-conversion to be applied to the returned data. For example:
 
+```
+>>> portfolio = parse_csv('Data/portfolio.csv', types=[str, int, float])
+>>> portfolio
+[{'price': 32.2, 'name': 'AA', 'shares': 100}, {'price': 91.1, 'name': 'IBM', 'shares': 50}, {'price': 83.44, 'name': 'CAT', 'shares': 150}, {'price': 51.23, 'name': 'MSFT', 'shares': 200}, {'price': 40.37, 'name': 'GE', 'shares': 95}, {'price': 65.1, 'name': 'MSFT', 'shares': 50}, {'price': 70.44, 'name': 'IBM', 'shares': 100}]
+
+>>> shares_held = parse_csv('Data/portfolio.csv', select=['name', 'shares'], types=[str, int])
+>>> shares_held
+[{'name': 'AA', 'shares': 100}, {'name': 'IBM', 'shares': 50}, {'name': 'CAT', 'shares': 150}, {'name': 'MSFT', 'shares': 200}, {'name': 'GE', 'shares': 95}, {'name': 'MSFT', 'shares': 50}, {'name': 'IBM', 'shares': 100}]
+>>>
+```
+
+You already explored this in Exercise 2-24. You will need to insert the following fragment of code into your solution.
+
+> ```
+> ...
+> if types:
+>     row = [func(val) for func, val in zip(types, row) ]
+> ...
+> ```
+
+```python
+# Read Evaluate Print Loop for type converion Exercise 3.5
+import csv
+select = ["name", "price"]
+types=[str, float]
+with open("Work/Data/portfolio.csv", "rt") as f:
+    rows = csv.reader(f)
+    headers = next(rows)
+    print(headers, type(headers))
+
+    if select:
+        name_idx = [headers.index(col_name) for  col_name in select]
+        headers = select
+    else:
+        name_idx = []
+
+    records = []
+    for row in rows:
+        if not row:
+            continue
+        if name_idx:
+            row = [row[idx] for idx in name_idx]
+
+        if types: # 컨버전하고자 하는 데이터타입이 있으면 .
+            row = [func(val) for func, val in zip(types, row)]
+        record = dict(zip(headers, row))
+        records.append(record)
+
+print("Type conversion :", records)
+```
+
+*Result*
+
+```python
+Type conversion : [{'name': 'AA', 'price': 32.2}, {'name': 'IBM', 'price': 91.1}, {'name': 'CAT', 'price': 83.44}, {'name': 'MSFT', 'price': 51.23}, {'name': 'GE', 'price': 40.37}, {'name': 'MSFT', 'price': 65.1}, {'name': 'IBM', 'price': 70.44}]
+```
+
+```python
+# fileparse.py
+def parse_csv(filename, select=None, types=None):
+    """
+    컬럼을 리스트 타입 인자로 받아 원하는 컬럼만 뽑아서 리턴
+    :param filename:
+    :param select: list
+    :param type: list
+    :return: dictionary를 내포한 리스트
+    """
+    import csv
+
+    with open("Work/Data/"+filename, 'rt') as f:
+        rows = csv.reader(f)
+        # read the file header
+        headers = next(rows)
+
+        if select:
+            col_idx = [headers.index(name) for name in select]
+            headers = select
+        else:
+            col_idx = []
+
+        records = []
+
+        for row in rows:
+            if not row:
+                continue
+            if col_idx:
+                row = [row[idx] for idx in col_idx]
+
+            if types:  # Type conversion
+                row = [func(val) for func, val in zip(types, row)]
+
+            record = dict(zip(headers, row))
+            records.append((record))
+    return records
+```
+
+*Call*
+
+```python
+# Excercise 3-5
+>>> from Work import fileparse
+>>> portfolio = fileparse.parse_csv("portfolio.csv", types=[str, int, float])
+>>> print(portfolio)
+[{'name': 'AA', 'shares': 100, 'price': 32.2}, {'name': 'IBM', 'shares': 50, 'price': 91.1}, {'name': 'CAT', 'shares': 150, 'price': 83.44}, {'name': 'MSFT', 'shares': 200, 'price': 51.23}, {'name': 'GE', 'shares': 95, 'price': 40.37}, {'name': 'MSFT', 'shares': 50, 'price': 65.1}, {'name': 'IBM', 'shares': 100, 'price': 70.44}]
+```
+
+```python
+>>> shares_held = fileparse.parse_csv("portfolio.csv", select=['name', 'shares'], types=[str, int])
+>>> print(shares_held)
+[{'name': 'AA', 'shares': 100}, {'name': 'IBM', 'shares': 50}, {'name': 'CAT', 'shares': 150}, {'name': 'MSFT', 'shares': 200}, {'name': 'GE', 'shares': 95}, {'name': 'MSFT', 'shares': 50}, {'name': 'IBM', 'shares': 100}]
+```
+
+Exercise 3.6: Working without Headers
+
+Some CSV files don't include any header information.For example, the file `prices.csv` looks like this:
+
+> ```
+> "AA",9.22
+> "AXP",24.85
+> "BA",44.85
+> "BAC",11.27
+> ...
+> ```
+
+Modify the function `parse_csv()` function so that it works with such files by creating a list of tuples, instead. For example:
+
+```python
+>>> prices = parse_csv('Data/prices.csv', types=[str,float], has_headers=False)
+>>> prices
+[('AA', 9.22), ('AXP', 24.85), ('BA', 44.85), ('BAC', 11.27), ('C', 3.72), ('CAT', 35.46), ('CVX', 66.67), ('DD', 28.47), ('DIS', 24.22), ('GE', 13.48), ('GM', 0.75), ('HD', 23.16), ('HPQ', 34.35), ('IBM', 106.28), ('INTC', 15.72), ('JNJ', 55.16), ('JPM', 36.9), ('KFT', 26.11), ('KO', 49.16), ('MCD', 58.99), ('MMM', 57.1), ('MRK', 27.58), ('MSFT', 20.89), ('PFE', 15.19), ('PG', 51.94), ('T', 24.79), ('UTX', 52.61), ('VZ', 29.26), ('WMT', 49.74), ('XOM', 69.35)]
+>>>
+```
+
+To make this change, You'll need to modify the code so that the first line of data isn't interpreted  as a header line. Also, you will need to make sure you don't create dictionaries as there are no longer any column names to use for keys.
+
+```python
+# Read Evaluate Print Loop for Exercise 3-6
+>>> import csv
+>>> types=[str,float]
+>>> has_headers = False
+>>> with open("Work/Data/prices.csv", 'rt') as f:
+        rows = csv.reader(f)
+        headers = next(rows)
+
+    	records = []
+    	for row in rows:
+        	print(row)
+        	if not row:
+            	continue
+        	if not has_headers:
+            	row = (row[0], row[1])
+        	if types:
+            	row = [func(val) for func, val in zip(types, row)]
+        	records.append(tuple(row))
+>>> print("Exercise 3-6", records)
+Exercise 3-6 [('AA', 9.22), ('AXP', 24.85), ('BA', 44.85), ('BAC', 11.27), ('C', 3.72), ('CAT', 35.46), ('CVX', 66.67), ('DD', 28.47), ('DIS', 24.22), ('GE', 13.48), ('GM', 0.75), ('HD', 23.16), ('HPQ', 34.35), ('IBM', 106.28), ('INTC', 15.72), ('JNJ', 55.16), ('JPM', 36.9), ('KFT', 26.11), ('KO', 49.16), ('MCD', 58.99), ('MMM', 57.1), ('MRK', 27.58), ('MSFT', 20.89), ('PFE', 15.19), ('PG', 51.94), ('T', 24.79), ('UTX', 52.61), ('VZ', 29.26), ('WMT', 49.74), ('XOM', 69.35)]
+```
+
+```python
+>>> from Work import fileparse
+>>> prices = fileparse.parse_csv('prices.csv', types=[str,float], has_headers=False)
+>>> print(prices)
+[('AA', 9.22), ('AXP', 24.85), ('BA', 44.85), ('BAC', 11.27), ('C', 3.72), ('CAT', 35.46), ('CVX', 66.67), ('DD', 28.47), ('DIS', 24.22), ('GE', 13.48), ('GM', 0.75), ('HD', 23.16), ('HPQ', 34.35), ('IBM', 106.28), ('INTC', 15.72), ('JNJ', 55.16), ('JPM', 36.9), ('KFT', 26.11), ('KO', 49.16), ('MCD', 58.99), ('MMM', 57.1), ('MRK', 27.58), ('MSFT', 20.89), ('PFE', 15.19), ('PG', 51.94), ('T', 24.79), ('UTX', 52.61), ('VZ', 29.26), ('WMT', 49.74), ('XOM', 69.35)]
+
+```
+
+*source*
+
+```python
+#fileparse.py
+def parse_csv(filename, select=None, types=None, has_headers=False):
+    """
+    컬럼을 리스트 타입 인자로 받아 원하는 컬럼만 뽑아서 리턴
+    :param filename:
+    :param select: list
+    :param type: list
+    :param has_headers : 헤더 존재 여부
+    :return: dictionary를 내포한 리스트
+    """
+    import csv
+
+    with open("Work/Data/"+filename, 'rt') as f:
+        rows = csv.reader(f)
+        # read the file header
+        headers = next(rows)
+
+        if select:
+            col_idx = [headers.index(name) for name in select]
+            headers = select
+        else:
+            col_idx = []
+
+        records = []
+
+        for row in rows:
+            if not row:
+                continue
+            if col_idx:
+                row = [row[idx] for idx in col_idx]
+
+            if types:
+                row = [func(val) for func, val in zip(types, row)]
+
+            if not has_headers:  #헤더가 없으면 튜플로 변환
+                records.append(tuple(row))
+            else:
+                record = dict(zip(headers, row))
+                records.append(record)
+    return records
+```
+
+#### Exercise 3.7: Picking a different column delimitier
+
+Although CSV files are pretty common, It's also possible that you could encounter a file that uses a different column separator such as a tab or space. For example, that file `Data/potfolio.dat` looks like this:
+
+```python
+name shares price
+"AA" 100 32.20
+"IBM" 50 91.10
+"CAT" 150 83.44
+"MSFT" 200 51.23
+"GE" 95 40.37
+"MSFT" 50 65.10
+"IBM" 100 70.44
+```
+
+The `csv.reader()` function allows a diffent column delimiter to be given as follows:
+
+```python
+rows = csv.reader(f, delimiter=' ')
+```
+
+Modify your `parse_csv()` function so that it also allows the delimiter to be changes.
+
+For example:
+
+```python
+>>> portfolio = parse_csv('Data/portfolio.data', types=[str, int, float], delimiter=' ')
+>>> print(portfolio)
+[{'price': '32.20', 'name': 'AA', 'shares': '100'}, {'price': '91.10', 'name': 'IBM', 'shares': '50'}, {'price': '83.44', 'name': 'CAT', 'shares': '150'}, {'price': '51.23', 'name': 'MSFT', 'shares': '200'}, {'price': '40.37', 'name': 'GE', 'shares': '95'}, {'price': '65.10', 'name': 'MSFT', 'shares': '50'}, {'price': '70.44', 'name': 'IBM', 'shares': '100'}]
+>>>
+```
 
 [Contents](../Contents.md) \| [Previous (3.1 Scripting)](01_Script.md) \| [Next (3.3 Error Checking)](03_Error_checking.md)
