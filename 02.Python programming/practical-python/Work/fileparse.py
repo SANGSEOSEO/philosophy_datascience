@@ -2,11 +2,13 @@
 #
 # Exercise 3.3
 # Exercise 3.4
-def parse_csv(filename, select=None):
+def parse_csv(filename, select=None, types=None, has_headers=False):
     """
     컬럼을 리스트 타입 인자로 받아 원하는 컬럼만 뽑아서 리턴
     :param filename:
     :param select: list
+    :param type: list
+    :param has_headers : 헤더 존재 여부
     :return: dictionary를 내포한 리스트
     """
     import csv
@@ -29,8 +31,15 @@ def parse_csv(filename, select=None):
                 continue
             if col_idx:
                 row = [row[idx] for idx in col_idx]
-            record = dict(zip(headers, row))
-            records.append((record))
+
+            if types:
+                row = [func(val) for func, val in zip(types, row)]
+
+            if not has_headers:  #헤더가 없으면 튜플로 변환
+                records.append(tuple(row))
+            else:
+                record = dict(zip(headers, row))
+                records.append(record)
     return records
 
 
