@@ -660,4 +660,88 @@ For example:
 >>>
 ```
 
+```python
+# Read Evaluate Print Loop for Exercise 3-7
+>>> import csv
+>>> types=[str, int, float]
+>>> with open("Work/Data/portfolio.dat", "rt") as f:
+    	rows = csv.reader(f, delimiter=' ')
+    	headers = next(rows)
+    	print(headers)
+
+    	# 반환할 변수 선언
+    	records = []
+    	for row in rows:
+        	if not row:
+            	continue
+
+        	if types:
+            	row = [func(val) for func, val in zip(types, row)]
+            	#print(row)
+            	row = dict(zip(headers, row))
+            	records.append(row)
+# 최종 담겨있는 데이터
+>>> print(records)
+[{'name': 'AA', 'shares': 100, 'price': 32.2}, {'name': 'IBM', 'shares': 50, 'price': 91.1}, {'name': 'CAT', 'shares': 150, 'price': 83.44}, {'name': 'MSFT', 'shares': 200, 'price': 51.23}, {'name': 'GE', 'shares': 95, 'price': 40.37}, {'name': 'MSFT', 'shares': 50, 'price': 65.1}, {'name': 'IBM', 'shares': 100, 'price': 70.44}]
+```
+
+```python
+#수행
+# Exercise 3-7
+>>>from Work import fileparse
+>>> portfolio = fileparse.parse_csv("portfolio.dat", types=[str, int, float], delimiter=' ')
+>>> print(portfolio)
+[{'name': 'AA', 'shares': 100, 'price': 32.2}, {'name': 'IBM', 'shares': 50, 'price': 91.1}, {'name': 'CAT', 'shares': 150, 'price': 83.44}, {'name': 'MSFT', 'shares': 200, 'price': 51.23}, {'name': 'GE', 'shares': 95, 'price': 40.37}, {'name': 'MSFT', 'shares': 50, 'price': 65.1}, {'name': 'IBM', 'shares': 100, 'price': 70.44}]
+```
+
+```python
+#fileparse.py
+def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','):
+    """
+    컬럼을 리스트 타입 인자로 받아 원하는 컬럼만 뽑아서 리턴
+    :param filename:
+    :param select: list
+    :param type: list
+    :param has_headers : 헤더 존재 여부
+    :param delimiter : 구분자
+    :return: dictionary를 내포한 리스트
+    """
+    import csv
+
+    with open("Work/Data/"+filename, 'rt') as f:
+        rows = csv.reader(f, delimiter=delimiter)
+        # read the file header
+        headers = next(rows) if has_headers else []
+
+        if select:
+            col_idx = [headers.index(name) for name in select]
+            headers = select
+        else:
+            col_idx = []
+
+        records = []
+
+        for row in rows:
+            if not row:
+                continue
+            if col_idx:
+                row = [row[idx] for idx in col_idx]
+
+            if types:
+                row = [func(val) for func, val in zip(types, row)]
+
+            if not has_headers:  #헤더가 없으면 튜플로 변환
+                records.append(tuple(row))
+            else:
+                record = dict(zip(headers, row))
+                records.append(record)
+    return records
+```
+
+### Commentary	
+
+If you've made it this far, you've created library function that's genuinely useful. You can use it to parse arbitrary CSV files, select out columns of interests, perform type conversions, without having to worry too much about the inner workings of files or the `csv` module.
+
+
+
 [Contents](../Contents.md) \| [Previous (3.1 Scripting)](01_Script.md) \| [Next (3.3 Error Checking)](03_Error_checking.md)
