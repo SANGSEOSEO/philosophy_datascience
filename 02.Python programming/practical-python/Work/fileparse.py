@@ -2,21 +2,23 @@
 #
 # Exercise 3.3
 # Exercise 3.4
-def parse_csv(filename, select=None, types=None, has_headers=False):
+# Exercise 3.7
+def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','):
     """
     컬럼을 리스트 타입 인자로 받아 원하는 컬럼만 뽑아서 리턴
     :param filename:
     :param select: list
     :param type: list
     :param has_headers : 헤더 존재 여부
+    :param delimiter : 구분자
     :return: dictionary를 내포한 리스트
     """
     import csv
 
     with open("Work/Data/"+filename, 'rt') as f:
-        rows = csv.reader(f)
+        rows = csv.reader(f, delimiter=delimiter)
         # read the file header
-        headers = next(rows)
+        headers = next(rows) if has_headers else []
 
         if select:
             col_idx = [headers.index(name) for name in select]
