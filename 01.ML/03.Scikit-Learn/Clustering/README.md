@@ -12,14 +12,14 @@
 
 * 고객, 마켓, 브랜드 및 사회 경제 활동 등 전분야에 걸쳐서 세분화(Segmentation)
 * Image검출, 세분화, 트랙킹
-* 이상 검출(Abnormaly detection)
+* 이상 검출(Abnormaly detection) - outlier검출
 
 어떤 요소들을 유사성으로 정의할 것인가가 중요판단 요소로 작용함.
 
 ### 군집화 알고리즘
 
 * K-Means - Centroid기반의 알고리즘 가장 많이 활용
-* Mean Shift - Centroid기반인데 KMeans와는 조금 다르게 중심정이 이동하는 것이 차이가 있음
+* Mean Shift - Centroid기반인데 KMeans와는 조금 다르게 중심점이 이동하는 것이 차이가 있음
 * Gaussian Mixture Model - 데이터가 여러 개의 정규분포로 되어있고 가정하고, 이 데이터세트가 어느 정규분포에 속하는지에 따라 클러스터링 수행
 * DBSCAN - 데이터의 밀도에 따라서 군집화를 수행하는 알고리즘
 
@@ -45,15 +45,15 @@
 
 ### 사이킷런 KMean클래스
 
-사이킷런 패키지는 K-평균을 구현하기 위해 KMeans클래스를 제공합니다. KMeans클래스는 다음과 같은 초기화 파라미터를 가지고있습니다.
+사이킷런 패키지는 K-평균을 구현하기 위해 **KMeans클래스**를 제공합니다. KMeans클래스는 다음과 같은 초기화 파라미터를 가지고있습니다.
 
 > class sklearn.cluster.KMeans(n_clusters=8, init='k-means++', n_init=10, max_iter=300, tol=0.0001, precompute_distances='auto', verbose=0, random_state=None, copy_x=True, n_jobs=1, algorithm='auto')
 
-`n_clusters` - 중심점갯수를 설정, `init`:KMeans초기화 알고리즘, `max_iter :` 최대반복횟수
+`n_clusters` - 중심점 갯수- 클러스터 갯수- 를 설정, `init`:KMeans초기화 알고리즘, `max_iter :` 최대반복횟수
 
 #### 주요 파라미터
 
-* KMeans초기화 파라미터 중 가장 중요한 파라미터는 `n_cluster`이며, 이는 군집화 개수 , 즉 준집 중심점 갯수를 의미
+* KMeans초기화 파라미터 중 가장 중요한 파라미터는 `n_cluster`이며, 이는 군집화 개수 , 즉 군집 중심점 갯수를 의미
 * `init`는 초기에 군집 중심점의 좌표를 설정할 방식을 말하며 보통은 임의로 중심을 설정하지 않고 일반적으로 `k-means++`방식으로 최초 설정
 * `max_iter`는 최대 반복 횟수이며, 이 횟수 이전에 모든 데이터의 중심점이 이동이 없으면 종료합니다.
 
