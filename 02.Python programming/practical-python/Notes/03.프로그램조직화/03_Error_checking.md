@@ -502,7 +502,7 @@ Row 6 : invalid literal for int() with base 10: ''
 
 ```
 
-If you want to diplay `exception message` , pass `silence_errors` argument  with `True`.
+If you want to display `exception message` , pass `silence_errors` argument  with `True`.
 
 ```python
 >>> portfolio2 = fp.parse_csv("missing.csv", types=[str, int, float], silence_errors=True)
