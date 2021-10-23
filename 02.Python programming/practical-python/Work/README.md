@@ -6,3 +6,5 @@ their corresponding exercise number.
 
 Many of the programs you write reference files found in the `Data/` directory.
 That is also located here.
+
+All the code will be executed by myself and will be enhanced as soon as I could.
