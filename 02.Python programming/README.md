@@ -21,7 +21,7 @@
 
 #### Fluent Python
 
-* TO DO List
+* 1.Python Data Model
 
 #### Python Library
 
