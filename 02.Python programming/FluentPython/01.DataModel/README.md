@@ -107,5 +107,67 @@ Check this out. `deck` object supports `slicing` cause `__getitem__()` delegate 
 ```python
 >>> deck[:3]
 [Card(rank='2', suit='spade'), Card(rank='3', suit='spade'), Card(rank='4', suit='spade')]
+>>> deck[:13]
+deck[:13]
+[Card(rank='2', suit='spade'), Card(rank='3', suit='spade'), Card(rank='4', suit='spade'), Card(rank='5', suit='spade'), Card(rank='6', suit='spade'), Card(rank='7', suit='spade'), Card(rank='8', suit='spade'), Card(rank='9', suit='spade'), Card(rank='10', suit='spade'), Card(rank='J', suit='spade'), Card(rank='Q', suit='spade'), Card(rank='K', suit='spade'), Card(rank='A', suit='spade')]
+
 ```
 
+`deck` is also iterable just by implementing `__getitem__`.
+
+```python
+>>> for card in deck:
+       print(card)    
+Card(rank='2', suit='spade')
+Card(rank='3', suit='spade')
+Card(rank='4', suit='spade')
+...
+Card(rank='K', suit='hearts')
+Card(rank='A', suit='hearts')
+```
+
+`deck` is also be reversed. check the following soltuion:
+
+```python
+>>> for card in reversed(deck):
+     print(card)
+ard(rank='A', suit='hearts')
+Card(rank='K', suit='hearts')
+Card(rank='Q', suit='hearts')
+.................
+Card(rank='2', suit='spade')
+Card(rank='3', suit='spade')
+Card(rank='4', suit='spade')
+```
+
+Iteration is often implicit. If a collection has no `__contains__` method, the `in` operator does a sequential scan. Case in point: `in` works with our `FenchDeck` class becuase it is iterable. Check this out.
+
+```python
+>>> import collections
+>>> Card = collections.namedtuple('Card', ['rank', 'suit'])
+>>> Card
+<class '__main__.Card'>
+>>> Card('Q', 'hearts') in deck
+True
+>>> Card('7', 'beast') in deck
+False
+```
+
+ How about sorting? A common system of ranking cards is by rank(with aces being highest), then by suit in the order of spades(highest), then hearts, diamonds, and clubs(lowest). Here is a function that ranks cards by that rule, returnings `0` for 2 of clubs and `51` for the ace of spades:
+
+```python
+>>> suit_values = dict(spades=3, hearts=2, diamonds=1, clubs=0)
+>>> def spaeds_high(card):
+    	rank_value = frenchdeck.FrechDeck.ranks.index(card.rank)
+    return rank_value * len(suit_values) + suit_values[card.suit]
+```
+
+### How Special Methods Are Used
+
+The first thing you should know that special method is that they are meant to be called by Python interpreter , and not by you.
+
+For example. the statement `for i in x:` actually causes the invocation of `iter(x)`, which in turn may call `x.__iter__()` if that is available.
+
+Check this another thing.
+
+The only special method that is frequently called by user code directly is `__init__`, to invoke the initizlier of the superclass in your own `__init__` implementation.
