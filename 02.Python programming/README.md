@@ -22,6 +22,7 @@
 #### Fluent Python
 
 * 1.Python Data Model
+* 2.Array-sequence
 
 #### Python Library
 
