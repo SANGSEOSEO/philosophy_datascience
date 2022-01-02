@@ -96,3 +96,106 @@ Check this out:
 ##### Listcomps Versus map and filter
 
 Listcomps do everything the `map` and `filter` functions do, without the contorictions of the functionality challenged Python `lambda`.
+
+```python
+# example 2-3 The sample list built by a listcomp and a map / filter composition
+>>> symbols = '$¢£¥€¤'
+>>> beyond_ascii = [ord(symbol) for symbol in symbols]
+>>> beyond_ascii
+[36, 162, 163, 165, 8364, 164]
+```
+
+```python
+# the following is the same 
+>>> filter(lambda x : x > 127, map(ord, symbols))
+<filter object at 0x000001E454A5C250>
+>>> list(filter(lambda x:  x> 127, map(ord, symbols)))
+[162, 163, 165, 8364, 164]
+```
+
+I used to believe that `map` and `filter` were faster thatn the equivalent listcomps, but *Alex Martelli* pointed out that's not the case-at least not in the preceding examples. 
+
+This example will be handled later on.
+
+##### Cartesian Products
+
+Listcomps can generate lists from the Cartesian product of two or more iterables. 
+
+The items that make up the cartesian product are tuples made from items from every input iterable. The resulting list has length equan to the lengths of the input iterables multipled.
+
+![](https://learning.oreilly.com/api/v2/epubs/urn:orm:book:9781491946237/files/assets/flup_0202.png)
+
+```python
+>>> colors = ['black', 'white']
+>>> sizes = ['S', 'M','L']
+>>> tshirts = [(color, size) for color in colors for size in sizes]
+>>> print(f"TShirts tuples are  {tshirts}. ")
+TShirts tuples are  [('black', 'S'), ('black', 'M'), ('black', 'L'), ('white', 'S'), ('white', 'M'), ('white', 'L')]. 
+>>> for size in sizes:
+       for color in colors:
+          print((color, size))
+('black', 'S')
+('white', 'S')
+('black', 'M')
+('white', 'M')
+('black', 'L')
+('white', 'L')        
+```
+
+##### Generator Expressions
+
+To initialize tuples, arrays, and other types of sequences, you could also start form a listcomp, but a genexo saves memory because it yields items one by one using the iterator protocol instead of building a whole list just to feed another constructor.
+
+Genexps use the same syntax as listcomps, but are enclosed in parentheses rather than brackets.
+
+```python
+# Initializing a tuple and an array from a generator expression
+>>> symbols = '$¢£¥€¤'
+>>> tuple(ord(symbol) for symbol in symbols)
+(36, 162, 163, 165, 8364, 164)
+
+# 'I' means Inter, 'U'- Unsigned integer
+>>> import array
+>>> array.array("I", (ord(symbol) for symbol in symbols))
+array('I', [36, 162, 163, 165, 8364, 164])
+```
+
+The `array` constructor takes two arguments, so the parentheses around the generator expressions are mandatory. The first argument of the `array` constructor defines the strorage type used for the numbers in the array.
+
+Using a genexp with a cartesian product
+
+```python
+>>> colors = ['black', 'white']
+>>> sizes = ['S', 'M', 'L'] 
+>>> for tshirt in ('%s %s' %(c, s) for c in colors for s in sizes): #(1) generator expression 
+       print(tshirt)
+    
+black S
+black M
+black L
+white S
+white M
+white L
+```
+
+The generator expression yields items one by one; a list with all T-shirt variations is never produced in this example.
+
+Chapter 14 will be take care of the generator expression later on.
+
+#### Tuples Are Not Just Immutable Lists
+
+Some introuctory texts about Python presents tuples as "immutable lists", but that is short selling them. Tuples do double duty: they can be used as immutable lists and also as records with no field names. This use is sometimes overlooked, so we will start with that.
+
+##### Tuples as Records
+
+Tuples hold records: each items in the tuple holds the data for one field and the position of the item gives its meaning.
+
+If you think of a tuple just as an immutable list, the quantity and the order of the items may or may not be important, depending on the context.
+
+But when using a tuple as a collection of fields, the number of items is often fixed and their order is always vital.
+
+```python
+# Tuples used as records
+
+```
+
