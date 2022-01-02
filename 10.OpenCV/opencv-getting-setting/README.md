@@ -151,7 +151,7 @@ The answer is that back when OpenCV was originall developed, BGR ordering was th
 
 Then access the pixel located at x=50, y=20 using the array indexing of `image[20, 50]`.
 
-But wait. Shoudln't it instead be `image[50, 20]`. since x = 50 and y = 20?
+But wait. Shouldn't it instead to be `image[50, 20]`. since x = 50 and y = 20?
 
 Let's consider.
 
@@ -164,3 +164,73 @@ Therefore , to access the pixel located at x = 50, y=20, you pass the y-value fi
 
 > **Note:** I've found that the concept of accessing individual pixels with the syntax of `image[y,x]` is what trips up many students. Take a second to convince yourself that `image[y, x]` is the correct syntax based on the fact that the x-value is your column number(i.e., width), and the y-value is your row number(i.e., height).
 
+```python
+# Compute Getting and Setting Pixels
+# divided by two
+(cX, cY) = (w // 2, h //2)
+print(f"cX => {cX}, cY => {cY}")
+```
+
+We compute the center (x, y)-coordinates of the image. This is accomplished by simply dividing the width and height by two, ensuring integer conversion(since we cannot access "fractional pixel" locations).
+
+```python
+# since we are using Numpy arrays, we can apply array slicing to grab
+# large chunks/regions of interest from the image -- here we grab the
+# top-left corner of the image
+t1 = image[0:cY, 0:cX]
+cv2.imshow("Top-Left Corner Cropped Image", t1)
+cv2.waitKey(0)
+```
+
+Then, we use simply Numpy array slicing to extract the `[0, cX]`and `[0, cY]` region of the image. In fact, this region corresponds to the *top-left* corner of the image! To grab chunks of an image, Numpy expects we provide four indexes:
+
+* **Start y :** The first value is the starting *y-coordinate. This is where our array slice will start along the *y-axis*. In our example above, our slice starts at *y=0*.
+* **End y:** Just as we supplied a starting *y-value*, we must provide an ending *y-value*. Our slice stops along the *y-axis* when *y=cY*.
+* **Start x:** The third value we must supply is the starting *x-coordinate for the slice. To grab the *top-left* region of the image, we start at *x= 0*.
+* **End x:** Lastly, we need to provide the *x-axis* values for our slice to stop. We stop when *x = cX*.
+
+<img width="223" alt="cropped" src="https://user-images.githubusercontent.com/70785000/147845922-a75bf191-0720-4950-9e3b-2bf4530bcf6e.png">
+
+```python
+# In a similiar fashion, we can crop the top-right , bottom-right , and
+# bottom-left corners of the image and then displayed them to our
+# screen
+top_right = image[0:cY, cX: w]
+btm_right = image[cY:h, cX: w]
+btm_left = image[cY:h, 0:cX]
+
+cv2.imshow("Top-Right Corner", top_right)
+cv2.waitKey(0)
+cv2.imshow("Bottom-Right Corner", btm_right)
+cv2.waitKey(0)
+cv2.imshow("Bottom-Left Corner", btm_left)
+cv2.waitKey(0)
+```
+
+Understanding Numpy array slicing is a very important skill that you will use time and time again as a computer vision practioner. If you are unfamiliar with Numpy basic of Numpy array slicing, I would suggest taking a few minutes and reading [this page](https://numpy.org/doc/stable/reference/arrays.indexing.html) on the basics of Numpy indexes, arrays, and slicing.
+
+The last task we are hoing to use array slice to chage the color of a region of pixels.
+
+```python
+# set the top-left corner of the original image ot be green
+image[0:cY, 0:cX] = (0, 255, 0)
+
+# Show our updated image
+cv2.imshow("UPdate", image)
+cv2.waitKey(0)
+```
+
+```python
+# execute 
+>>>  python opencv_getting_setting.py --image .\adrian.png
+```
+
+### Summary
+
+In this tutorial, you learned how to get and set pixel values OpenCV.
+
+You also learned about pixels, the building blocks of an image, along with the image coordinate system OpenCV uses.
+
+Unlike the coordinate system you studied in basic algebra, where the origin, denoted as (0,0), is at the bottom-left, the origian for images is actually located at the *top-left* of the image.
+
+As the `x` value increases we go farther  to the *right* of the image. And as the `y`-values increases, we go farther down the image.
