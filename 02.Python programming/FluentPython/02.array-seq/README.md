@@ -196,6 +196,68 @@ But when using a tuple as a collection of fields, the number of items is often f
 
 ```python
 # Tuples used as records
+# Examples 2-7 Tuples used as records
+lax_coordinates = (33.9425, -118.408056) #  latitude and logitude of LA Internaltional Airport
+city,year, pop, chg, area = ('Tokyo', 2003, 32450, 0.66, 8014)  # Tkyo Postal inforamtion
+traveler_ids = [('USA', '31195855'), ('BRA', 'CES342567'), ('ESP', 'XDA205856')]
 
+for passport in sorted(traveler_ids):  
+    # tuple unpacking
+    print("%s /%s" % passport)
+```
+
+```python
+C:\Anaconda3\envs\PyProject\python.exe C:/PythonProject/FluentPython/Example2-7.py
+BRA /CES342567
+ESP /XDA205856
+USA /31195855
+```
+
+```python
+for country, _ in sorted(traveler_ids):  
+    print(country)
+```
+
+```
+# Output
+# `_` not interested in the second items , so it's assigned to `_` , a dummy variable
+BRA
+ESP
+USA
+```
+
+We call the above `Tuple Unpacking`.
+
+##### Tuples Unpacking
+
+> Tuples unpacking works with any iterable object. The only requirements is that the iterable yields exactly one item per variable in the receiving tuple, unless you use a star (`*`) to capture excess items 
+
+```python
+# tuple unpacking
+>>>latitude, longitude = lax_coordinates
+>>>print(f"latitude -> {latitude}, longgitude -> {longitude}")
+
+>>>
+latitude -> 33.9425, longgitude -> -118.408056
+```
+
+```python
+# Another example of tuple unpacking
+a, b = divmod(20, 8) # 몫과 나머지를 리턴
+
+print(f"a -> {a}, b -> {b}")
+
+# `*` - prefixing an aurgument with a star when calling a function
+t = divmod(20, 8)
+print(*t)
+
+# `*` - prefixing an aurgument with a star when calling a function
+t = divmod(20, 8)
+print(*t)
+```
+
+```python
+a -> 2, b -> 4
+2 4
 ```
 
