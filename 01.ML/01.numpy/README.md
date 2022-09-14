@@ -13,3 +13,4 @@
 ## 업데이트 내역
 
 * 넘파이 - argsort(), np.sort(), ndarray.sort()
+* Numpy introduction document
