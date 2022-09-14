@@ -2,7 +2,8 @@
 
 ndarray : N차원(Dimension)배열 (Array) 객체
 
-![ndarray.drawio](C:\Users\seosa\Downloads\ndarray.drawio.png)
+![ndarray drawio](https://user-images.githubusercontent.com/70785000/190153543-5906ec3d-e41a-4bfb-b8c0-a267bce7ce87.png)
+
 
 * 1차원 배열은 선의 개열
 * 2차원 배열은 1차원의 요소가 여러개 있는 것을 의미
