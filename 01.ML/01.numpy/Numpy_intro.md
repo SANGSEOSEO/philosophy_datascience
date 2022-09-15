@@ -109,9 +109,9 @@ array1d.astype("int32")  # array1d.astype(np.int32)
   | <img width="176" alt="axis_0" src="https://user-images.githubusercontent.com/70785000/190311628-dc69d296-9e9a-4d28-902e-5868055e7265.png"> | <img width="203" alt="axis_1" src="https://user-images.githubusercontent.com/70785000/190311979-cc6e7162-fe99-4a7a-9b5e-cb58184ba102.png"> |
 
 
-## ndarray를 편리하게 생성
+## ndarray를 편리하게 생성 및 변경
 
-> arange, zeros, ones
+> arange, zeros, ones, reshape
 
 * 특정 크기와 차원을 가진 ndarray를 연속값이나 0또는 1로 초기화 생성해야 할 경우 arange(), zeros(), ones()를 이용해 쉽게 ndarray를 생성 할 수 있습니다. 주로 테스트용으로 데이터를 만들거나 데이터를 일괄적으로 초기화해 사용 할 경우에 적용 가능
 
@@ -192,5 +192,104 @@ array([[1., 1.],
   변환된 행렬 : [0 1 2 3 4], 변환된 행렬의 shape : (5,), 변환된 행렬의 차원 : 1
   ```
 
-  ​
+## ndarray의 데이터 세트 선택 - 인덱싱(Indexing)
 
+|          인덱싱 유형          | 설명                                       |
+| :----------------------: | :--------------------------------------- |
+|      특정 위치의 단일값 추출       | 원하는 위치의 인덱스 값을 지정하면 해당 위치의 데이터가 반환<br />ex) 파이썬의 인덱싱과 유사함 |
+|      슬라이싱(Slicing)       | 슬라이싱은 연속된 인덱스상의 ndarray를 추출하는 방식.`:` 기호 사이에 시작 인덱스와 종료 인덱스를 표시하면 시작 인덱스에서 종료 인덱스 `-1`위치에 있는 ndarray를 반환합니다. <br />예를 들어 1:5라고 하면 시작 인덱스 1과 종료 인덱스 4까지에 해당하는 ndarray를 반환<br />ex)파이썬의 슬라이싱 방식과 유사함 |
+|  팬시 인덱싱(Fancy Indexing)  | 일정한 인덱싱 집합을 리스트 또는 ndarray형태로 지정해 해당 위치에 있는 ndarray를 반환 |
+| 불린 인덱싱(Boolean Indexing) | 특정 조건에 해당하는지 여부인 True/False값 인덱싱 집합을 기반으로 True에 해당하는 인덱스 위치에 있는 ndarray를 반환 |
+
+### 팬시 인덱싱 - 1차원 ndarray
+
+* 팬시 인덱싱(Fancy Indexing)은 리스트 혹은 ndarray로 인덱스 집합을 지정하면 해당 위치의 인덱스에 해당하는 ndarray를 반환하는 인덱싱 방식입니다.
+
+![fancy_indexing](https://user-images.githubusercontent.com/70785000/190357894-91a5ea72-55d3-4eb7-81b2-764364af7cce.png)
+
+* 인덱싱하고자 하는 대상은 Python List의 형태 혹은 numpy.ndarray 타입니다.
+
+### 팬시 인덱싱 - 2차원 ndarray
+
+![fancy_indexing_2 drawio](https://user-images.githubusercontent.com/70785000/190409337-3341fe0c-596c-4de8-9a8a-22892c0f976a.png)
+
+* array2d[[0,1]]의 의미는 axis = 0만 있다는 의미(행만 해당, 컬럼은 전부 포함된다는 의미)
+
+
+
+### 불린 인덱싱 - 1차원 ndarray
+
+* 불린 인덱싱(boolean indexing) 은 조건 필터링과 추출을 동시에 할 수 있기 때문에 매주 자주 사용되는 인덱싱 방식.
+
+* boolean condition을 `[]`에 입력 -> `False`값은 무시하고 `True`값에 해당하는 Index값만 저장
+
+  -> 저장된 인덱스 값으로 데이터를 조회
+
+* 만약 , ndarray내의 값이 5보다 큰 ndarray를 추출하고자 한다면?
+
+  ```python
+  # 불린 인덱싱을 사용하지 않는 경우
+  array1d = np.arange(start = 1, stop=10)
+  target = []
+
+  for i in range(0, 9):
+    if array1d[i] > 5:
+      target.append(array1d[i])
+      
+  array_selected = np.arrany(target)
+  ```
+
+  ```python
+  # 불린 인덱싱을 사용하는 경우
+  array1d = np.arange(start=0, stop=10)
+  array1d[array1d > 5]  # 이렇게 하면 된다.
+  ```
+
+  ```python
+  # array1d result
+  [0 1 2 3 4 5 6 7 8 9]
+  # boolean index result
+  boolean index result : [6 7 8 9]
+  ```
+
+### 배열의 정렬 - sort() 와 argsort()
+
+#### sort()
+
+*  `np.sort(ndarray)` - 인자로 들어온 원 행렬은 그대로 유지한 채 원 행렬의 정렬된 행렬을 반환
+* `ndarray.sort()`는 원 행렬 자체를 정렬한 형태로 변환하며 반환 값은 `None`
+
+> `np.sort()` 나 `ndarray.sort()` 모두 기본적으로 오름 차순으로 행렬 내 원소를 정렬합니다. 
+>
+> 내림 차순으로 정렬하기 위해서는 `[::-1]`를 적용합니다. 
+>
+> `np.sort()[::-1]`과 같이 사용하면 됩니다.
+
+* 2차원 배열에서의 `axis`기반의 	`sort()` 기본적으로 올림차순임을 기억하자
+
+  np.sort(A, axis = 0)를 소팅한다고 가정한다면 이렇게?
+  $$
+  \begin{bmatrix}                                          
+  8 & 12 \\
+  7 & 1
+  \end{bmatrix}
+  \Rightarrow
+  \begin{bmatrix}                                          
+  7 & 1 \\
+  8 & 12
+  \end{bmatrix}
+  $$
+
+
+​     np.sort(A, axis = 1) 를 소팅한다고 가정
+$$
+\begin{bmatrix}                                          
+8 & 12 \\
+7 & 1
+\end{bmatrix}
+\Rightarrow
+\begin{bmatrix}                                          
+8 & 12 \\
+1 & 7
+\end{bmatrix}
+$$
