@@ -5,11 +5,11 @@ ndarray : N차원(Dimension)배열 (Array) 객체
 ![ndarray drawio](https://user-images.githubusercontent.com/70785000/190153543-5906ec3d-e41a-4bfb-b8c0-a267bce7ce87.png)
 
 
-* 1차원 배열은 선의 개열
+* 1차원 배열은 각 원소들이 선분처럼 배열된 것으로 이해
 * 2차원 배열은 1차원의 요소가 여러개 있는 것을 의미
 * 3차원 배열 - 면적이 - 2차원 배열- 여러 개 있다고 이해하자.
 
- 
+
 
 ## ndarray 생성
 
@@ -69,4 +69,52 @@ import numpy as np
 array1d = [1.0, 2.0]
 array1d.astype("int32")  # array1d.astype(np.int32)
 ```
+
+## ndarray sum function using axis
+
+<img width="369" alt="numpy_axis" src="https://user-images.githubusercontent.com/70785000/190310650-e1c6f57f-c076-4439-bfa4-73d483a84a8d.png">
+
+* calculation with axis
+
+  ```python
+  np_array_2d = np.arange(0, 6).reshape(2,3)
+  print(np_array_2d)
+  ```
+
+  ```python
+  [[0 1 2]
+   [3 4 5]]
+  ```
+
+  ```python
+  np.sum(np_array_2d,axis=0)
+  ```
+
+  ```python
+  # execution result
+  array([3, 5, 7])
+  ```
+
+  ```python
+  np.sum(np_array_2d, axis=1)
+  ```
+
+  ```python
+  # execution result
+  array([ 3, 12])
+  ```
+
+  |                 axis =0                  |                 axis = 1                 |
+  | :--------------------------------------: | :--------------------------------------: |
+  | <img width="176" alt="axis_0" src="https://user-images.githubusercontent.com/70785000/190311628-dc69d296-9e9a-4d28-902e-5868055e7265.png"> | <img width="203" alt="axis_1" src="https://user-images.githubusercontent.com/70785000/190311979-cc6e7162-fe99-4a7a-9b5e-cb58184ba102.png"> |
+
+  ​
+
+
+
+
+
+
+
+
 
