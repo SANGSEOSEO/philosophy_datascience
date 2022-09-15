@@ -268,28 +268,9 @@ array([[1., 1.],
 * 2차원 배열에서의 `axis`기반의 	`sort()` 기본적으로 올림차순임을 기억하자
 
   np.sort(A, axis = 0)를 소팅한다고 가정한다면 이렇게?
-  $$
-  \begin{bmatrix}                                          
-  8 & 12 \\
-  7 & 1
-  \end{bmatrix}
-  \Rightarrow
-  \begin{bmatrix}                                          
-  7 & 1 \\
-  8 & 12
-  \end{bmatrix}
-  $$
+  <img width="154" alt="sort_axis_0" src="https://user-images.githubusercontent.com/70785000/190433675-a6c29da2-dc71-4464-9e98-fc7963f10e4e.png">
 
 
 ​     np.sort(A, axis = 1) 를 소팅한다고 가정
-$$
-\begin{bmatrix}                                          
-8 & 12 \\
-7 & 1
-\end{bmatrix}
-\Rightarrow
-\begin{bmatrix}                                          
-8 & 12 \\
-1 & 7
-\end{bmatrix}
-$$
+
+<img width="160" alt="sort_axis_1" src="https://user-images.githubusercontent.com/70785000/190433701-b83fc48a-d58b-42a0-adf7-57140a7e1c83.png">
