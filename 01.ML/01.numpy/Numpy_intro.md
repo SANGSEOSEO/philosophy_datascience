@@ -108,13 +108,89 @@ array1d.astype("int32")  # array1d.astype(np.int32)
   | :--------------------------------------: | :--------------------------------------: |
   | <img width="176" alt="axis_0" src="https://user-images.githubusercontent.com/70785000/190311628-dc69d296-9e9a-4d28-902e-5868055e7265.png"> | <img width="203" alt="axis_1" src="https://user-images.githubusercontent.com/70785000/190311979-cc6e7162-fe99-4a7a-9b5e-cb58184ba102.png"> |
 
+
+## ndarray를 편리하게 생성
+
+> arange, zeros, ones
+
+* 특정 크기와 차원을 가진 ndarray를 연속값이나 0또는 1로 초기화 생성해야 할 경우 arange(), zeros(), ones()를 이용해 쉽게 ndarray를 생성 할 수 있습니다. 주로 테스트용으로 데이터를 만들거나 데이터를 일괄적으로 초기화해 사용 할 경우에 적용 가능
+
+```python
+np.arange(10)
+```
+
+```python
+# 실행결과
+array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+```
+
+```python
+np.zeros((3,2), dtype='int32') # int32타입의 영행렬을 생성, 행이 3개이고, 컬럼 갯수는 2개
+```
+
+```python
+# 실행결과
+array([[0, 0],
+       [0, 0],
+       [0, 0]])
+```
+
+```python
+np.ones((3,2))  # dtype를 주지 않으면 float64형으로 생성
+```
+
+```python
+# 실행결과
+array([[1., 1.],
+       [1., 1.],
+       [1., 1.]])
+```
+
+* reshape()는 ndarray를 특정 차원 및 형태로 변환. 변환 형태를 함수 인자로 부여할 수 있다.
+
+  ```python
+  x = np.arange(10)
+  print(x.reshape((2, 5), order='C'))
+  ```
+
+* reshape()는 reshape(-1, 1), reshape(-1,) 과 같은 형식으로 변환이 되는 요구 경우, 주로 머신러닝 API의 인자로 1차원 ndarray를 명확하게 2차원 ndarray로 변환하여 입력하기를 원하거나, 또는 반대의 경우가 있을 경우 reshape()를 이용하여 ndarray의 형태를 변환시켜주는 데 사용
+
+  ```python
+  array1d = np.array([0, 1, 2, 3, 4])
+  array2d = array1d.reshape((-1, 1))  # 2차원이고 , 컬럼의 갯수 1개
+  print(f"array2d shape : {array2d.shape}, array2d : \n {array2d}, \n{array2d.ndim} 차원")
+  ```
+
+  ```python
+  # result
+  array2d shape : (5, 1), 
+  array2d : 
+   [
+   [0]
+   [1]
+   [2]
+   [3]
+   [4]
+   ], 
+  2 차원
+  ```
+
+  ```python
+  print(f'Array2d : \n {array2d}')
+  array_conv = array2d.reshape(-1,)    # 1차원으로 변환
+  print(f"변환된 행렬 : {array_conv}, 변환된 행렬의 shape : {array_conv.shape}, 변환된 행렬의 차원 : {array_conv.ndim}")
+  ```
+
+  ```python
+  # result
+  Array2d : 
+   [[0]
+   [1]
+   [2]
+   [3]
+   [4]]
+  변환된 행렬 : [0 1 2 3 4], 변환된 행렬의 shape : (5,), 변환된 행렬의 차원 : 1
+  ```
+
   ​
-
-
-
-
-
-
-
-
 
