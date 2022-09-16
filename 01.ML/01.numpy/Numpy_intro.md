@@ -304,7 +304,7 @@ $$
 
   ![argsort drawio](https://user-images.githubusercontent.com/70785000/190590961-05c6c143-9a24-45ca-90f8-0d3de60edf44.png)
 
-## 행렬의 내적 예
+## 행렬의 내적 및 전치 행렬
 
 * np.dot(A, B)
 
@@ -313,3 +313,7 @@ $$
 * 오른쪽의  행렬(B)의 행 갯수와 왼쪽의 행렬(A)의 열 갯수가 동일해야 내적이 성립된다.
 
 * 내적의 결과는 왼쪽의 행렬(A)의 행 갯수 * 오른쪽 행렬(B)의 열 갯수 이다.( 4 * 2)
+
+* 전치 행렬([데이터 사이언스 스쿨](https://datascienceschool.net/02%20mathematics/02.01%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%99%80%20%ED%96%89%EB%A0%AC.html) )
+
+  <img width="539" alt="transpose" src="https://user-images.githubusercontent.com/70785000/190607157-86ba7f67-206a-444f-8d98-441ef4f05fb4.png">
