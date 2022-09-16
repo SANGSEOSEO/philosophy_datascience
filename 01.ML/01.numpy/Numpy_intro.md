@@ -257,7 +257,7 @@ array([[1., 1.],
 #### sort()
 
 *  `np.sort(ndarray)` - 인자로 들어온 원 행렬은 그대로 유지한 채 원 행렬의 정렬된 행렬을 반환
-* `ndarray.sort()`는 원 행렬 자체를 정렬한 형태로 변환하며 반환 값은 `None`
+*  `ndarray.sort()`는 원 행렬 자체를 정렬한 형태로 변환하며 반환 값은 `None`
 
 > `np.sort()` 나 `ndarray.sort()` 모두 기본적으로 오름 차순으로 행렬 내 원소를 정렬합니다. 
 >
@@ -268,9 +268,48 @@ array([[1., 1.],
 * 2차원 배열에서의 `axis`기반의 	`sort()` 기본적으로 올림차순임을 기억하자
 
   np.sort(A, axis = 0)를 소팅한다고 가정한다면 이렇게?
-  <img width="154" alt="sort_axis_0" src="https://user-images.githubusercontent.com/70785000/190433675-a6c29da2-dc71-4464-9e98-fc7963f10e4e.png">
+  $$
+  \begin{bmatrix}                                          
+  8 & 12 \\
+  7 & 1
+  \end{bmatrix}
+  \Rightarrow
+  \begin{bmatrix}                                          
+  7 & 1 \\
+  8 & 12
+  \end{bmatrix}
+  $$
+
+
 
 
 ​     np.sort(A, axis = 1) 를 소팅한다고 가정
+$$
+\begin{bmatrix}                                          
+8 & 12 \\
+7 & 1
+\end{bmatrix}
+\Rightarrow
+\begin{bmatrix}                                          
+8 & 12 \\
+1 & 7
+\end{bmatrix}
+$$
 
-<img width="160" alt="sort_axis_1" src="https://user-images.githubusercontent.com/70785000/190433701-b83fc48a-d58b-42a0-adf7-57140a7e1c83.png">
+#### argsort()
+
+* 정렬전의 행렬의 각 원소에 대한 인덱스값을 알고자 할때 유용
+
+* 넘파이는 키, 값의 구분이 되지 않음
+
+  ![argsort drawio](https://user-images.githubusercontent.com/70785000/190590961-05c6c143-9a24-45ca-90f8-0d3de60edf44.png)
+
+## 행렬의 내적 예
+
+* np.dot(A, B)
+
+  <img width="530" alt="matrix_dot" src="https://user-images.githubusercontent.com/70785000/190604499-4fb1fce3-7991-40b8-a0bf-8fb59bb967d1.png">
+
+* 오른쪽의  행렬(B)의 행 갯수와 왼쪽의 행렬(A)의 열 갯수가 동일해야 내적이 성립된다.
+
+* 내적의 결과는 왼쪽의 행렬(A)의 행 갯수 * 오른쪽 행렬(B)의 열 갯수 이다.( 4 * 2)
